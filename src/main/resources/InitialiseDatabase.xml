@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+ * PopulateDatabase.xml
+ *
+ * Copyright (C) 2019 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	">
+	
+	<!-- User accounts -->
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin1" />
+		<property name="password" value="e00cf25ad42683b3df678c61f42c6bda" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	
+	
+	<!-- Other domain beans come here -->	
+	
+	<bean id="admin1" class="domain.Administrator">
+		<property name="userAccount" ref="userAccount1"/>
+		<property name="name" value="admin1" />
+		<property name="middleName" value="middleName" />
+		<property name="surname" value="admin1"/>
+		<property name="photo" value="https://github.com/dp2-anacardo/DP2-D01"/>
+		<property name="email" value="emailDePrueba@gmail.com"/>
+		<property name="phoneNumber" value="+34 678123674"/>
+		<property name="address" value="Avenida Reina Mercedes"/>
+		<property name="isSuspicious" value="false"/>
+		<property name="isBanned" value="false"/>
+		<property name="score" value=""/>
+		<property name="socialProfiles">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+				<ref bean="inBoxAdmin1"/>
+				<ref bean="outBoxAdmin1"/>
+				<ref bean="spamBoxAdmin1"/>
+				<ref bean="trashBoxAdmin1"/>
+				<ref bean="notificationBoxAdmin1" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="inBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="INBOX"/>
+		<property name="isSystem" value="true"/>
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+		<property name="sons">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="outBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="OUTBOX"/>
+		<property name="isSystem" value="true"/>
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+		<property name="sons">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="spamBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="SPAMBOX"/>
+		<property name="isSystem" value="true"/>
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+		<property name="sons">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="trashBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="TRASHBOX"/>
+		<property name="isSystem" value="true"/>
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+		<property name="sons">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="notificationBoxAdmin1" class="domain.MessageBox">
+		<property name="name" value="NOTIFICATIONBOX"/>
+		<property name="isSystem" value="true"/>
+		<property name="messages">
+			<list>
+			</list>
+		</property>
+		<property name="sons">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="HIGH" class="domain.Priority">
+		<property name="name">
+		<map>
+		<entry key="ES" value="ALTA"/>
+		<entry key="EN" value="HIGH"/>
+		</map>
+		</property>
+	</bean>
+	
+	<bean id="MEDIUM" class="domain.Priority">
+		<property name="name">
+		<map>
+		<entry key="ES" value="MEDIA"/>
+		<entry key="EN" value="MEDIUM"/>
+		</map>
+		</property>
+	</bean>
+	
+	<bean id="LOW" class="domain.Priority">
+		<property name="name">
+		<map>
+		<entry key="ES" value="BAJA"/>
+		<entry key="EN" value="LOW"/>
+		</map>
+		</property>
+	</bean>
+	
+	<bean id="president" class="domain.Position">
+		<property name="roleEs" value="Presidente"/>
+		<property name="roleEn" value="President"/>
+	</bean>
+	
+	<bean id="vicepresident" class="domain.Position">
+		<property name="roleEs" value="Vicepresidente"/>
+		<property name="roleEn" value="Vice President"/>
+	</bean>
+	
+	<bean id="secretary" class="domain.Position">
+		<property name="roleEs" value="Secretario"/>
+		<property name="roleEn" value="Secretary"/>
+	</bean>
+	
+	<bean id="treasurer" class="domain.Position">
+		<property name="roleEs" value="Tesorero"/>
+		<property name="roleEn" value="Treasurer"/>
+	</bean>
+	
+	<bean id="fundraiser" class="domain.Position">
+		<property name="roleEs" value="Promotor"/>
+		<property name="roleEn" value="Fundraiser"/>
+	</bean>
+	
+	<bean id="historian" class="domain.Position">
+		<property name="roleEs" value="Historiador"/>
+		<property name="roleEn" value="Historian"/>
+	</bean>
+	
+	<bean id="officer" class="domain.Position">
+		<property name="roleEs" value="Vocal"/>
+		<property name="roleEn" value="Officer"/>
+	</bean>
+	
+	<bean id="default" class="domain.Position">
+		<property name="roleEs" value="default"/>
+		<property name="roleEn" value="default"/>
+	</bean>
+	
+	<!-- Configuration -->
+	
+	<bean id="configuration1" class="domain.Configuration">
+		<property name="maxResults" value="10"/>
+		<property name="maxTime" value="1"/>
+		<property name="systemName" value="Acme Madrugá"/>
+		<property name="banner" value="https://st.depositphotos.com/1907907/3851/v/950/depositphotos_38512469-stock-illustration-marching-band-in-celebtarion-parade.jpg"/>
+		<property name="welcomeMessageEs" value="¡Bienvenidos a Acme Madrugá! Tu sitio para organizar procesiones."/>
+		<property name="welcomeMessageEn" value="Welcome to Acme Madrugá, the site to organise your parades."/>
+		<property name="defaultCC" value="34"/>
+		<property name="vat" value="21"/>
+		<property name="flatFee" value="15"/>
+		<property name="spamWords">
+			<list>
+				<value>sex</value>
+				<value>viagra</value>
+				<value>cialis</value>
+				<value>one million</value>
+				<value>you've been selected</value>
+				<value>Nigeria</value>
+				<value>sexo</value>
+				<value>un millon</value>
+				<value>has sido seleccionado</value>
+			</list>
+		</property>
+		<property name="positiveWords">
+			<list>
+				<value>good</value>
+				<value>fantastic</value>
+				<value>excellent</value>
+				<value>great</value>
+				<value>amazing</value>
+				<value>terrific</value>
+				<value>beautiful</value>
+				<value>bueno</value>
+				<value>buenos</value>
+				<value>buena</value>
+				<value>buenas</value>
+				<value>fantastico</value>
+				<value>fantasticos</value>
+				<value>fantastica</value>
+				<value>fantasticas</value>
+				<value>excelente</value>
+				<value>excelentes</value>
+				<value>genial</value>
+				<value>geniales</value>
+				<value>increible</value>
+				<value>increibles</value>
+				<value>estupendo</value>
+				<value>estupendos</value>
+				<value>estupenda</value>
+				<value>estupendas</value>
+				<value>bonito</value>
+				<value>bonitos</value>
+				<value>bonita</value>
+				<value>bonitas</value>
+			</list>
+		</property>
+		<property name="negativeWords">
+			<list>
+				<value>not</value>
+				<value>bad</value>
+				<value>horrible</value>
+				<value>average</value>
+				<value>disaster</value>
+				<value>no</value>
+				<value>malo</value>
+				<value>malos</value>
+				<value>mala</value>
+				<value>malas</value>
+				<value>mediocre</value>
+				<value>desastroso</value>
+				<value>desastrosos</value>
+				<value>desastrosa</value>
+				<value>desastrosas</value>
+			</list>
+		</property>
+		<property name="brandName">
+			<list>
+				<value>VISA</value>
+				<value>MCARD</value>
+				<value>DINNERS</value>
+				<value>AMEX</value>
+				<value>FLY</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>
