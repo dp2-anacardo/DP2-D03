@@ -35,7 +35,7 @@
 		<security:intercept-url pattern="/styles/**" access="permitAll" /> 
 		<security:intercept-url pattern="/gdpr/show.do" access="permitAll" /> 
 
-		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
+		<security:intercept-url pattern="/**" access="permitAll" />
 
 		<security:form-login 
 			login-page="/security/login.do"
