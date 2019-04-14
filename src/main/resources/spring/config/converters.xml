@@ -23,6 +23,17 @@
 			<bean class="converters.Class1ToClass2" /> 
 		-->
 
+		<bean class="converters.CurriculaToStringConverter"/>
+		<bean class="converters.StringToCurriculaConverter"/>
+		<bean class="converters.EducationalDataToStringConverter"/>
+		<bean class="converters.StringToEducationalDataConverter"/>
+		<bean class="converters.PersonalDataToStringConverter"/>
+		<bean class="converters.StringToPersonalDataConverter"/>
+		<bean class="converters.MiscDataToStringConverter"/>
+		<bean class="converters.StringToMiscDataConverter"/>
+		<bean class="converters.PositionDataToStringConverter"/>
+		<bean class="converters.StringToPositionDataConverter"/>
+
 	</util:list>
 	
 </beans>
