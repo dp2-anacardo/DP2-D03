@@ -276,6 +276,7 @@
 				<ref bean="position1"/>
 			</list>
 		</property>
+		<property name="lastUpdate" value=""/>
 	</bean>
 	
 	<bean id="finderHacker2" class="domain.Finder">
@@ -287,6 +288,7 @@
 			<list>
 			</list>
 		</property>
+		<property name="lastUpdate" value=""/>
 	</bean>
 	
 	<!-- Hackers' Curricula -->
