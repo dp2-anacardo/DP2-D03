@@ -1,13 +1,13 @@
 package domain;
 
-<<<<<<< HEAD
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.Collection;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Curricula extends DomainEntity{
+public class Curricula extends DomainEntity {
 
     //Relationships ----------------------------------------------------------------------------------------------------
     private Collection<EducationalData> educationalData;
@@ -23,6 +23,7 @@ public class Curricula extends DomainEntity{
     public void setEducationalData(Collection<EducationalData> educationalData) {
         this.educationalData = educationalData;
     }
+
     @OneToOne(optional = true)
     public MiscData getMiscData() {
         return miscData;
@@ -31,6 +32,7 @@ public class Curricula extends DomainEntity{
     public void setMiscData(MiscData miscData) {
         this.miscData = miscData;
     }
+
     @Valid
     @OneToOne(optional = false)
     public PersonalData getPersonalData() {
@@ -40,6 +42,7 @@ public class Curricula extends DomainEntity{
     public void setPersonalData(PersonalData personalData) {
         this.personalData = personalData;
     }
+
     @OneToMany
     public Collection<PositionData> getPositionData() {
         return positionData;
@@ -48,9 +51,4 @@ public class Curricula extends DomainEntity{
     public void setPositionData(Collection<PositionData> positionData) {
         this.positionData = positionData;
     }
-=======
-
-public class Curricula {
-
->>>>>>> f752a648b433bfd8f77ab4599992261429e7595c
 }
