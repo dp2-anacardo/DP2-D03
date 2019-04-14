@@ -1,5 +1,6 @@
 package domain;
 
+<<<<<<< HEAD
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.Collection;
@@ -47,4 +48,9 @@ public class Curricula extends DomainEntity{
     public void setPositionData(Collection<PositionData> positionData) {
         this.positionData = positionData;
     }
+=======
+
+public class Curricula {
+
+>>>>>>> f752a648b433bfd8f77ab4599992261429e7595c
 }
