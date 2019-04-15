@@ -23,6 +23,8 @@
 		<value>/views/security/messages</value>		
 		<value>/views/welcome/messages</value>
 		<value>/views/application/messages</value>
+		<value>/views/profile/messages</value>
+		<value>/views/administrator/messages</value>
 	</util:list>
 
 </beans>

@@ -21,6 +21,7 @@ import domain.Actor;
 import domain.Administrator;
 import domain.Message;
 import domain.SocialProfile;
+import forms.AdministratorForm;
 
 @Service
 @Transactional
@@ -134,6 +135,33 @@ public class AdministratorService {
 
 			this.validator.validate(admin, binding);
 		}
+		return result;
+	}
+
+	//Validador de contraseñas
+	public Boolean checkPass(final String pass, final String confirmPass) {
+		Boolean res = false;
+		if (pass.compareTo(confirmPass) == 0)
+			res = true;
+		return res;
+	}
+	//Objeto formulario
+	public Administrator reconstruct(final AdministratorForm admin, final BindingResult binding) {
+
+		final Administrator result = this.create();
+		result.setAddress(admin.getAddress());
+		result.setEmail(admin.getEmail());
+		result.setId(admin.getId());
+		result.setName(admin.getName());
+		result.setPhoneNumber(admin.getPhoneNumber());
+		result.setPhoto(admin.getPhoto());
+		result.setSurname(admin.getSurname());
+		result.getUserAccount().setPassword(admin.getPassword());
+		result.getUserAccount().setUsername(admin.getUsername());
+		result.setVersion(admin.getVersion());
+		result.setVatNumber(admin.getVatNumber());
+
+		this.validator.validate(result, binding);
 		return result;
 	}
 

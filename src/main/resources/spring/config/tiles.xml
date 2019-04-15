@@ -23,6 +23,8 @@
 		<value>/views/security/tiles.xml</value>
 		<value>/views/welcome/tiles.xml</value>
 		<value>/views/application/tiles.xml</value>
+		<value>/views/profile/tiles.xml</value>
+		<value>/views/administrator/tiles.xml</value>
 	</util:list>
 
 </beans>
