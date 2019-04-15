@@ -58,7 +58,7 @@ public class HackerService {
 		userAccount.setAuthorities(authorities);
 		a.setUserAccount(userAccount);
 		a.setIsBanned(false);
-		a.setIsSuspicious(false);
+		a.setIsSpammer(false);
 		a.setMessages(boxes);
 		a.setSocialProfiles(profiles);
 		a.setSurname(surnames);
