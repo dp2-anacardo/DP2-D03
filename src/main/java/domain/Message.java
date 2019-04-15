@@ -29,7 +29,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Access(AccessType.PROPERTY)
 @Table(indexes = {
-	@Index(columnList = "subject, isSpam")
+	@Index(columnList = "subject")
 })
 public class Message extends DomainEntity {
 
@@ -41,12 +41,7 @@ public class Message extends DomainEntity {
 	@Expose
 	private String				body;
 	@Expose
-	private Priority			priority;
-	@Expose
 	private Collection<String>	tags;
-	@Expose
-	private Boolean				isSpam;
-
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -80,17 +75,6 @@ public class Message extends DomainEntity {
 		this.body = body;
 	}
 
-	@NotNull
-	@Valid
-	@ManyToOne
-	public Priority getPriority() {
-		return this.priority;
-	}
-
-	public void setPriority(final Priority priority) {
-		this.priority = priority;
-	}
-
 	@ElementCollection
 	public Collection<String> getTags() {
 		return this.tags;
@@ -99,15 +83,6 @@ public class Message extends DomainEntity {
 	public void setTags(final Collection<String> tags) {
 		this.tags = tags;
 	}
-
-	public Boolean getIsSpam() {
-		return this.isSpam;
-	}
-
-	public void setIsSpam(final Boolean isSpam) {
-		this.isSpam = isSpam;
-	}
-
 
 	// Relationships ----------------------------------------------------------
 	private Actor					sender;
