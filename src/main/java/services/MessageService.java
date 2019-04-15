@@ -153,7 +153,7 @@ public class MessageService {
 
         return result;
     }
-    
+
     public Message reconstruct(final Message message, final BindingResult binding) {
         final Message result;
 
