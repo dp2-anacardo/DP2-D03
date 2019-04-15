@@ -1,11 +1,11 @@
 
 package forms;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,23 +22,23 @@ import domain.Hacker;
 
 public class HackerForm {
 
-	private String				confirmPass;
-	private String				password;
-	private String				username;
-	private String				name;
-	private String				photo;
-	private String				email;
-	private String				phoneNumber;
-	private String				address;
-	private int					id;
-	private int					version;
-	private Collection<String>	surname;
-	private int					vatNumber;
-	private String				holderName;
-	private String				brandName;
-	private String				number;
-	private Date				expiration;
-	private Integer				cvvCode;
+	private String	confirmPass;
+	private String	password;
+	private String	username;
+	private String	name;
+	private String	photo;
+	private String	email;
+	private String	phoneNumber;
+	private String	address;
+	private int		id;
+	private int		version;
+	private String	surname;
+	private int		vatNumber;
+	private String	holderName;
+	private String	brandName;
+	private String	number;
+	private Date	expiration;
+	private Integer	cvvCode;
 
 
 	public HackerForm(final Hacker a) {
@@ -51,7 +51,6 @@ public class HackerForm {
 		result.setPhoto(a.getPhoto());
 		result.setSurname(a.getSurname());
 		result.setVersion(a.getVersion());
-		result.setSurname(a.getSurname());
 		result.setVatNumber(a.getVatNumber());
 
 	}
@@ -156,11 +155,13 @@ public class HackerForm {
 		this.username = username;
 	}
 
-	public Collection<String> getSurname() {
+	@SafeHtml(whitelistType = WhiteListType.NONE)
+	@Valid
+	public String getSurname() {
 		return this.surname;
 	}
 
-	public void setSurname(final Collection<String> surname) {
+	public void setSurname(final String surname) {
 		this.surname = surname;
 	}
 

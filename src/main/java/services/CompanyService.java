@@ -44,14 +44,12 @@ public class CompanyService {
 		final Collection<Authority> authorities;
 		final Collection<SocialProfile> profiles;
 		final Collection<Message> boxes;
-		final Collection<String> surnames;
 		final Company a = new Company();
 		userAccount = new UserAccount();
 		auth = new Authority();
 		authorities = new ArrayList<Authority>();
 		profiles = new ArrayList<SocialProfile>();
 		boxes = new ArrayList<Message>();
-		surnames = new ArrayList<String>();
 
 		auth.setAuthority(Authority.COMPANY);
 		authorities.add(auth);
@@ -61,7 +59,6 @@ public class CompanyService {
 		a.setIsSpammer(false);
 		a.setMessages(boxes);
 		a.setSocialProfiles(profiles);
-		a.setSurname(surnames);
 
 		return a;
 	}

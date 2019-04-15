@@ -44,14 +44,12 @@ public class HackerService {
 		final Collection<Authority> authorities;
 		final Collection<SocialProfile> profiles;
 		final Collection<Message> boxes;
-		final Collection<String> surnames;
 		final Hacker a = new Hacker();
 		userAccount = new UserAccount();
 		auth = new Authority();
 		authorities = new ArrayList<Authority>();
 		profiles = new ArrayList<SocialProfile>();
 		boxes = new ArrayList<Message>();
-		surnames = new ArrayList<String>();
 
 		auth.setAuthority(Authority.HACKER);
 		authorities.add(auth);
@@ -61,8 +59,6 @@ public class HackerService {
 		a.setIsSpammer(false);
 		a.setMessages(boxes);
 		a.setSocialProfiles(profiles);
-		a.setSurname(surnames);
-
 		return a;
 	}
 

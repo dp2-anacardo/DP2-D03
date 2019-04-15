@@ -15,7 +15,6 @@ import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.hibernate.validator.constraints.URL;
@@ -40,7 +39,7 @@ public class Actor extends DomainEntity {
 	@Expose
 	private int							vatNumber;
 	@Expose
-	private Collection<String>			surname;
+	private String						surname;
 	@Expose
 	private String						photo;
 	@Expose
@@ -176,13 +175,13 @@ public class Actor extends DomainEntity {
 		this.vatNumber = vatNumber;
 	}
 
-	@NotEmpty
+	@SafeHtml(whitelistType = WhiteListType.NONE)
 	@Valid
-	public Collection<String> getSurname() {
+	public String getSurname() {
 		return this.surname;
 	}
 
-	public void setSurname(final Collection<String> surname) {
+	public void setSurname(final String surname) {
 		this.surname = surname;
 	}
 
