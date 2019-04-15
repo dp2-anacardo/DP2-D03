@@ -99,6 +99,12 @@
 				<ref bean="socialProfileAdmin1"/>
 			</list>
 		</property>
+		<property name="messages">
+			<list>
+				<ref bean = "message1"/>
+				<ref bean ="message2"/>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- Administrator's SocialProfiles -->	
@@ -139,6 +145,11 @@
 			</list>
 		</property>
 		<property name="commercialName" value="BBVA"/>
+		<property name="messages">
+			<list>
+				<ref bean="message1"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="company2" class="domain.Company">
@@ -158,6 +169,10 @@
 			</list>
 		</property>
 		<property name ="commercialName" value="Abengoa"/>
+		<property name ="messages">
+			<list>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- Companies' SocialProfiles -->	
@@ -212,6 +227,12 @@
 			</list>
 		</property>
 		<property name ="finder" ref="finderHacker1"/>
+		<property name="messages">
+			<list>
+				<ref bean="message2"/>
+				<ref bean="message3"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="hacker2" class="domain.Hacker">
@@ -236,6 +257,11 @@
 			</list>
 		</property>
 		<property name ="finder" ref="finderHacker2"/>
+		<property name="messages">
+			<list>
+				<ref bean="message3"/>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- Hackers' SocialProfiles -->	
@@ -269,26 +295,22 @@
 	<bean id="finderHacker1" class="domain.Finder">
 		<property name="keyWord" value="Developer" />
 		<property name="deadline" value="05/09/2019" />
-		<property name="minimumSalary" value="1800" />
-		<property name="maximumDeadline" value="" />
+		<property name="minSalary" value="1800" />
 		<property name="positions">
 			<list>
 				<ref bean="position1"/>
 			</list>
 		</property>
-		<property name="lastUpdate" value=""/>
+		<property name="lastUpdate" value="15/04/2019"/>
 	</bean>
 	
 	<bean id="finderHacker2" class="domain.Finder">
 		<property name="keyWord" value="" />
-		<property name="deadline" value="" />
-		<property name="minimumSalary" value="" />
-		<property name="maximumDeadline" value="" />
+		<property name="minSalary" value="0"/>
 		<property name="positions">
 			<list>
 			</list>
 		</property>
-		<property name="lastUpdate" value=""/>
 	</bean>
 	
 	<!-- Hackers' Curricula -->
@@ -296,22 +318,16 @@
 	<bean id="curricula1Hacker1" class ="domain.Curricula">
 		<property name = "educationalData" ref = "educationalDataHacker1"/>
 		<property name = "personalData" ref = "personalDataHacker1"/>
-		<property name = "miscellaneousData" ref = "miscellaneousDataHacker1"/>
+		<property name = "miscData" ref = "miscellaneousDataHacker1"/>
 		<property name = "positionData" ref ="positionDataHacker1"/>
 	</bean>
 	
 	<bean id="curricula2Hacker1" class ="domain.Curricula">
-		<property name = "educationalData" ref = ""/>
 		<property name = "personalData" ref = "personalDataHacker1"/>
-		<property name = "miscellaneousData" ref = ""/>
-		<property name = "positionData" ref =""/>
 	</bean>
 	
 	<bean id="curriculaHacker2" class ="domain.Curricula">
-		<property name = "educationalData" ref = ""/>
 		<property name = "personalData" ref = "personalDataHacker2"/>
-		<property name = "miscellaneousData" ref = ""/>
-		<property name = "positionData" ref =""/>
 	</bean>
 	
 	<!-- Curricula's EducationalData -->
@@ -321,17 +337,17 @@
 		<property name = "institution" value = "ETSII"/>
 		<property name = "mark" value = "9"/>
 		<property name = "startDate" value ="24/09/2006"/>
-		<property name = "finishDate" value ="18/06/2012"/>
+		<property name = "endDate" value ="18/06/2012"/>
 	</bean>
 	
 	<!-- Curricula's PersonalData -->
 	
-	<bean id="personalData1Hacker1" class ="domain.PersonalData">
+	<bean id="personalDataHacker1" class ="domain.PersonalData">
 		<property name = "fullName" value = "Eduardo García Jiménez"/>
 		<property name = "statement" value = "No se que poner, ¿qué declaración haría un hacker?"/>
 		<property name = "phoneNumber" value = "+34 791235712"/>
 		<property name = "githubProfile" value ="https://github.com/edugj7126"/>
-		<property name = "linkeldnProfile" value ="https://linkldn.com/edugj7126"/>
+		<property name = "linkedInProfile" value ="https://linkedIn.com/edugj7126"/>
 	</bean>
 	
 	<bean id="personalDataHacker2" class ="domain.PersonalData">
@@ -339,12 +355,12 @@
 		<property name = "statement" value = "No se que poner, ¿qué declaración haría un hacker?"/>
 		<property name = "phoneNumber" value = "+34 654928123"/>
 		<property name = "githubProfile" value ="https://github.com/franCb81"/>
-		<property name = "linkeldnProfile" value ="https://linkldn.com/franCb81"/>
+		<property name = "linkedInProfile" value ="https://linkedIn.com/franCb81"/>
 	</bean>
 	
 	<!-- Curricula's MiscellaneousData -->
 	
-	<bean id="miscellaneousDataHacker1" class ="domain.MiscellaneousData">
+	<bean id="miscellaneousDataHacker1" class ="domain.MiscData">
 		<property name = "attachment" ref="attachment1"/>
 		<property name = "freeText" value=""/>
 	</bean>
@@ -362,42 +378,53 @@
 		<property name = "title" value = "Teacher"/>
 		<property name = "description" value = "I am a secondary school teacher"/>
 		<property name = "startDate" value = "14/04/2014"/>
-		<property name = "endDate" value =""/>
 	</bean>
 	
 	<!-- Messages -->
 	
 	<bean id="message1" class ="domain.Message">
-		<property name = "moment" value = "14/04/2019 16:09"/>
+		<property name = "moment" value = "04/14/2019 16:09"/>
 		<property name = "subject" value = "prueba"/>
 		<property name = "body" value = "message1"/>
-		<property name = "tag">
+		<property name = "tags">
 			<value>tagDePrueba</value>
 		</property>
 		<property name = "sender" ref = "company1"/>
-		<property name = "receipter" value = "admin1"/>
+		<property name = "recipients">
+			<list>
+				<ref bean="admin1"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="message2" class ="domain.Message">
-		<property name = "moment" value = "14/04/2019 16:20"/>
+		<property name = "moment" value = "04/14/2019 16:20"/>
 		<property name = "subject" value = "prueba"/>
 		<property name = "body" value = "message2"/>
-		<property name = "tag">
+		<property name = "tags">
 			<value>Aviso</value>
 		</property>
 		<property name = "sender" ref = "admin1"/>
-		<property name = "receipter" value = "hacker1"/>
+		<property name = "recipients">
+			<list>
+				<ref bean="hacker1"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="message3" class ="domain.Message">
-		<property name = "moment" value = "16/04/2019 16:09"/>
+		<property name = "moment" value = "04/14/2019 16:09"/>
 		<property name = "subject" value = "pruebaBorrado"/>
 		<property name = "body" value = "message3"/>
-		<property name = "tag">
+		<property name = "tags">
 			<value>DELETED</value>
 		</property>
 		<property name = "sender" ref = "hacker1"/>
-		<property name = "receipter" value = "hacker2"/>
+		<property name = "recipients">
+			<list>
+				<ref bean="hacker2"/>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- Position -->
@@ -622,6 +649,7 @@
 		<property name = "rejectComment" value=""/>
 		<property name = "hacker" ref="hacker1"/>
 		<property name = "problem" ref ="problem1"/>
+		<property name = "curricula" ref ="curricula1Hacker1"/>
 	</bean>
 	
 	<bean id="application2" class ="domain.Application">
@@ -633,6 +661,7 @@
 		<property name = "rejectComment" value="You did it wrong"/>
 		<property name = "hacker" ref="hacker2"/>
 		<property name = "problem" ref ="problem1"/>
+		<property name = "curricula" ref="curriculaHacker2"/>
 	</bean>
 	
 	<!-- Configuration -->

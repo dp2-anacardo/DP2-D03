@@ -1,7 +1,40 @@
 #./src/main/resources/Entities.map
-<<<<<<< HEAD
-#Sun Apr 14 17:26:14 CEST 2019
-=======
-#Sun Apr 14 16:56:15 CEST 2019
->>>>>>> origin/adrian
-userAccount1=2
+#Mon Apr 15 18:48:31 CEST 2019
+problem6=206
+problem5=205
+problem4=204
+application2=214
+personalDataHacker2=194
+problem3=203
+message3=197
+application1=213
+personalDataHacker1=193
+problem2=202
+message2=184
+problem1=201
+message1=183
+curriculaHacker2=212
+configuration1=207
+educationalDataHacker1=192
+finderHacker2=191
+finderHacker1=190
+curricula1Hacker1=210
+socialProfileHacker1=189
+socialProfileCompany1=188
+company2=187
+company1=186
+curricula2Hacker1=211
+userAccount5=181
+userAccount4=180
+hacker2=209
+userAccount3=179
+hacker1=208
+userAccount2=178
+userAccount1=177
+miscellaneousDataHacker1=195
+admin1=182
+positionDataHacker1=196
+position3=200
+socialProfileAdmin1=185
+position2=199
+position1=198

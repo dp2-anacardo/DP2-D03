@@ -1,54 +1,63 @@
+
 package domain;
 
-
-import javax.persistence.*;
-import javax.validation.Valid;
 import java.util.Collection;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.Valid;
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class Curricula extends DomainEntity {
 
-    //Relationships ----------------------------------------------------------------------------------------------------
-    private Collection<EducationalData> educationalData;
-    private MiscData miscData;
-    private PersonalData personalData;
-    private Collection<PositionData> positionData;
 
-    @OneToMany
-    public Collection<EducationalData> getEducationalData() {
-        return educationalData;
-    }
+	//Relationships ----------------------------------------------------------------------------------------------------
+	private Collection<EducationalData>	educationalData;
+	private MiscData					miscData;
+	private PersonalData				personalData;
+	private Collection<PositionData>	positionData;
 
-    public void setEducationalData(Collection<EducationalData> educationalData) {
-        this.educationalData = educationalData;
-    }
-    @Valid
-    @OneToOne(optional = true)
-    public MiscData getMiscData() {
-        return miscData;
-    }
 
-    public void setMiscData(MiscData miscData) {
-        this.miscData = miscData;
-    }
+	@OneToMany
+	public Collection<EducationalData> getEducationalData() {
+		return this.educationalData;
+	}
 
-    @Valid
-    @OneToOne(optional = false)
-    public PersonalData getPersonalData() {
-        return personalData;
-    }
+	public void setEducationalData(final Collection<EducationalData> educationalData) {
+		this.educationalData = educationalData;
+	}
 
-    public void setPersonalData(PersonalData personalData) {
-        this.personalData = personalData;
-    }
+	@OneToOne(optional = true)
+	public MiscData getMiscData() {
+		return this.miscData;
+	}
 
-    @OneToMany
-    public Collection<PositionData> getPositionData() {
-        return positionData;
-    }
+	public void setMiscData(final MiscData miscData) {
+		this.miscData = miscData;
+	}
 
-    public void setPositionData(Collection<PositionData> positionData) {
-        this.positionData = positionData;
-    }
+	@Valid
+	@ManyToOne(optional = false)
+	public PersonalData getPersonalData() {
+		return this.personalData;
+	}
+
+	public void setPersonalData(final PersonalData personalData) {
+		this.personalData = personalData;
+	}
+
+	@OneToMany
+	public Collection<PositionData> getPositionData() {
+		return this.positionData;
+	}
+
+	public void setPositionData(final Collection<PositionData> positionData) {
+		this.positionData = positionData;
+	}
+
 }
