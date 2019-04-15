@@ -41,7 +41,7 @@ public class MessageService {
         final Collection<String> tags = new ArrayList<String>();
 
         result.setTags(tags);
-        result.setSendingMoment(calendar.getTime());
+        result.setMoment(calendar.getTime());
 
         return result;
     }
@@ -163,7 +163,7 @@ public class MessageService {
         final long time = calendar.getTimeInMillis() - 500;
         calendar.setTimeInMillis(time);
 
-        result.setSendingMoment(calendar.getTime());
+        result.setMoment(calendar.getTime());
         result.setSubject(message.getSubject());
         result.setBody(message.getBody());
         result.setTags(message.getTags());

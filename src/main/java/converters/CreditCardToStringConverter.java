@@ -27,23 +27,23 @@ public class CreditCardToStringConverter implements Converter<CreditCard, String
 		else
 			try {
 				builder = new StringBuilder();
-				builder.append(URLEncoder.encode(creditCard.getHolderName(), "UTF-8"));
+				builder.append(URLEncoder.encode(creditCard.getHolder(), "UTF-8"));
 				builder.append("|");
 				builder.append(URLEncoder.encode(creditCard.getBrandName(), "UTF-8"));
 				builder.append("|");
 				builder.append(URLEncoder.encode(creditCard.getNumber(), "UTF-8"));
 				builder.append("|");
 
-				if (creditCard.getCvvCode() == null)
-					creditCard.setCvvCode(0);
+				if (creditCard.getCvv() == null)
+					creditCard.setCvv(0);
 
-				builder.append(URLEncoder.encode(Integer.toString(creditCard.getCvvCode()), "UTF-8"));
+				builder.append(URLEncoder.encode(Integer.toString(creditCard.getCvv()), "UTF-8"));
 				builder.append("|");
 				final DateFormat df1 = new SimpleDateFormat("MM/YY");
 
-				if (creditCard.getExpiration() == null)
-					creditCard.setExpiration(new Date());
-				builder.append(URLEncoder.encode(df1.format(creditCard.getExpiration()), "UTF-8"));
+				if (creditCard.getExpirationYear() == null)
+					creditCard.setExpirationYear(new Date());
+				builder.append(URLEncoder.encode(df1.format(creditCard.getExpirationYear()), "UTF-8"));
 				result = builder.toString();
 			} catch (final Throwable oops) {
 				throw new RuntimeException(oops);

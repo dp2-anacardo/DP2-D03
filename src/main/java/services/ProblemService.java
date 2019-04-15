@@ -61,7 +61,7 @@ public class ProblemService {
         if(problem.getId() == 0)
             result = this.problemRepository.save(problem);
         else{
-            Assert.isTrue(problem.getFinal() == false);
+            Assert.isTrue(problem.getIsFinal() == false);
             Assert.isTrue(problem.getCompany() == actor);
             result = this.problemRepository.save(problem);
         }
@@ -93,7 +93,7 @@ public class ProblemService {
             result = this.problemRepository.findOne(problem.getId());
 
             problem.setAttachment(result.getAttachment());
-            problem.setFinal(result.getFinal());
+            problem.setIsFinal(result.getIsFinal());
             problem.setHint(result.getHint());
             problem.setTitle(result.getTitle());
             problem.setVersion(result.getVersion());

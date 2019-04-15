@@ -323,7 +323,7 @@
 	</bean>
 	
 	<bean id="curricula2Hacker1" class ="domain.Curricula">
-		<property name = "personalData" ref = "personalDataHacker1"/>
+		<property name = "personalData" ref = "personalData2Hacker1"/>
 	</bean>
 	
 	<bean id="curriculaHacker2" class ="domain.Curricula">
@@ -342,6 +342,14 @@
 	
 	<!-- Curricula's PersonalData -->
 	
+	<bean id="personalData2Hacker1" class ="domain.PersonalData">
+		<property name = "fullName" value = "Eduardo García Jiménez 2"/>
+		<property name = "statement" value = "No se que poner, ¿qué declaración haría un hacker? 2"/>
+		<property name = "phoneNumber" value = "+34 791235712"/>
+		<property name = "githubProfile" value ="https://github.com/edugj71262"/>
+		<property name = "linkedInProfile" value ="https://linkedIn.com/edugj71262"/>
+	</bean>
+
 	<bean id="personalDataHacker1" class ="domain.PersonalData">
 		<property name = "fullName" value = "Eduardo García Jiménez"/>
 		<property name = "statement" value = "No se que poner, ¿qué declaración haría un hacker?"/>

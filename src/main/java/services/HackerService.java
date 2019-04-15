@@ -87,7 +87,7 @@ public class HackerService {
 		final char[] c = hacker.getPhoneNumber().toCharArray();
 		if ((!hacker.getPhoneNumber().equals(null) && !hacker.getPhoneNumber().equals("")))
 			if (c[0] != '+') {
-				final String i = this.configurationService.findAll().get(0).getDefaultCC();
+				final String i = this.configurationService.findAll().get(0).getCountryCode();
 				hacker.setPhoneNumber("+" + i + " " + hacker.getPhoneNumber());
 			}
 		if (hacker.getId() == 0) {

@@ -1,9 +1,8 @@
 package services;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
+import domain.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,56 +49,56 @@ public class FinderService {
     }
 
     public Finder save(Finder finder) {
-
-        Assert.notNull(finder);
-        Collection<Position> result = Collections.emptyList();
-        List<Position> pro1 = null;
-        List<Position> pro2 = null;
-        List<Position> pro3 = null;
-        List<Position> pro4 = null;
-        if (!(finder.getKeyWord() == null || finder.getKeyWord() == ""))
-            pro1 = (List<Position>) this.finderRepository.getPositionsByKeyWord(finder.getKeyWord());
-        if (finder.getDeadline() != null)
-            pro2 = (List<Position>) this.finderRepository.getPositionsByDeadline(finder.getDeadline());
-        if (finder.getMaxDeadline() != null)
-            pro3 = (List<Position>) this.finderRepository.getPositionsUntilDeadline(new Date(), finder.getMaxDeadline());
-        if (finder.getMinSalary() != 0 )
-            pro4 = (List<Position>) this.finderRepository.getPositionsByMinSalary(finder.getMinSalary());
-        if (!(pro1 == null && pro2 == null && pro3 == null && pro4 == null)) {
-            if (pro1 == null)
-                pro1 = (List<Position>) this.finderRepository.findAllFinal();
-            if (pro2 == null)
-                pro2 = (List<Position>) this.finderRepository.findAllFinal();
-            if (pro3 == null)
-                pro3 = (List<Position>) this.finderRepository.findAllFinal();
-            if (pro4 == null)
-                pro4 = (List<Position>) this.finderRepository.findAllFinal();
-            pro1.retainAll(pro2);
-            pro1.retainAll(pro3);
-            pro1.retainAll(pro4);
-
-            result = pro1;
-        }
-
-        Configuration conf;
-        conf = this.configurationService.getConfiguration();
-
-        if (result.size() > conf.getMaxResults()) {
-
-            final List<Position> copy = (List<Position>) result;
-
-            final List<Position> paradesLim = new ArrayList<Position>();
-            for (int i = 0; i < conf.getMaxResults(); i++)
-                paradesLim.add(copy.get(i));
-            result = paradesLim;
-
-        }
-
-        finder.setPositions(result);
-        final Date moment = new Date();
-        finder.setLastUpdate(moment);
-
-        finder = this.finderRepository.save(finder);
+// TODO FALLO POR QUERIES
+//        Assert.notNull(finder);
+//        Collection<Position> result = Collections.emptyList();
+//        List<Position> pro1 = null;
+//        List<Position> pro2 = null;
+//        List<Position> pro3 = null;
+//        List<Position> pro4 = null;
+//        if (!(finder.getKeyWord() == null || finder.getKeyWord() == ""))
+//            pro1 = (List<Position>) this.finderRepository.getPositionsByKeyWord(finder.getKeyWord());
+//        if (finder.getDeadline() != null)
+//            pro2 = (List<Position>) this.finderRepository.getPositionsByDeadline(finder.getDeadline());
+//        if (finder.getMaxDeadline() != null)
+//            pro3 = (List<Position>) this.finderRepository.getPositionsUntilDeadline(new Date(), finder.getMaxDeadline());
+//        if (finder.getMinSalary() != 0 )
+//            pro4 = (List<Position>) this.finderRepository.getPositionsByMinSalary(finder.getMinSalary());
+//        if (!(pro1 == null && pro2 == null && pro3 == null && pro4 == null)) {
+//            if (pro1 == null)
+//                pro1 = (List<Position>) this.finderRepository.findAllFinal();
+//            if (pro2 == null)
+//                pro2 = (List<Position>) this.finderRepository.findAllFinal();
+//            if (pro3 == null)
+//                pro3 = (List<Position>) this.finderRepository.findAllFinal();
+//            if (pro4 == null)
+//                pro4 = (List<Position>) this.finderRepository.findAllFinal();
+//            pro1.retainAll(pro2);
+//            pro1.retainAll(pro3);
+//            pro1.retainAll(pro4);
+//
+//            result = pro1;
+//        }
+//
+//        Configuration conf;
+//        conf = this.configurationService.getConfiguration();
+//
+//        if (result.size() > conf.getMaxResults()) {
+//
+//            final List<Position> copy = (List<Position>) result;
+//
+//            final List<Position> paradesLim = new ArrayList<Position>();
+//            for (int i = 0; i < conf.getMaxResults(); i++)
+//                paradesLim.add(copy.get(i));
+//            result = paradesLim;
+//
+//        }
+//
+//        finder.setPositions(result);
+//        final Date moment = new Date();
+//        finder.setLastUpdate(moment);
+//
+//        finder = this.finderRepository.save(finder);
         return finder;
     }
 
@@ -118,9 +117,10 @@ public class FinderService {
     }
 
     //Another methods
-    public Collection<Position> findAllFinal() {
-        return this.finderRepository.findAllFinal();
-    }
+    //TODO FALLO
+//    public Collection<Position> findAllFinal() {
+//        return this.finderRepository.findAllFinal();
+//    }
 
     public void delete(final Finder f) {
         Assert.notNull(f);

@@ -94,7 +94,7 @@ public class AdministratorService {
 		final char[] c = administrator.getPhoneNumber().toCharArray();
 		if ((!administrator.getPhoneNumber().equals(null) && !administrator.getPhoneNumber().equals("")))
 			if (c[0] != '+') {
-				final String i = this.configurationService.findAll().get(0).getDefaultCC();
+				final String i = this.configurationService.findAll().get(0).getCountryCode();
 				administrator.setPhoneNumber("+" + i + " " + administrator.getPhoneNumber());
 			}
 		if (administrator.getId() == 0) {

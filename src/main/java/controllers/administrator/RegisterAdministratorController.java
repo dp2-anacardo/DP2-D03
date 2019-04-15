@@ -63,9 +63,9 @@ public class RegisterAdministratorController extends AbstractController {
 			try {
 				final CreditCard c = new CreditCard();
 				c.setBrandName(administratorForm.getBrandName());
-				c.setCvvCode(administratorForm.getCvvCode());
-				c.setExpiration(administratorForm.getExpiration());
-				c.setHolderName(administratorForm.getHolderName());
+				c.setCvv(administratorForm.getCvvCode());
+				c.setExpirationYear(administratorForm.getExpiration());
+				c.setHolder(administratorForm.getHolderName());
 				c.setNumber(administratorForm.getNumber());
 				admin = this.administratorService.reconstruct(administratorForm, binding);
 				admin.setCreditCard(c);

@@ -106,6 +106,6 @@ public class ConfigurationService {
         result.setBanner(config.getBanner());
         result.setWelcomeMessageEn(config.getWelcomeMessageEn());
         result.setWelcomeMessageEs(config.getWelcomeMessageEs());
-        result.setDefaultCC(config.getDefaultCC());
+        result.setCountryCode(config.getCountryCode());
     }
 }

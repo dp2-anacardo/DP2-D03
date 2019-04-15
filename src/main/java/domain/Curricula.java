@@ -42,7 +42,7 @@ public class Curricula extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = false)
+	@OneToOne(optional = false)
 	public PersonalData getPersonalData() {
 		return this.personalData;
 	}

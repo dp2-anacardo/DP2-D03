@@ -32,7 +32,7 @@ public class ConfigurationForm {
         this.welcomeMessageEn = config.getWelcomeMessageEn();
         this.welcomeMessageEs = config.getWelcomeMessageEs();
         this.spamWords = config.getSpamWords();
-        this.defaultCC = config.getDefaultCC();
+        this.defaultCC = config.getCountryCode();
     }
 
     public ConfigurationForm() {

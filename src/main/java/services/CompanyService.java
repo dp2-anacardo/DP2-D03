@@ -88,7 +88,7 @@ public class CompanyService {
 		final char[] c = company.getPhoneNumber().toCharArray();
 		if ((!company.getPhoneNumber().equals(null) && !company.getPhoneNumber().equals("")))
 			if (c[0] != '+') {
-				final String i = this.configurationService.findAll().get(0).getDefaultCC();
+				final String i = this.configurationService.findAll().get(0).getCountryCode();
 				company.setPhoneNumber("+" + i + " " + company.getPhoneNumber());
 			}
 		if (company.getId() == 0) {

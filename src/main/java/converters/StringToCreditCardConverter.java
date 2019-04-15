@@ -26,12 +26,12 @@ public class StringToCreditCardConverter implements Converter<String, CreditCard
 			try {
 				parts = text.split("\\|");
 				result = new CreditCard();
-				result.setHolderName(URLDecoder.decode(parts[0], "UTF-8"));
+				result.setHolder(URLDecoder.decode(parts[0], "UTF-8"));
 				result.setBrandName(URLDecoder.decode(parts[1], "UTF-8"));
 				result.setNumber(URLDecoder.decode(parts[2], "UTF-8"));
-				result.setCvvCode(Integer.getInteger(URLDecoder.decode(parts[3], "UTF-8")));
+				result.setCvv(Integer.getInteger(URLDecoder.decode(parts[3], "UTF-8")));
 				final DateFormat df1 = new SimpleDateFormat("MM/YY");
-				result.setExpiration(df1.parse(URLDecoder.decode(parts[4], "UTF-8")));
+				result.setExpirationYear(df1.parse(URLDecoder.decode(parts[4], "UTF-8")));
 			} catch (final Throwable oops) {
 				throw new IllegalArgumentException(oops);
 			}
