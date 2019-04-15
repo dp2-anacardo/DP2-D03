@@ -37,6 +37,14 @@
 		<bean class="converters.StringToProblemConverter"/>
 		<bean class="converters.MessageToStringConverter"/>
 		<bean class="converters.StringToMessageConverter"/>
+		<bean class="converters.AdministratorToStringConverter"/>
+		<bean class="converters.StringToAdministratorConverter"/>
+		<bean class="converters.HackerToStringConverter"/>
+		<bean class="converters.StringToHackerConverter"/>
+		<bean class="converters.CompanyToStringConverter"/>
+		<bean class="converters.StringToCompanyConverter"/>
+		<bean class="converters.CreditCardToStringConverter"/>
+		<bean class="converters.StringToCreditCardConverter"/>
 	</util:list>
 	
 </beans>

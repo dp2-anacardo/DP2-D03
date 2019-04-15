@@ -38,7 +38,7 @@ public class Actor extends DomainEntity {
 	@Expose
 	private CreditCard					creditCard;
 	@Expose
-	private Integer						vatNumber;
+	private int							vatNumber;
 	@Expose
 	private Collection<String>			surname;
 	@Expose
@@ -168,7 +168,7 @@ public class Actor extends DomainEntity {
 		this.creditCard = creditCard;
 	}
 
-	public Integer getVatNumber() {
+	public int getVatNumber() {
 		return this.vatNumber;
 	}
 
