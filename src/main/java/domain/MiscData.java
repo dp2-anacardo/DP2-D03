@@ -2,6 +2,7 @@ package domain;
 
 import datatype.Url;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -17,7 +18,7 @@ public class MiscData extends DomainEntity{
     private Collection<Url> attachment;
 
     //Getters and setters ---------------------------------------------------------------------------
-
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getFreeText() {
         return freeText;
     }
