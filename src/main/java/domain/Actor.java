@@ -15,6 +15,7 @@ import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
@@ -23,6 +24,8 @@ import org.hibernate.validator.constraints.URL;
 import security.UserAccount;
 
 import com.google.gson.annotations.Expose;
+
+import datatype.CreditCard;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -33,6 +36,12 @@ public class Actor extends DomainEntity {
 
 	@Expose
 	private String						name;
+	@Expose
+	private CreditCard					creditCard;
+	@Expose
+	private Integer						vatNumber;
+	@Expose
+	private Collection<String>			surname;
 	@Expose
 	private String						photo;
 	@Expose
@@ -160,6 +169,32 @@ public class Actor extends DomainEntity {
 
 	public void setSocialProfiles(final Collection<SocialProfile> socialProfiles) {
 		this.socialProfiles = socialProfiles;
+	}
+
+	public CreditCard getCreditCard() {
+		return this.creditCard;
+	}
+
+	public void setCreditCard(final CreditCard creditCard) {
+		this.creditCard = creditCard;
+	}
+
+	public Integer getVatNumber() {
+		return this.vatNumber;
+	}
+
+	public void setVatNumber(final Integer vatNumber) {
+		this.vatNumber = vatNumber;
+	}
+
+	@NotEmpty
+	@Valid
+	public Collection<String> getSurname() {
+		return this.surname;
+	}
+
+	public void setSurname(final Collection<String> surname) {
+		this.surname = surname;
 	}
 
 }

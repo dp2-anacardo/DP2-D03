@@ -47,12 +47,14 @@ public class AdministratorService {
 		final Collection<Authority> authorities;
 		final Collection<SocialProfile> profiles;
 		final Collection<Message> boxes;
+		final Collection<String> surnames;
 		final Administrator a = new Administrator();
 		userAccount = new UserAccount();
 		auth = new Authority();
 		authorities = new ArrayList<Authority>();
 		profiles = new ArrayList<SocialProfile>();
 		boxes = new ArrayList<Message>();
+		surnames = new ArrayList<String>();
 
 		auth.setAuthority(Authority.ADMIN);
 		authorities.add(auth);
@@ -62,6 +64,7 @@ public class AdministratorService {
 		a.setIsSuspicious(false);
 		a.setMessages(boxes);
 		a.setSocialProfiles(profiles);
+		a.setSurname(surnames);
 
 		return a;
 	}
@@ -125,20 +128,12 @@ public class AdministratorService {
 			result = this.administratorRepository.findOne(admin.getId());
 
 			result.setName(admin.getName());
-			result.setMiddleName(admin.getMiddleName());
-			result.setSurname(admin.getSurname());
 			result.setPhoto(admin.getPhoto());
 			result.setPhoneNumber(admin.getPhoneNumber());
 			result.setEmail(admin.getEmail());
 			result.setAddress(admin.getAddress());
-
-			//			result.setIsBanned(admin.getIsBanned());
-			//			result.setIsSuspicious(admin.getIsSuspicious());
-			//			result.setScore(admin.getScore());
-			//			result.setBoxes(admin.getBoxes());
-			//			result.setUserAccount(admin.getUserAccount());
-			//			result.setSocialProfiles(admin.getSocialProfiles());
-			//			result = admin;
+			result.setVatNumber(admin.getVatNumber());
+			result.setSurname(admin.getSurname());
 
 			this.validator.validate(admin, binding);
 		}

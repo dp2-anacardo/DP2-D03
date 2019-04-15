@@ -18,7 +18,6 @@ import security.UserAccountService;
 import domain.Actor;
 import domain.SocialProfile;
 
-
 @Service
 @Transactional
 public class ActorService {
@@ -31,8 +30,6 @@ public class ActorService {
 	private UserAccountService		userAccountService;
 	@Autowired
 	private SocialProfileService	socialProfileService;
-
-	private MessageService			messageService;
 
 
 	public Collection<Actor> findAll() {
