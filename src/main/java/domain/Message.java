@@ -10,7 +10,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,7 +34,7 @@ public class Message extends DomainEntity {
 
 	// Attributes -------------------------------------------------------------
 	@Expose
-	private Date				sendingMoment;
+	private Date				moment;
 	@Expose
 	private String				subject;
 	@Expose
@@ -43,16 +42,17 @@ public class Message extends DomainEntity {
 	@Expose
 	private Collection<String>	tags;
 
+
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Past
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-	public Date getSendingMoment() {
-		return this.sendingMoment;
+	public Date getMoment() {
+		return this.moment;
 	}
 
-	public void setSendingMoment(final Date sendingMoment) {
-		this.sendingMoment = sendingMoment;
+	public void setMoment(final Date moment) {
+		this.moment = moment;
 	}
 
 	@NotBlank
@@ -84,9 +84,11 @@ public class Message extends DomainEntity {
 		this.tags = tags;
 	}
 
+
 	// Relationships ----------------------------------------------------------
-	private Actor					sender;
-	private Collection<Actor>		recipients;
+	private Actor				sender;
+	private Collection<Actor>	recipients;
+
 
 	@Valid
 	@OneToOne(optional = true)

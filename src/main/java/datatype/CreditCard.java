@@ -22,26 +22,24 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Access(AccessType.PROPERTY)
 public class CreditCard {
 
-	private String	holderName;
+	private String	holder;
 	private String	brandName;
 	private String	number;
-	private Date	expiration;
-	private Integer	cvvCode;
+	private Date	expirationYear;
+	private Integer	cvv;
 
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
-
-	public String getHolderName() {
-		return this.holderName;
+	public String getHolder() {
+		return this.holder;
 	}
-	public void setHolderName(final String holderName) {
-		this.holderName = holderName;
+	public void setHolder(final String holder) {
+		this.holder = holder;
 	}
 
 	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
-
 	public String getBrandName() {
 		return this.brandName;
 	}
@@ -61,25 +59,25 @@ public class CreditCard {
 
 	@NotNull
 	@Range(min = 100, max = 999)
-	public Integer getCvvCode() {
-		return this.cvvCode;
+	public Integer getCvv() {
+		return this.cvv;
 	}
-	public void setCvvCode(final Integer cvvCode) {
-		this.cvvCode = cvvCode;
+	public void setCvv(final Integer cvv) {
+		this.cvv = cvv;
 	}
 	@Override
 	public String toString() {
-		return ("Holder Name: " + this.getHolderName() + "   Brand Name: " + this.getBrandName() + "   Number: " + this.getNumber() + "   Expiration:" + this.getExpiration() + "   CVV Code: " + this.getCvvCode());
+		return ("Holder Name: " + this.getHolder() + "   Brand Name: " + this.getBrandName() + "   Number: " + this.getNumber() + "   Expiration:" + this.getExpirationYear() + "   CVV Code: " + this.getCvv());
 	}
 
 	@NotNull
 	@Future
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "MM/YY")
-	public Date getExpiration() {
-		return this.expiration;
+	public Date getExpirationYear() {
+		return this.expirationYear;
 	}
-	public void setExpiration(final Date expiration) {
-		this.expiration = expiration;
+	public void setExpirationYear(final Date expirationYear) {
+		this.expirationYear = expirationYear;
 	}
 }

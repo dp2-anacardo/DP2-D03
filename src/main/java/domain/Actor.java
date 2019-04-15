@@ -8,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Index;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -130,7 +131,7 @@ public class Actor extends DomainEntity {
 	//Relationships
 
 	@Valid
-	@OneToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
 	public Collection<Message> getMessages() {
 		return this.messages;
 	}
@@ -171,7 +172,7 @@ public class Actor extends DomainEntity {
 		return this.vatNumber;
 	}
 
-	public void setVatNumber(final Integer vatNumber) {
+	public void setVatNumber(final int vatNumber) {
 		this.vatNumber = vatNumber;
 	}
 

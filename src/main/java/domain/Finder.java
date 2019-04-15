@@ -20,15 +20,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Access(AccessType.PROPERTY)
 public class Finder extends DomainEntity {
 
-	private String						keyWord;
-	private Date						deadline;
-	private Date						maxDeadline;
-	private int							minSalary;
-	private Date						lastUpdate;
+	private String					keyWord;
+	private Date					deadline;
+	private Date					maxDeadline;
+	private int						minSalary;
+	private Date					lastUpdate;
 
 	//Relationships
 
-	private Collection<PositionData>	positions;
+	private Collection<Position>	positions;
 
 
 	@SafeHtml(whitelistType = WhiteListType.NONE)
@@ -63,7 +63,6 @@ public class Finder extends DomainEntity {
 		this.maxDeadline = maxDeadline;
 	}
 
-	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public int getMinSalary() {
 		return this.minSalary;
 	}
@@ -86,11 +85,11 @@ public class Finder extends DomainEntity {
 
 	@Valid
 	@ManyToMany
-	public Collection<PositionData> getPositions() {
+	public Collection<Position> getPositions() {
 		return this.positions;
 	}
 
-	public void setPositions(final Collection<PositionData> positions) {
+	public void setPositions(final Collection<Position> positions) {
 		this.positions = positions;
 	}
 

@@ -1,97 +1,106 @@
+
 package domain;
 
-import com.google.gson.annotations.Expose;
-import datatype.Url;
+import java.util.Collection;
+
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.Collection;
+import com.google.gson.annotations.Expose;
+
+import datatype.Url;
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class Problem extends DomainEntity {
 
-    // Attributes -------------------------------------------------------------
-    @Expose
-    private String title;
-    @Expose
-    private String statement;
-    @Expose
-    private String hint;
-    @Expose
-    private Collection<Url> attachment;
-    @Expose
-    private Boolean isFinal;
-
-    @NotBlank
-    @SafeHtml(whitelistType = WhiteListType.NONE)
-    public String getTitle() {
-        return this.title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    @NotBlank
-    @SafeHtml(whitelistType = WhiteListType.NONE)
-    public String getStatement() {
-        return this.statement;
-    }
-
-    public void setStatement(String statement) {
-        this.statement = statement;
-    }
+	// Attributes -------------------------------------------------------------
+	@Expose
+	private String			title;
+	@Expose
+	private String			statement;
+	@Expose
+	private String			hint;
+	@Expose
+	private Collection<Url>	attachment;
+	@Expose
+	private Boolean			isFinal;
 
 
-    @SafeHtml(whitelistType = WhiteListType.NONE)
-    public String getHint() {
-        return this.hint;
-    }
+	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
+	public String getTitle() {
+		return this.title;
+	}
 
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
+	public void setTitle(final String title) {
+		this.title = title;
+	}
 
-    @NotEmpty
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Valid
-    public Collection<Url> getAttachment() {
-        return this.attachment;
-    }
+	@NotBlank
+	@SafeHtml(whitelistType = WhiteListType.NONE)
+	public String getStatement() {
+		return this.statement;
+	}
 
-    public void setAttachment(Collection<Url> attachment) {
-        this.attachment = attachment;
-    }
+	public void setStatement(final String statement) {
+		this.statement = statement;
+	}
 
-    @NotNull
-    public Boolean getFinal() {
-        return isFinal;
-    }
+	@SafeHtml(whitelistType = WhiteListType.NONE)
+	public String getHint() {
+		return this.hint;
+	}
 
-    public void setFinal(Boolean aFinal) {
-        isFinal = aFinal;
-    }
+	public void setHint(final String hint) {
+		this.hint = hint;
+	}
+
+	@NotEmpty
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Valid
+	public Collection<Url> getAttachment() {
+		return this.attachment;
+	}
+
+	public void setAttachment(final Collection<Url> attachment) {
+		this.attachment = attachment;
+	}
+
+	@NotNull
+	public Boolean getIsFinal() {
+		return this.isFinal;
+	}
+
+	public void setIsFinal(final Boolean isFinal) {
+		this.isFinal = isFinal;
+	}
 
 
-    // Relationships
+	// Relationships
 
-    private Company company;
+	private Company	company;
 
-    @Valid
-    @ManyToOne(optional = false)
-    public Company getCompany(){
-        return this.company;
-    }
 
-    public void setCompany(final Company company){
-        this.company = company;
-    }
+	@Valid
+	@ManyToOne(optional = false)
+	public Company getCompany() {
+		return this.company;
+	}
 
+	public void setCompany(final Company company) {
+		this.company = company;
+	}
 
 }
