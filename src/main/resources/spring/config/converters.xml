@@ -33,7 +33,10 @@
 		<bean class="converters.StringToMiscDataConverter"/>
 		<bean class="converters.PositionDataToStringConverter"/>
 		<bean class="converters.StringToPositionDataConverter"/>
-
+		<bean class="converters.ProblemToStringConverter"/>
+		<bean class="converters.StringToProblemConverter"/>
+		<bean class="converters.MessageToStringConverter"/>
+		<bean class="converters.StringToMessageConverter"/>
 	</util:list>
 	
 </beans>
