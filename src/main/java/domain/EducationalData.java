@@ -1,6 +1,7 @@
 package domain;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -21,8 +22,8 @@ public class EducationalData extends DomainEntity{
     private Date endDate;
 
     //Getters and setters ---------------------------------------------------------------------------
-
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getDegree() {
         return degree;
     }
@@ -31,6 +32,7 @@ public class EducationalData extends DomainEntity{
         this.degree = degree;
     }
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getInstitution() {
         return institution;
     }
@@ -39,6 +41,7 @@ public class EducationalData extends DomainEntity{
         this.institution = institution;
     }
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getMark() {
         return mark;
     }

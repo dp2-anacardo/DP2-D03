@@ -1,6 +1,7 @@
 package domain;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -20,6 +21,7 @@ public class PersonalData extends DomainEntity{
     //Getters and setters ---------------------------------------------------------------------------
 
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getFullName() {
         return fullName;
     }
@@ -29,6 +31,7 @@ public class PersonalData extends DomainEntity{
     }
 
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getStatement() {
         return statement;
     }
@@ -37,6 +40,7 @@ public class PersonalData extends DomainEntity{
         this.statement = statement;
     }
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -45,6 +49,7 @@ public class PersonalData extends DomainEntity{
         this.phoneNumber = phoneNumber;
     }
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getGithubProfile() {
         return githubProfile;
     }
@@ -53,6 +58,7 @@ public class PersonalData extends DomainEntity{
         this.githubProfile = githubProfile;
     }
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getLinkedInProfile() {
         return linkedInProfile;
     }

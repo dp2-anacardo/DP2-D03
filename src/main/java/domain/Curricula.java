@@ -23,7 +23,7 @@ public class Curricula extends DomainEntity {
     public void setEducationalData(Collection<EducationalData> educationalData) {
         this.educationalData = educationalData;
     }
-
+    @Valid
     @OneToOne(optional = true)
     public MiscData getMiscData() {
         return miscData;

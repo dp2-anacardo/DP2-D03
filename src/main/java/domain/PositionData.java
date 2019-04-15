@@ -1,6 +1,7 @@
 package domain;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class PositionData extends DomainEntity{
     //Getters and setters ---------------------------------------------------------------------------
 
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getTitle() {
         return title;
     }
@@ -30,6 +32,7 @@ public class PositionData extends DomainEntity{
         this.title = title;
     }
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getDescription() {
         return description;
     }
