@@ -99,6 +99,12 @@
 				<ref bean="socialProfileAdmin1"/>
 			</list>
 		</property>
+		<property name="messages">
+			<list>
+				<ref bean = "message1"/>
+				<ref bean ="message2"/>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- Administrator's SocialProfiles -->	
@@ -139,6 +145,11 @@
 			</list>
 		</property>
 		<property name="commercialName" value="BBVA"/>
+		<property name="messages">
+			<list>
+				<ref bean="message1"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="company2" class="domain.Company">
@@ -158,6 +169,10 @@
 			</list>
 		</property>
 		<property name ="commercialName" value="Abengoa"/>
+		<property name ="messages">
+			<list>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- Companies' SocialProfiles -->	
@@ -212,6 +227,12 @@
 			</list>
 		</property>
 		<property name ="finder" ref="finderHacker1"/>
+		<property name="messages">
+			<list>
+				<ref bean="message2"/>
+				<ref bean="message3"/>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="hacker2" class="domain.Hacker">
@@ -236,6 +257,11 @@
 			</list>
 		</property>
 		<property name ="finder" ref="finderHacker2"/>
+		<property name="messages">
+			<list>
+				<ref bean="message3"/>
+			</list>
+		</property>
 	</bean>
 	
 	<!-- Hackers' SocialProfiles -->	
