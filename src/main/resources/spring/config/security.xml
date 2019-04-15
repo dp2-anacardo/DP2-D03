@@ -34,6 +34,9 @@
 		<security:intercept-url pattern="/scripts/**" access="permitAll" /> 
 		<security:intercept-url pattern="/styles/**" access="permitAll" /> 
 		<security:intercept-url pattern="/gdpr/show.do" access="permitAll" /> 
+		
+		<security:intercept-url pattern="/application/hacker/**" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/application/company/**" access="hasRole('COMPANY')" /> 
 
 		<security:intercept-url pattern="/**" access="permitAll" />
 
