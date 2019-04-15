@@ -1,27 +1,26 @@
 
 package converters;
 
-import javax.transaction.Transactional;
-
+import domain.Problem;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+import repositories.ProblemRepository;
 
-import repositories.PriorityRepository;
-import domain.Priority;
+import javax.transaction.Transactional;
 
 @Component
 @Transactional
-public class StringToPriorityConverter implements Converter<String, Priority> {
+public class StringToProblemConverter implements Converter<String, Problem> {
 
 	@Autowired
-	PriorityRepository	priorityRepository;
+	ProblemRepository problemRepository;
 
 
 	@Override
-	public Priority convert(final String text) {
-		Priority result;
+	public Problem convert(final String text) {
+		Problem result;
 		int id;
 
 		try {
@@ -29,7 +28,7 @@ public class StringToPriorityConverter implements Converter<String, Priority> {
 				result = null;
 			else {
 				id = Integer.valueOf(text);
-				result = this.priorityRepository.findOne(id);
+				result = this.problemRepository.findOne(id);
 			}
 		} catch (final Throwable oops) {
 			throw new IllegalArgumentException(oops);

@@ -30,7 +30,7 @@ import datatype.CreditCard;
 @Entity
 @Access(AccessType.PROPERTY)
 @Table(indexes = {
-	@Index(columnList = "isSuspicious, isBanned")
+	@Index(columnList = "isSpammer, isBanned")
 })
 public class Actor extends DomainEntity {
 
@@ -51,11 +51,9 @@ public class Actor extends DomainEntity {
 	@Expose
 	private String						address;
 	@Expose
-	private Boolean						isSuspicious;
+	private Boolean						isSpammer;
 	@Expose
 	private Boolean						isBanned;
-	@Expose
-	private Double						score;
 
 	//Relationships
 	@Expose
@@ -95,16 +93,12 @@ public class Actor extends DomainEntity {
 		return this.address;
 	}
 
-	public Boolean getIsSuspicious() {
-		return this.isSuspicious;
+	public Boolean getIsSpammer() {
+		return this.isSpammer;
 	}
 
 	public Boolean getIsBanned() {
 		return this.isBanned;
-	}
-	@Range(min = -1, max = 1)
-	public Double getScore() {
-		return this.score;
 	}
 
 	public void setName(final String name) {
@@ -127,16 +121,12 @@ public class Actor extends DomainEntity {
 		this.address = address;
 	}
 
-	public void setIsSuspicious(final Boolean isSuspicious) {
-		this.isSuspicious = isSuspicious;
+	public void setIsSpammer(final Boolean isSpammer) {
+		this.isSpammer = isSpammer;
 	}
 
 	public void setIsBanned(final Boolean isBanned) {
 		this.isBanned = isBanned;
-	}
-
-	public void setScore(final Double score) {
-		this.score = score;
 	}
 
 	//Relationships
