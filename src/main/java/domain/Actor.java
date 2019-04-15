@@ -20,16 +20,16 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
 import org.hibernate.validator.constraints.URL;
 
-import com.google.gson.annotations.Expose;
-
 import security.UserAccount;
+
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Access(AccessType.PROPERTY)
 @Table(indexes = {
 	@Index(columnList = "isSuspicious, isBanned")
 })
-public abstract class Actor extends DomainEntity {
+public class Actor extends DomainEntity {
 
 	@Expose
 	private String						name;
@@ -50,7 +50,7 @@ public abstract class Actor extends DomainEntity {
 
 	//Relationships
 	@Expose
-	private Collection<Message>		messages;
+	private Collection<Message>			messages;
 	@Expose
 	private UserAccount					userAccount;
 	@Expose

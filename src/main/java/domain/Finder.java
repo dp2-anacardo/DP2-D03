@@ -1,5 +1,7 @@
+
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -18,78 +20,78 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Access(AccessType.PROPERTY)
 public class Finder extends DomainEntity {
 
-    private String				keyWord;
-    private Date				deadline;
-    private Date                maxDeadline;
-    private int                 minSalary;
-    private Date				lastUpdate;
+	private String						keyWord;
+	private Date						deadline;
+	private Date						maxDeadline;
+	private int							minSalary;
+	private Date						lastUpdate;
 
-    //Relationships
+	//Relationships
 
-    private Collection<Position>	positions;
+	private Collection<PositionData>	positions;
 
 
-    @SafeHtml(whitelistType = WhiteListType.NONE)
-    public String getKeyWord() {
-        return this.keyWord;
-    }
+	@SafeHtml(whitelistType = WhiteListType.NONE)
+	public String getKeyWord() {
+		return this.keyWord;
+	}
 
-    public void setKeyWord(final String keyWord) {
-        if (keyWord == null)
-            this.keyWord = keyWord;
-        else
-            this.keyWord = keyWord.trim();
-    }
+	public void setKeyWord(final String keyWord) {
+		if (keyWord == null)
+			this.keyWord = keyWord;
+		else
+			this.keyWord = keyWord.trim();
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-    public Date getDeadline() {
-        return this.deadline;
-    }
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	public Date getDeadline() {
+		return this.deadline;
+	}
 
-    public void setDeadline(final Date deadline) {
-        this.deadline = deadline;
-    }
+	public void setDeadline(final Date deadline) {
+		this.deadline = deadline;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
-    public Date getMaxDeadline() {
-        return this.maxDeadline;
-    }
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	public Date getMaxDeadline() {
+		return this.maxDeadline;
+	}
 
-    public void setMaxDeadline(final Date maxDeadline) {
-        this.maxDeadline = maxDeadline;
-    }
+	public void setMaxDeadline(final Date maxDeadline) {
+		this.maxDeadline = maxDeadline;
+	}
 
-    @SafeHtml(whitelistType = WhiteListType.NONE)
-    public int getMinSalary() {
-        return this.minSalary;
-    }
+	@SafeHtml(whitelistType = WhiteListType.NONE)
+	public int getMinSalary() {
+		return this.minSalary;
+	}
 
-    public void setMinSalary(final int minSalary) {
-        this.minSalary = minSalary;
-    }
+	public void setMinSalary(final int minSalary) {
+		this.minSalary = minSalary;
+	}
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd/MM/yy HH:mm")
-    public Date getLastUpdate() {
-        return this.lastUpdate;
-    }
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yy HH:mm")
+	public Date getLastUpdate() {
+		return this.lastUpdate;
+	}
 
-    public void setLastUpdate(final Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
+	public void setLastUpdate(final Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
-    //Relationships
+	//Relationships
 
-    @Valid
-    @ManyToMany
-    public Collection<Position> getPositions() {
-        return this.positions;
-    }
+	@Valid
+	@ManyToMany
+	public Collection<PositionData> getPositions() {
+		return this.positions;
+	}
 
-    public void setPositions(final Collection<Position> positions) {
-        this.positions = positions;
-    }
+	public void setPositions(final Collection<PositionData> positions) {
+		this.positions = positions;
+	}
 
 }
