@@ -17,9 +17,11 @@ import repositories.HackerRepository;
 import security.Authority;
 import security.UserAccount;
 import domain.Actor;
+import domain.Curricula;
 import domain.Hacker;
 import domain.Message;
 import domain.SocialProfile;
+import forms.HackerForm;
 
 @Service
 @Transactional
@@ -34,6 +36,8 @@ public class HackerService {
 	@Autowired
 	private HackerRepository		hackerRepository;
 	@Autowired
+	private FinderService			finderService;
+	@Autowired
 	private Validator				validator;
 
 
@@ -44,12 +48,14 @@ public class HackerService {
 		final Collection<Authority> authorities;
 		final Collection<SocialProfile> profiles;
 		final Collection<Message> boxes;
+		final Collection<Curricula> curriculas;
 		final Hacker a = new Hacker();
 		userAccount = new UserAccount();
 		auth = new Authority();
 		authorities = new ArrayList<Authority>();
 		profiles = new ArrayList<SocialProfile>();
 		boxes = new ArrayList<Message>();
+		curriculas = new ArrayList<Curricula>();
 
 		auth.setAuthority(Authority.HACKER);
 		authorities.add(auth);
@@ -59,6 +65,7 @@ public class HackerService {
 		a.setIsSpammer(false);
 		a.setMessages(boxes);
 		a.setSocialProfiles(profiles);
+		a.setCurricula(curriculas);
 		return a;
 	}
 
@@ -126,6 +133,25 @@ public class HackerService {
 			result.setSurname(hacker.getSurname());
 			this.validator.validate(hacker, binding);
 		}
+		return result;
+	}
+
+	public Hacker reconstruct(final HackerForm a, final BindingResult binding) {
+
+		final Hacker result = this.create();
+		result.setAddress(a.getAddress());
+		result.setEmail(a.getEmail());
+		result.setId(a.getId());
+		result.setName(a.getName());
+		result.setPhoneNumber(a.getPhoneNumber());
+		result.setPhoto(a.getPhoto());
+		result.setSurname(a.getSurname());
+		result.getUserAccount().setPassword(a.getPassword());
+		result.getUserAccount().setUsername(a.getUsername());
+		result.setVersion(a.getVersion());
+		result.setVatNumber(a.getVatNumber());
+
+		this.validator.validate(result, binding);
 		return result;
 	}
 

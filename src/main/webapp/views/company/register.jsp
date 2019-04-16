@@ -15,9 +15,8 @@
 
 </head>
 <body>
-<security:authorize access="hasRole('ADMIN')">
 <spring:message code="actor.firstMessage" />
-<form:form id="myform" action="administrator/administrator/create.do" modelAttribute="administratorForm">
+<form:form id="myform" action="company/create.do" modelAttribute="companyForm">
 
 	<form:hidden path="id" />
  
@@ -43,6 +42,9 @@
 	<br />
 	
 	<acme:textbox code="actor.surname" path="surname"/>
+	<br />
+	
+	<acme:textbox code="actor.commercialName" path="commercialName"/>
 	<br />
 	
 	<acme:textbox code="actor.photo" path="photo"/>
@@ -116,6 +118,5 @@
 	<br />
  	
 </form:form>
-</security:authorize>
 </body>
 </html>

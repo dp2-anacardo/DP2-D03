@@ -18,7 +18,7 @@
 <br>
 <acme:showtext code="actor.phoneNumber" value="${administrator.phoneNumber}" fieldset="true"/>
 <br>
-<acme:showtext code="actor.vatNumber" value="${administrator.vatNumeber}" fieldset="true"/>
+<acme:showtext code="actor.vatNumber" value="${administrator.vatNumber}" fieldset="true"/>
 <br>
 <acme:showtext code="actor.address" value="${administrator.address}" fieldset="true"/>
 <br>

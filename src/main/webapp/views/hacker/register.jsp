@@ -15,9 +15,8 @@
 
 </head>
 <body>
-<security:authorize access="hasRole('ADMIN')">
 <spring:message code="actor.firstMessage" />
-<form:form id="myform" action="administrator/administrator/create.do" modelAttribute="administratorForm">
+<form:form id="myform" action="hacker/create.do" modelAttribute="hackerForm">
 
 	<form:hidden path="id" />
  
@@ -75,6 +74,12 @@
 	<acme:textbox code="credit.cvvCode" path="cvvCode"/>
 	<br />
 	
+	<acme:textbox code="curricula.gitHubProfile" path="githubProfile"/>
+	<br />
+	
+	<acme:textbox code="curricula.linkedInProfile" path="linkedInProfile"/>
+	<br />
+	
 	<script type="text/javascript">
 	function phoneValidation(){
 		var phoneNumber = document.getElementById("phoneNumber").value;
@@ -116,6 +121,5 @@
 	<br />
  	
 </form:form>
-</security:authorize>
 </body>
 </html>
