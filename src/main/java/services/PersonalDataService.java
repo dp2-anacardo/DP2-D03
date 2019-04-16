@@ -49,7 +49,6 @@ public class PersonalDataService {
         Actor a = this.actorService.getActorLogged();
         Hacker h = this.hackerService.findOne(a.getId());
         Assert.notNull(h);
-
         p = this.personalDataRepository.save(p);
         return p;
 

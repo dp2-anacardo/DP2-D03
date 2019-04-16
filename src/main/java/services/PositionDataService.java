@@ -51,6 +51,10 @@ public class PositionDataService {
         Curricula curricula = this.curriculaService.findOne(curriculaId);
         Assert.notNull(h);
 
+        if(p.getEndDate()!=null){
+            Assert.isTrue(p.getStartDate().before(p.getEndDate()));
+        }
+
         if(p.getId()==0){
             p = this.positionDataRepository.save(p);
             curricula.getPositionData().add(p);

@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -78,10 +79,10 @@ public class CurriculaService {
 	public Curricula copy(final Curricula curricula) {
 		Assert.notNull(curricula);
 		Curricula result;
-		final Collection<EducationalData> educationalData;
-		final MiscData miscData;
-		final PersonalData personalData;
-		final Collection<PositionData> positionData;
+		final Collection<EducationalData> educationalData = new ArrayList<>();
+		final MiscData miscData = new MiscData();
+		final PersonalData personalData = new PersonalData();
+		final Collection<PositionData> positionData = new ArrayList<>();
 
 		for (final EducationalData ed : curricula.getEducationalData()) {
 			final EducationalData res = new EducationalData();
@@ -122,4 +123,12 @@ public class CurriculaService {
 
 		return result;
 	}
+
+	public Collection<Curricula> getCurriculaByHacker() {
+		final Actor a = this.actorService.getActorLogged();
+		final Hacker h = this.hackerService.findOne(a.getId());
+		Assert.notNull(h);
+		return this.curriculaRepository.getCurriculaByHacker(h);
+	}
+
 }

@@ -29,6 +29,8 @@
 		<value>/views/problem/messages</value>
 		<value>/views/hacker/messages</value>
 		<value>/views/company/messages</value>
+		<value>/views/curricula/messages</value>
+
 
 	</util:list>
 
