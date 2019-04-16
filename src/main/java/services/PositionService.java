@@ -9,6 +9,7 @@ import security.UserAccount;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -77,5 +78,10 @@ public class PositionService {
 
         return res + "-" +nums ;
 
+    }
+
+    public List<Position> getPositionsAvilables(){
+        List<Position> res = this.positionRepository.getPositionsAvailable();
+        return res;
     }
 }
