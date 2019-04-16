@@ -55,6 +55,8 @@
 
         <security:intercept-url pattern="/problem/show.do" access="hasAnyRole('COMPANY', 'HACKER')"/>
 
+        <security:intercept-url pattern="/curricula/hacker/**" access="hasAnyRole('HACKER')"/>
+
 
         <security:intercept-url pattern="/**" access="permitAll"/>
 

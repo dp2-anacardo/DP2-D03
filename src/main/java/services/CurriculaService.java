@@ -68,4 +68,11 @@ public class CurriculaService {
         this.curriculaRepository.delete(curricula);
     }
 
+    public Collection<Curricula> getCurriculaByHacker(){
+        Actor a = this.actorService.getActorLogged();
+        Hacker h = this.hackerService.findOne(a.getId());
+        Assert.notNull(h);
+        return this.curriculaRepository.getCurriculaByHacker(h);
+    }
+
 }

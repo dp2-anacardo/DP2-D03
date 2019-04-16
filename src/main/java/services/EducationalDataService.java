@@ -54,6 +54,10 @@ public class EducationalDataService {
         Assert.notNull(h);
         Assert.isTrue(h.getCurricula().contains(curricula));
 
+        if(educationalData.getEndDate()!=null){
+            Assert.isTrue(educationalData.getStartDate().before(educationalData.getEndDate()));
+        }
+
         if(educationalData.getId() == 0){
             educationalData = this.educationalDataRepository.save(educationalData);
             curricula.getEducationalData().add(educationalData);

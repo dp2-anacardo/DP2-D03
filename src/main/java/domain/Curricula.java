@@ -20,7 +20,15 @@ public class Curricula extends DomainEntity {
 	private MiscData					miscData;
 	private PersonalData				personalData;
 	private Collection<PositionData>	positionData;
+	private boolean isCopy;
 
+	public boolean isCopy() {
+		return isCopy;
+	}
+
+	public void setCopy(boolean copy) {
+		isCopy = copy;
+	}
 
 	@OneToMany
 	public Collection<EducationalData> getEducationalData() {

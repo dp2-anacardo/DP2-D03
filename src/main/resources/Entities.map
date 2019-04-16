@@ -1,13 +1,5 @@
 #./src/main/resources/Entities.map
-<<<<<<< HEAD
-<<<<<<< HEAD
-#Tue Apr 16 00:15:47 CEST 2019
-=======
-#Tue Apr 16 13:02:20 CEST 2019
->>>>>>> miguel
-=======
-#Tue Apr 16 10:15:49 CEST 2019
->>>>>>> e02e680cc910394c91d1b3df796b4522a72dde65
+#Tue Apr 16 17:19:43 CEST 2019
 problem6=210
 problem5=209
 problem4=208
@@ -16,10 +8,6 @@ personalDataHacker2=198
 problem3=207
 message3=201
 application1=217
-<<<<<<< HEAD
-personalDataHacker1=197
-=======
->>>>>>> miguel
 problem2=206
 message2=187
 problem1=205
@@ -35,10 +23,7 @@ socialProfileCompany1=191
 company2=190
 curricula2Hacker1=215
 company1=189
-<<<<<<< HEAD
-=======
 personalData1Hacker1=196
->>>>>>> miguel
 userAccount5=184
 userAccount4=183
 hacker2=213
@@ -46,11 +31,7 @@ userAccount3=182
 hacker1=212
 userAccount2=181
 userAccount1=180
-<<<<<<< HEAD
-personalData2Hacker1=196
-=======
 personalData2Hacker1=197
->>>>>>> miguel
 miscellaneousDataHacker1=199
 admin1=185
 positionDataHacker1=200
