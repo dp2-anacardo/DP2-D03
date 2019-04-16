@@ -10,41 +10,22 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<security:authorize access="hasRole('BROTHERHOOD')">
-<form:form action="parade/brotherhood/edit.do" modelAttribute="parade">
+<security:authorize access="hasRole('HACKER')">
+<form:form action="application/hacker/create.do" modelAttribute="application">
 	<form:hidden path="id" />
-	<acme:textbox code="parade.title" path="title"/>
-	<acme:textarea code="parade.description" path="description"/>
-	<acme:textbox code="parade.maxRow" path="maxRow"/>
-	<acme:textbox code="parade.maxColumn" path="maxColumn"/>
-	<acme:textbox code="parade.date" path="moment"/>
-	<form:label path="floats">
-		<spring:message code="parade.floats"/>
+	
+	<form:label path="curricula">
+		<spring:message code="application.selectCurricula"/>
 	</form:label>
-	<form:select path="floats">	
-		<form:options items="${floats}" itemValue="id" itemLabel="title"
-			/>
+	<form:select path="curricula">	
+		<form:options items="${curricula}" itemValue="id" itemLabel="curricula"/>
 	</form:select>
-	<form:errors cssClass="error" path="floats" />
+	<form:errors cssClass="error" path="curricula" />
 	<br />
 	
-	
-	
-	<jstl:if test="${parade.isFinal == false }">
-		<acme:submit name="saveFinal" code="parade.saveFinal"/>
-		<acme:submit name="saveDraft" code="parade.saveDraft"/>
-	</jstl:if>
-	<jstl:if test="${parade.isFinal == true }">
-		<acme:submit name="saveFinal" code="parade.save"/>
-	</jstl:if>
-	<jstl:if test="${parade.id != 0}">
-		<input type="submit" name="delete"
-			value="<spring:message code="parade.delete" />" />
-	</jstl:if>
-	<acme:cancel url="parade/brotherhood/list.do" code="parade.cancel"/>
-	<br />
-	
-	
-	
+	<input type="submit" name="save"
+			value="<spring:message code="application.save" />" />
+			
+	<acme:cancel url="position/hacker/list.do" code="application.cancel"/>
 </form:form>
 </security:authorize>

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.LoginService;
-import security.UserAccount;
 import services.ActorService;
 import services.ApplicationService;
 import services.CompanyService;
@@ -21,6 +20,7 @@ import services.HackerService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Application;
+import domain.Curricula;
 import domain.Hacker;
 
 @Controller
@@ -77,6 +77,27 @@ public class ApplicationController extends AbstractController {
 	//		return result;
 	//	}
 
+	@RequestMapping(value = "/hacker/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int applicationId) {
+		ModelAndView result;
+		Application application;
+		Actor actor;
+		Hacker hacker;
+
+		try {
+			Assert.notNull(applicationId);
+			actor = this.actorService.getActorLogged();
+			hacker = this.hackerService.findOne(actor.getId());
+			application = this.applicationService.findOne(applicationId);
+			Assert.isTrue(application.getHacker().equals(hacker));
+			result = new ModelAndView("application/hacker/show");
+			result.addObject("application", application);
+		} catch (final Exception e) {
+			result = new ModelAndView("redirect:/application/hacker/list.do");
+		}
+		return result;
+	}
+
 	//	@RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
 	//	public ModelAndView create(@RequestParam final int positionId) {
 	//		ModelAndView result;
@@ -96,27 +117,6 @@ public class ApplicationController extends AbstractController {
 	//			return result;
 	//		}
 	//	}
-
-	@RequestMapping(value = "/hacker/show", method = RequestMethod.GET)
-	public ModelAndView show(@RequestParam final int applicationId) {
-		ModelAndView result;
-		Application application;
-		UserAccount userAccount;
-		Hacker hacker;
-
-		try {
-			Assert.notNull(applicationId);
-			userAccount = LoginService.getPrincipal();
-			hacker = this.hackerService.findOne(userAccount.getId());
-			application = this.applicationService.findOne(applicationId);
-			Assert.isTrue(application.getHacker().equals(hacker));
-			result = new ModelAndView("application/hacker/show");
-			result.addObject("application", application);
-		} catch (final Exception e) {
-			result = new ModelAndView("redirect:/application/hacker/list.do");
-		}
-		return result;
-	}
 
 	@RequestMapping(value = "/hacker/create", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Application application, final BindingResult binding) {
@@ -271,9 +271,14 @@ public class ApplicationController extends AbstractController {
 
 	protected ModelAndView createModelAndView(final Application application, final String messageCode) {
 		ModelAndView result;
+		Collection<Curricula> curricula;
+		final Actor actor = this.actorService.getActorLogged();
+		final Hacker hacker = this.hackerService.findOne(actor.getId());
+		curricula = hacker.getCurricula();
 
 		result = new ModelAndView("application/hacker/create");
 		result.addObject("application", application);
+		result.addObject("curricula", curricula);
 		result.addObject("message", messageCode);
 
 		return result;

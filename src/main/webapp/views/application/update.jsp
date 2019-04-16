@@ -8,86 +8,18 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<style type="text/css">
-.ACCEPTED{
-  background-color: green;
-}
-.REJECTED{
-  background-color: red;
-}
-.SUBMITTED{
-  background-color: grey;
-}
-</style>
-
-<security:authorize access="hasRole('BROTHERHOOD')">
-<display:table name="parade" id="row" requestURI="${requestURI}" pagesize="5" class="displaytag">
+<security:authorize access="hasRole('HACKER')">
+<form:form action="application/hacker/update.do" modelAttribute="application">
+	<form:hidden path="id" />
 	
-		<jstl:if test="${row.status == 'ACCEPTED'}">
-				<jstl:set var="css" value="ACCEPTED"></jstl:set>
-			</jstl:if>
-		<jstl:if test="${row.status == 'SUBMITTED'}">
-		<jstl:set var="css" value="SUBMITTED"></jstl:set>
-		</jstl:if>
-		<jstl:if test="${row.status == 'REJECTED'}">
-			<jstl:set var="css" value="REJECTED"></jstl:set>
-		</jstl:if>
+	<acme:textarea code="application.explanation" path="explanation"/>
+	<acme:textbox code="application.link" path="link"/>
 	
-	<spring:message code="parade.title" var="columnTitle"/>
-	<display:column title="${columnTitle}" class="${css}">
-		<jstl:out value="${row.title }"></jstl:out>
-	</display:column>
-	
-	<spring:message code="parade.status" var="status"/>
-	<display:column title="${status}" class="${css}" sortable="true">
-			<jstl:if test="${row.status == 'ACCEPTED' }">
-				<spring:message code="parade.accepted"/>
-			</jstl:if>
+	<input type="submit" name="update"
+			value="<spring:message code="application.update" />" />
 			
-			<jstl:if test="${row.status == 'SUBMITTED' }">
-				<spring:message code="parade.submitted"/>
-			</jstl:if>
-			
-			<jstl:if test="${row.status == 'REJECTED' }">
-				<spring:message code="parade.rejected"/>
-			</jstl:if>
-	</display:column>
-	
-	<spring:message code="parade.rejectComment" var="rejectComment"/>
-		<display:column title="${rejectComment}" class="${css}">
-		<jstl:if test="${row.status == 'REJECTED'}">
-			<jstl:out value="${row.rejectComment }"/>
-		</jstl:if>
-		</display:column>	
-	<display:column class="${css}">
-		<a href="parade/brotherhood/edit.do?paradeId=${row.id}">
-			<spring:message code="parade.edit"/>
-		</a>
-	</display:column>
-	
-	<display:column class="${css}">
-		<a href="parade/show.do?paradeId=${row.id}">
-			<spring:message code="parade.show"/>
-		</a>
-	</display:column>
-	<display:column class="${css}">
-		<a href="request/brotherhood/list.do?paradeId=${row.id}">
-			<spring:message code="parade.request"/>
-		</a>
-	</display:column>
-	
-	<display:column class="${css}">
-		<a href="parade/brotherhood/copy.do?paradeId=${row.id}">
-			<spring:message code="parade.copy"/>
-		</a>
-	</display:column>
-	
-	
-</display:table>
-<div>
-	<a href="parade/brotherhood/create.do"> <spring:message
-				code="parade.create" />
-	</a>
-</div>
+	<acme:cancel url="application/hacker/list.do" code="application.cancel"/>
+</form:form>
 </security:authorize>
