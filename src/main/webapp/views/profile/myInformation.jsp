@@ -40,7 +40,7 @@
 <br>
 <acme:showtext code="actor.phoneNumber" value="${hacker.phoneNumber}" fieldset="true"/>
 <br>
-<acme:showtext code="actor.vatNumber" value="${hacker.vatNumeber}" fieldset="true"/>
+<acme:showtext code="actor.vatNumber" value="${hacker.vatNumber}" fieldset="true"/>
 <br>
 <acme:showtext code="actor.address" value="${hacker.address}" fieldset="true"/>
 <br>
@@ -66,7 +66,7 @@
 <br>
 <acme:showtext code="actor.phoneNumber" value="${company.phoneNumber}" fieldset="true"/>
 <br>
-<acme:showtext code="actor.vatNumber" value="${company.vatNumeber}" fieldset="true"/>
+<acme:showtext code="actor.vatNumber" value="${company.vatNumber}" fieldset="true"/>
 <br>
 <acme:showtext code="actor.address" value="${company.address}" fieldset="true"/>
 <br>
