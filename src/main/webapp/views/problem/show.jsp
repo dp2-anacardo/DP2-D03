@@ -70,7 +70,7 @@
 </display:table>
 
 <security:authorize access="hasRole('COMPANY')">
-    <acme:cancel url="problem/delete.do?problemID=${row.id}" code="problem.delete"/>
+    <acme:cancel url="problem/company/delete.do?problemID=${row.id}" code="problem.delete"/>
     <acme:cancel url="problem/company/list.do" code="problem.goBack"/>
 
 </security:authorize>

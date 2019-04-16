@@ -159,31 +159,57 @@ public class ProblemController extends AbstractController {
         return result;
     }
 
-//    // Delete ------------------------------------------------------
-//    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-//    public ModelAndView delete(@RequestParam final int messageID) {
-//        ModelAndView result;
-//        Message message;
-//
-//        try {
-//            try {
-//                final Actor principal = this.actorService.getActorLogged();
-//                message = this.messageService.findOne(messageID);
-//                Assert.isTrue(principal.getMessages().contains(message));
-//            } catch (final Exception e) {
-//                result = this.forbiddenOperation();
-//                return result;
-//            }
-//            this.messageService.delete(message);
-//            result = new ModelAndView("redirect:list.do");
-//        } catch (final Throwable oops) {
-//            message = this.messageService.findOne(messageID);
-//            result = this.createModelAndView(message, "messageBox.commit.error");
-//        }
-//
-//        return result;
-//    }
-//
+    //TODO No poder borrar un Problem en uso.
+
+    // Delete GET ------------------------------------------------------
+    @RequestMapping(value = "company/delete", method = RequestMethod.GET)
+    public ModelAndView deleteGet(@RequestParam final int problemID) {
+        ModelAndView result;
+        Problem problem;
+        Collection<Problem> problems;
+
+        try {
+            try {
+                final Actor principal = this.actorService.getActorLogged();
+                problem = this.problemService.findOne(problemID);
+                problems = this.problemService.findAllByCompany(principal.getId());
+                Assert.isTrue(problems.contains(problem));
+            } catch (final Exception e) {
+                result = this.forbiddenOperation();
+                return result;
+            }
+            this.problemService.delete(problem);
+            result = new ModelAndView("redirect:list.do");
+        } catch (final Throwable oops) {
+            problem = this.problemService.findOne(problemID);
+            result = this.updateModelAndView(problem, "problem.commit.error");
+        }
+
+        return result;
+    }
+
+    // Delete POST ------------------------------------------------------
+    @RequestMapping(value = "company/update", method = RequestMethod.POST, params = "delete")
+    public ModelAndView deletePost(@ModelAttribute("problem") Problem problem, final BindingResult binding) {
+        ModelAndView result;
+        Collection<Problem> problems;
+
+        try {
+            try {
+                problem = this.problemService.reconstruct(problem, binding);
+                this.problemService.delete(problem);
+                result = new ModelAndView("redirect:list.do");
+            } catch (final Exception e) {
+                result = this.forbiddenOperation();
+                return result;
+            }
+        } catch (final Throwable oops) {
+            result = this.updateModelAndView(problem, "problem.commit.error");
+        }
+
+        return result;
+    }
+
     // Ancillary methods ------------------------------------------------------
 
     protected ModelAndView createModelAndView(final Problem problem) {

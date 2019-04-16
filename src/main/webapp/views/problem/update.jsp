@@ -19,7 +19,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net" %>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="problem/company/update.do" modelAttribute="problem">
+<form:form modelAttribute="problem">
 
     <security:authorize
             access="hasRole('COMPANY')">
@@ -56,6 +56,8 @@
 
         <%-- Buttons --%>
         <acme:submit name="update" code="problem.update"/>
+
+        <acme:submit name="delete" code="problem.delete"/>
 
         <acme:cancel url="problem/company/list.do" code="problem.cancel"/>
 

@@ -45,4 +45,4 @@
 	<acme:cancel url="message/create.do" code="message.create"/>
 </security:authorize>
 
-<acme:cancel url="message/list.do" code="message.goBack"/>
+<acme:cancel url="/" code="message.goBack"/>
