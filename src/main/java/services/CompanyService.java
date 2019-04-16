@@ -20,6 +20,7 @@ import domain.Actor;
 import domain.Company;
 import domain.Message;
 import domain.SocialProfile;
+import forms.CompanyForm;
 
 @Service
 @Transactional
@@ -129,6 +130,26 @@ public class CompanyService {
 
 			this.validator.validate(company, binding);
 		}
+		return result;
+	}
+
+	public Company reconstruct(final CompanyForm c, final BindingResult binding) {
+
+		final Company result = this.create();
+		result.setAddress(c.getAddress());
+		result.setEmail(c.getEmail());
+		result.setId(c.getId());
+		result.setName(c.getName());
+		result.setPhoneNumber(c.getPhoneNumber());
+		result.setPhoto(c.getPhoto());
+		result.setSurname(c.getSurname());
+		result.getUserAccount().setPassword(c.getPassword());
+		result.getUserAccount().setUsername(c.getUsername());
+		result.setVersion(c.getVersion());
+		result.setVatNumber(c.getVatNumber());
+		result.setCommercialName(c.getCommercialName());
+
+		this.validator.validate(result, binding);
 		return result;
 	}
 

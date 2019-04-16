@@ -82,6 +82,7 @@ public class Actor extends DomainEntity {
 		return this.email;
 	}
 
+	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getPhoneNumber() {
 		return this.phoneNumber;
