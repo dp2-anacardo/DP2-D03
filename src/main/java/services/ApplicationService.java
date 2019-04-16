@@ -18,6 +18,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.Application;
+import domain.Company;
 import domain.Hacker;
 
 @Service
@@ -113,9 +114,11 @@ public class ApplicationService {
 		UserAccount userAccount;
 		userAccount = LoginService.getPrincipal();
 		final Company company = this.companyService.findOne(this.actorService.getActorLogged().getId());
+		final Collection<Application> applications = this.getApplicationsByCompany(company);
 
 		Assert.isTrue(userAccount.getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
+		Assert.isTrue(applications.contains(application));
 		application.setStatus("ACCEPTED");
 	}
 
@@ -124,9 +127,11 @@ public class ApplicationService {
 		UserAccount userAccount;
 		userAccount = LoginService.getPrincipal();
 		final Company company = this.companyService.findOne(this.actorService.getActorLogged().getId());
+		final Collection<Application> applications = this.getApplicationsByCompany(company);
 
 		Assert.isTrue(userAccount.getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
+		Assert.isTrue(applications.contains(application));
 		Assert.isTrue(!application.getRejectComment().equals(""));
 		application.setStatus("REJECTED");
 	}
@@ -136,6 +141,15 @@ public class ApplicationService {
 		Collection<Application> applications;
 
 		applications = this.applicationRepository.getApplicationsByHacker(hacker.getId());
+
+		return applications;
+	}
+
+	public Collection<Application> getApplicationsByCompany(final Company company) {
+		Assert.notNull(company);
+		Collection<Application> applications;
+
+		applications = this.applicationRepository.getApplicationsByCompany(company.getId());
 
 		return applications;
 	}

@@ -3,7 +3,6 @@ package controllers.application;
 
 import java.util.Collection;
 
-import domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -16,9 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 import security.LoginService;
 import services.ActorService;
 import services.ApplicationService;
-import controllers.AbstractController;
 import services.CompanyService;
 import services.HackerService;
+import controllers.AbstractController;
+import domain.Actor;
+import domain.Application;
+import domain.Hacker;
 
 @Controller
 @RequestMapping("application")
@@ -28,17 +30,17 @@ public class ApplicationController extends AbstractController {
 	private ApplicationService	applicationService;
 
 	@Autowired
-	private HackerService hackerService;
+	private HackerService		hackerService;
 
 	@Autowired
 	private ActorService		actorService;
 
-	//TODO FALLO
-//	@Autowired
-//	private PositionService		positionService;
+	//	@Autowired
+	//	private PositionService		positionService;
 
 	@Autowired
-	private CompanyService companyService;
+	private CompanyService		companyService;
+
 
 	@RequestMapping(value = "/hacker/list", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -55,64 +57,61 @@ public class ApplicationController extends AbstractController {
 		return result;
 	}
 
-	//TODO FALLO
-//	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
-//	public ModelAndView listCompany() {
-//		ModelAndView result;
-//		Collection<Application> applications;
-//		Collection<Position> positions;
-//
-//		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
-//		final Company company = this.companyService.findOne(user.getId());
-//
-//		positions = this.positionService.findPositionsByCompany(company.getId());
-//		for (final Position position : positions)
-//			applications = applications.addAll(position.getApplications());
-//
-//		result = new ModelAndView("application/company/list");
-//		result.addObject("applications", applications);
-//		result.addObject("requestURI", "application/company/list.do");
-//
-//		return result;
-//	}
+	//	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
+	//	public ModelAndView listCompany() {
+	//		ModelAndView result;
+	//		Collection<Application> applications;
+	//		Collection<Position> positions;
+	//
+	//		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
+	//		final Company company = this.companyService.findOne(user.getId());
+	//
+	//		positions = this.positionService.findPositionsByCompany(company.getId());
+	//		applications = this.applicationService.getApplicationsByCompany(company);
+	//
+	//		result = new ModelAndView("application/company/list");
+	//		result.addObject("applications", applications);
+	//		result.addObject("requestURI", "application/company/list.do");
+	//
+	//		return result;
+	//	}
 
-    //TODO FALLO
-//	@RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
-//	public ModelAndView create(@RequestParam final int positionId) {
-//		ModelAndView result;
-//		Application application;
-//		Position position;
-//
-//		try {
-//			Assert.notNull(positionId);
-//			position = this.positionService.findOne(positionId);
-//			final Collection<Application> applications = position.getApplications();
-//			applications.add(application);
-//			application = this.applicationService.create();
-//			result = this.createModelAndView(application);
-//			return result;
-//		} catch (final Exception e) {
-//			result = new ModelAndView("redirect:/position/hacker/list.do");
-//			return result;
-//		}
-//	}
+	//	@RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
+	//	public ModelAndView create(@RequestParam final int positionId) {
+	//		ModelAndView result;
+	//		Application application;
+	//		Position position;
+	//
+	//		try {
+	//			Assert.notNull(positionId);
+	//			position = this.positionService.findOne(positionId);
+	//			final Collection<Application> applications = position.getApplications();
+	//			applications.add(application);
+	//			application = this.applicationService.create();
+	//			result = this.createModelAndView(application);
+	//			return result;
+	//		} catch (final Exception e) {
+	//			result = new ModelAndView("redirect:/position/hacker/list.do");
+	//			return result;
+	//		}
+	//	}
 
-    //TODO FALLO
-//	@RequestMapping(value = "/hacker/create", method = RequestMethod.POST, params = "save")
-//	public ModelAndView save(Application application, final BindingResult binding) {
-//		final ModelAndView result;
-//		application = this.applicationService.reconstruct(application, binding);
-//
-//		if (binding.hasErrors())
-//			result = this.createModelAndView(application);
-//		else
-//			try {
-//				this.applicationService.save(application);
-//				result = new ModelAndView("redirect:/application/hacker/list.do");
-//			} catch (final Exception e) {
-//				result = this.createModelAndView(application, "application.commit.error");
-//			}
-//	}
+	@RequestMapping(value = "/hacker/create", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(Application application, final BindingResult binding) {
+		ModelAndView result;
+		application = this.applicationService.reconstruct(application, binding);
+
+		if (binding.hasErrors())
+			result = this.createModelAndView(application);
+		else
+			try {
+				this.applicationService.save(application);
+				result = new ModelAndView("redirect:/application/hacker/list.do");
+			} catch (final Exception e) {
+				result = this.createModelAndView(application, "application.commit.error");
+			}
+		return result;
+	}
 
 	@RequestMapping(value = "/hacker/update", method = RequestMethod.GET)
 	public ModelAndView update(@RequestParam final int applicationId) {
@@ -130,24 +129,22 @@ public class ApplicationController extends AbstractController {
 		}
 	}
 
-	//TODO FALLO
-//	@RequestMapping(value = "/hacker/update", method = RequestMethod.POST, params = "update")
-//	public ModelAndView update(Application application, final BindingResult binding) {
-//		ModelAndView result;
-//		application = this.applicationService.reconstruct(application, binding);
-//
-//		if (binding.hasErrors())
-//			result = this.updateModelAndView(application);
-//		else
-//			try {
-//				this.applicationService.save(application);
-//				result = new ModelAndView("redirect:/application/hacker/list.do");
-//				return result;
-//			} catch (final Exception e) {
-//				result = this.updateModelAndView(application, "application.commit.error");
-//				return result;
-//			}
-//	}
+	@RequestMapping(value = "/hacker/update", method = RequestMethod.POST, params = "update")
+	public ModelAndView update(Application application, final BindingResult binding) {
+		ModelAndView result;
+		application = this.applicationService.reconstruct(application, binding);
+
+		if (binding.hasErrors())
+			result = this.updateModelAndView(application);
+		else
+			try {
+				this.applicationService.save(application);
+				result = new ModelAndView("redirect:/application/hacker/list.do");
+			} catch (final Exception e) {
+				result = this.updateModelAndView(application, "application.commit.error");
+			}
+		return result;
+	}
 
 	@RequestMapping(value = "/company/accept", method = RequestMethod.GET)
 	public ModelAndView accept(@RequestParam final int applicationId) {
@@ -183,28 +180,28 @@ public class ApplicationController extends AbstractController {
 		}
 	}
 
-	//TODO FALLO
-//	@RequestMapping(value = "/company/reject", method = RequestMethod.POST, params = "reject")
-//	public ModelAndView reject(Application application, final BindingResult binding) {
-//		ModelAndView result;
-//		application = this.applicationService.reconstruct(application, binding);
-//
-//		if (application.getRejectComment().equals("")) {
-//			binding.rejectValue("rejectComment", "error.rejectComment");
-//			result = this.rejectModelAndView(application);
-//		} else if (binding.hasErrors()) {
-//			result = this.rejectModelAndView(application);
-//			return result;
-//		} else
-//			try {
-//				this.applicationService.rejectApplication(application);
-//				result = new ModelAndView("redirect:/application/company/list.do");
-//				return result;
-//			} catch (final Exception e) {
-//				result = this.rejectModelAndView(application, "application.commit.error");
-//				return result;
-//			}
-//	}
+	@RequestMapping(value = "/company/reject", method = RequestMethod.POST, params = "reject")
+	public ModelAndView reject(Application application, final BindingResult binding) {
+		ModelAndView result;
+		application = this.applicationService.reconstruct(application, binding);
+
+		if (application.getRejectComment().equals("")) {
+			binding.rejectValue("rejectComment", "error.rejectComment");
+			result = this.rejectModelAndView(application);
+			return result;
+		} else if (binding.hasErrors()) {
+			result = this.rejectModelAndView(application);
+			return result;
+		} else
+			try {
+				this.applicationService.rejectApplication(application);
+				result = new ModelAndView("redirect:/application/company/list.do");
+				return result;
+			} catch (final Exception e) {
+				result = this.rejectModelAndView(application, "application.commit.error");
+				return result;
+			}
+	}
 
 	protected ModelAndView rejectModelAndView(final Application application) {
 		ModelAndView result;

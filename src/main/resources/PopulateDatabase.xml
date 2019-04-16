@@ -317,7 +317,7 @@
 	
 	<bean id="curricula1Hacker1" class ="domain.Curricula">
 		<property name = "educationalData" ref = "educationalDataHacker1"/>
-		<property name = "personalData" ref = "personalDataHacker1"/>
+		<property name = "personalData" ref = "personalData1Hacker1"/>
 		<property name = "miscData" ref = "miscellaneousDataHacker1"/>
 		<property name = "positionData" ref ="positionDataHacker1"/>
 	</bean>
@@ -342,20 +342,20 @@
 	
 	<!-- Curricula's PersonalData -->
 	
-	<bean id="personalData2Hacker1" class ="domain.PersonalData">
-		<property name = "fullName" value = "Eduardo García Jiménez 2"/>
-		<property name = "statement" value = "No se que poner, ¿qué declaración haría un hacker? 2"/>
-		<property name = "phoneNumber" value = "+34 791235712"/>
-		<property name = "githubProfile" value ="https://github.com/edugj71262"/>
-		<property name = "linkedInProfile" value ="https://linkedIn.com/edugj71262"/>
-	</bean>
-
-	<bean id="personalDataHacker1" class ="domain.PersonalData">
+	<bean id="personalData1Hacker1" class ="domain.PersonalData">
 		<property name = "fullName" value = "Eduardo García Jiménez"/>
 		<property name = "statement" value = "No se que poner, ¿qué declaración haría un hacker?"/>
 		<property name = "phoneNumber" value = "+34 791235712"/>
 		<property name = "githubProfile" value ="https://github.com/edugj7126"/>
 		<property name = "linkedInProfile" value ="https://linkedIn.com/edugj7126"/>
+	</bean>
+	
+	<bean id="personalData2Hacker1" class ="domain.PersonalData">
+		<property name = "fullName" value = "Eduardo García Jiménez"/>
+		<property name = "statement" value = "No se que poner, ¿qué declaración haría un hacker?"/>
+		<property name = "phoneNumber" value = "+34 791235712"/>
+		<property name = "githubProfile" value ="https://github.com/prueba"/>
+		<property name = "linkedInProfile" value ="https://linkedIn.com/prueba"/>
 	</bean>
 	
 	<bean id="personalDataHacker2" class ="domain.PersonalData">

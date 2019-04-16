@@ -15,4 +15,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 	@Query("select a from Application a where a.hacker.id = ?1")
 	Collection<Application> getApplicationsByHacker(int hackerId);
 
+	@Query("select a from Position p join p.company c join p.applications a where a.status != 'PENDING' and c.id = ?1")
+	Collection<Application> getApplicationsByCompany(int companyId);
+
 }
