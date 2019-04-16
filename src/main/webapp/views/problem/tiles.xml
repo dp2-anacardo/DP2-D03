@@ -28,7 +28,7 @@
 
 	<definition name="problem/company/update" extends="master.page">
 		<put-attribute name="title" value="Update Problem" />
-		<put-attribute name="body" value="/views/problem/create.jsp" />
+		<put-attribute name="body" value="/views/problem/update.jsp" />
 	</definition>
 
 	<definition name="problem/show" extends="master.page">

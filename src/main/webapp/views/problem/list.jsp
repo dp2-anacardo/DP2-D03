@@ -38,10 +38,12 @@
 
     <spring:message code="problem.update" var="updateHeader"/>
     <display:column title="${updateHeader}">
+        <jstl:if test="${row.isFinal eq false}">
         <a
-                href="problem/update.do?problemID=${row.id}">
+                href="problem/company/update.do?problemID=${row.id}">
             <spring:message code="problem.update"/>
         </a>
+        </jstl:if>
     </display:column>
 
     <spring:message code="problem.show" var="showHeader"/>
