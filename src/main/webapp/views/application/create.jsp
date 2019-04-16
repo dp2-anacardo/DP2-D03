@@ -8,26 +8,24 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<security:authorize access="hasRole('COMPANY')">
-<form:form action="application/company/reject.do" modelAttribute="application">
+<security:authorize access="hasRole('HACKER')">
+<form:form action="application/hacker/create.do" modelAttribute="application">
 	<form:hidden path="id" />
 	
-	<form:label path="rejectComment">
-	<spring:message code="application.rejectComment"/>
+	<form:label path="curricula">
+		<spring:message code="application.selectCurricula"/>
 	</form:label>
-	<form:textarea path="rejectComment"/>
-	<form:errors cssClass="error" path="rejectComment"/>
-	<br/>
-	
-	<input type="submit" name="reject"
-		value="<spring:message code="application.reject" />" />&nbsp; 
-	<input type="button" name="cancel"
-		value="<spring:message code="application.cancel" />"
-		onclick="javascript: relativeRedir('application/company/list.do');" />
+	<form:select path="curricula">	
+		<form:options items="${curricula}" itemValue="id" itemLabel="curricula"/>
+	</form:select>
+	<form:errors cssClass="error" path="curricula" />
 	<br />
 	
-	
+	<input type="submit" name="save"
+			value="<spring:message code="application.save" />" />
+			
+	<acme:cancel url="position/hacker/list.do" code="application.cancel"/>
 </form:form>
 </security:authorize>
