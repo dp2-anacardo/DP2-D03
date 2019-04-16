@@ -13,6 +13,7 @@ package controllers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import domain.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import services.ActorService;
 
 @Controller
 @RequestMapping("/welcome")
@@ -36,8 +38,8 @@ public class WelcomeController extends AbstractController {
 
 	// Index ------------------------------------------------------------------		
 
-	//@Autowired
-	//private ActorService	actorService;
+	@Autowired
+	private ActorService actorService;
 
 
 	@RequestMapping(value = "/index")
@@ -49,22 +51,23 @@ public class WelcomeController extends AbstractController {
 		final SecurityContext context = SecurityContextHolder.getContext();
 		final Authentication a = context.getAuthentication();
 
-		//if (!a.getName().equals("anonymousUser"))
-		//	name = this.actorService.getActorLogged().getName();
+		if (!a.getName().equals("anonymousUser"))
+			name = this.actorService.getActorLogged().getName();
 
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		moment = formatter.format(new Date());
 
 		final String language = LocaleContextHolder.getLocale().getLanguage();
-		//final Configuration conf = this.configurationService.findAll().get(0);
+		final Configuration conf = this.configurationService.findAll().get(0);
 
 		result = new ModelAndView("welcome/index");
-		//if (language.equals("es"))
-		//	result.addObject("welcome", conf.getWelcomeMessageEs());
-		//else if (language.equals("en"))
-		//	result.addObject("welcome", conf.getWelcomeMessageEn());
 
-		//result.addObject("name", name);
+		if (language.equals("es"))
+			result.addObject("welcome", conf.getWelcomeMessageEs());
+		else if (language.equals("en"))
+			result.addObject("welcome", conf.getWelcomeMessageEn());
+
+		result.addObject("name", name);
 		result.addObject("moment", moment);
 
 		return result;

@@ -32,6 +32,9 @@ public class ProblemService {
     private ActorService actorService;
 
     @Autowired
+    private CompanyService companyService;
+
+    @Autowired
     private Validator validator;
 
 
@@ -84,8 +87,9 @@ public class ProblemService {
         Problem result;
 
         if (problem.getId() == 0) {
+            final Company actor = (Company) this.actorService.getActorLogged();
             result = problem;
-            //result.setCompany(this.companyService.findByPrincipal());
+            result.setCompany(actor);
 
             this.validator.validate(result, binding);
 
@@ -106,6 +110,13 @@ public class ProblemService {
 
         return result;
 
+    }
+
+    public Collection<Problem> findAllByCompany(int companyID) {
+        final Collection<Problem> result = this.problemRepository.findAllByCompany(companyID);
+        Assert.notNull(result);
+
+        return result;
     }
 }
 

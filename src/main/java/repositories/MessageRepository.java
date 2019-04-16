@@ -21,4 +21,6 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 	@Query("select count(a) from Actor a join a.messages m where m.id=?1")
 	Integer findMessageInPool(int messageID);
 
+	@Query("select a.messages from Actor a where a.id=?1")
+	Collection<Message> getMessagesByActor(int actorID);
 }

@@ -32,7 +32,7 @@
 		</security:authorize>
 		
 		<security:authorize access="hasRole('HACKER')">
-			<li><a class="fNiv"><spring:message	code="master.page.member" /></a>
+			<li><a class="fNiv"><spring:message	code="master.page.hacker" /></a>
 				<ul>
 					<li class="arrow"></li>
 				</ul>
@@ -47,9 +47,10 @@
 		</security:authorize>
 		
 		<security:authorize access="hasRole('COMPANY')">
-			<li><a class="fNiv"><spring:message	code="master.page.brotherhood" /></a>
+			<li><a class="fNiv"><spring:message	code="master.page.company" /></a>
 				<ul>
-					<li class="arrow"></li>									
+					<li class="arrow"></li>
+					<li><a href="problem/company/list.do"><spring:message code="master.page.company.problem" /></a></li>
 
 				</ul>
 			</li>
@@ -68,7 +69,7 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="profile/myInformation.do"><spring:message code="master.page.profile.myInformation" /></a></li>
-					<li><a href="messageBox/list.do"><spring:message code="master.page.message" /></a></li>
+					<li><a href="message/list.do"><spring:message code="master.page.message" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>				
 				</ul>
 			</li>

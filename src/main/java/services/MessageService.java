@@ -73,6 +73,8 @@ public class MessageService {
                 Assert.notNull(recipients);
                 Assert.notEmpty(recipients);
 
+                message.getTags().add("SYSTEM");
+
                 result = this.messageRepository.save(message);
 
                 for (final Actor recipient : recipients)
@@ -153,6 +155,14 @@ public class MessageService {
 
         return result;
     }
+
+    public 	Collection<Message> getMessagesByActor(int actorID){
+        final Collection<Message> result = this.messageRepository.getMessagesByActor(actorID);
+        Assert.notNull(result);
+
+        return result;
+    }
+
 
     public Message reconstruct(final Message message, final BindingResult binding) {
         final Message result;
