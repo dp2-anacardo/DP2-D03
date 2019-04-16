@@ -23,6 +23,8 @@
 			<bean class="converters.Class1ToClass2" /> 
 		-->
 
+		<bean class="converters.ApplicationToStringConverter"/>
+		<bean class="converters.StringToApplicationConverter"/>
 		<bean class="converters.CurriculaToStringConverter"/>
 		<bean class="converters.StringToCurriculaConverter"/>
 		<bean class="converters.EducationalDataToStringConverter"/>
