@@ -1,6 +1,7 @@
 
 package controllers.application;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,16 @@ import security.LoginService;
 import services.ActorService;
 import services.ApplicationService;
 import services.CompanyService;
+import services.CurriculaService;
 import services.HackerService;
+import services.PositionService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Application;
+import domain.Company;
 import domain.Curricula;
 import domain.Hacker;
+import domain.Position;
 
 @Controller
 @RequestMapping("application")
@@ -36,11 +41,14 @@ public class ApplicationController extends AbstractController {
 	@Autowired
 	private ActorService		actorService;
 
-	//	@Autowired
-	//	private PositionService		positionService;
+	@Autowired
+	private PositionService		positionService;
 
 	@Autowired
 	private CompanyService		companyService;
+
+	@Autowired
+	private CurriculaService	curriculaService;
 
 
 	@RequestMapping(value = "/hacker/list", method = RequestMethod.GET)
@@ -58,24 +66,22 @@ public class ApplicationController extends AbstractController {
 		return result;
 	}
 
-	//	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
-	//	public ModelAndView listCompany() {
-	//		ModelAndView result;
-	//		Collection<Application> applications;
-	//		Collection<Position> positions;
-	//
-	//		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
-	//		final Company company = this.companyService.findOne(user.getId());
-	//
-	//		positions = this.positionService.findPositionsByCompany(company.getId());
-	//		applications = this.applicationService.getApplicationsByCompany(company);
-	//
-	//		result = new ModelAndView("application/company/list");
-	//		result.addObject("applications", applications);
-	//		result.addObject("requestURI", "application/company/list.do");
-	//
-	//		return result;
-	//	}
+	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
+	public ModelAndView listCompany() {
+		ModelAndView result;
+		Collection<Application> applications;
+
+		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
+		final Company company = this.companyService.findOne(user.getId());
+
+		applications = this.applicationService.getApplicationsByCompany(company);
+
+		result = new ModelAndView("application/company/list");
+		result.addObject("applications", applications);
+		result.addObject("requestURI", "application/company/list.do");
+
+		return result;
+	}
 
 	@RequestMapping(value = "/hacker/show", method = RequestMethod.GET)
 	public ModelAndView show(@RequestParam final int applicationId) {
@@ -98,25 +104,25 @@ public class ApplicationController extends AbstractController {
 		return result;
 	}
 
-	//	@RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
-	//	public ModelAndView create(@RequestParam final int positionId) {
-	//		ModelAndView result;
-	//		Application application;
-	//		Position position;
-	//
-	//		try {
-	//			Assert.notNull(positionId);
-	//			position = this.positionService.findOne(positionId);
-	//			final Collection<Application> applications = position.getApplications();
-	//			applications.add(application);
-	//			application = this.applicationService.create();
-	//			result = this.createModelAndView(application);
-	//			return result;
-	//		} catch (final Exception e) {
-	//			result = new ModelAndView("redirect:/position/hacker/list.do");
-	//			return result;
-	//		}
-	//	}
+	@RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
+	public ModelAndView create(@RequestParam final int positionId) {
+		ModelAndView result;
+		Application application;
+		Position position;
+
+		try {
+			Assert.notNull(positionId);
+			position = this.positionService.findOne(positionId);
+			final Collection<Application> applications = position.getApplications();
+			application = this.applicationService.create(positionId);
+			applications.add(application);
+			result = this.createModelAndView(application);
+			return result;
+		} catch (final Exception e) {
+			result = new ModelAndView("redirect:/position/hacker/list.do");
+			return result;
+		}
+	}
 
 	@RequestMapping(value = "/hacker/create", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Application application, final BindingResult binding) {
@@ -272,13 +278,16 @@ public class ApplicationController extends AbstractController {
 	protected ModelAndView createModelAndView(final Application application, final String messageCode) {
 		ModelAndView result;
 		Collection<Curricula> curricula;
+		final Collection<Curricula> copied = new ArrayList<>();
 		final Actor actor = this.actorService.getActorLogged();
 		final Hacker hacker = this.hackerService.findOne(actor.getId());
 		curricula = hacker.getCurricula();
+		for (final Curricula c : curricula)
+			copied.add(this.curriculaService.copy(c));
 
 		result = new ModelAndView("application/hacker/create");
 		result.addObject("application", application);
-		result.addObject("curricula", curricula);
+		result.addObject("curricula", copied);
 		result.addObject("message", messageCode);
 
 		return result;

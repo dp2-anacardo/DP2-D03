@@ -3,10 +3,10 @@ package services;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
-import domain.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -20,6 +20,8 @@ import domain.Actor;
 import domain.Application;
 import domain.Company;
 import domain.Hacker;
+import domain.Position;
+import domain.Problem;
 
 @Service
 @Transactional
@@ -36,6 +38,12 @@ public class ApplicationService {
 
 	@Autowired
 	private CompanyService			companyService;
+
+	@Autowired
+	private ProblemService			problemService;
+
+	@Autowired
+	private PositionService			positionService;
 
 	@Autowired
 	private Validator				validator;
@@ -57,15 +65,23 @@ public class ApplicationService {
 			application.setProblem(result.getProblem());
 			application.setHacker(result.getHacker());
 			application.setMoment(result.getMoment());
+			application.setRejectComment(result.getRejectComment());
 			this.validator.validate(application, binding);
 			result = application;
 		}
 		return result;
 	}
 
-	public Application create() {
+	public Application create(final int positionId) {
 		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
 		Application application;
+
+		//Tenemos que coger la lista de problemas de la posición a la que se le
+		//va a hacer la application
+		final List<Problem> problems;
+		//Cogemos la position usando el findOne y usando el id como parametro
+		final Position position = this.positionService.findOne(positionId);
+		Problem problem;
 
 		application = new Application();
 		application.setMoment(new Date());
@@ -73,13 +89,21 @@ public class ApplicationService {
 		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
 		final Hacker hacker = this.hackerService.findOne(user.getId());
 		application.setHacker(hacker);
-		//Aqui hay que ponerle un problem aleatorio para la position
-		//a la que se le crea esta Application
-		//application.setProblem();
+
+		//Cogemos los problemas que son finales y que esten relacionados con la
+		//position que cogemos antes, que esta luego esta relacionada con la
+		//company que tiene los problemas
+		problems = this.problemService.getProblemsFinalByCompany(position.getCompany());
+
+		//Generamos un int random que vaya de 0 a el tamaño de los problemas -1
+		final int valorRandom = (int) Math.random() * problems.size();
+		//Cogemos un problema random de la lista de problemas
+		problem = problems.get(valorRandom);
+		//Le hacemos el set a la application
+		application.setProblem(problem);
 
 		return application;
 	}
-
 	public Application findOne(final int applicationId) {
 		Assert.notNull(applicationId);
 
