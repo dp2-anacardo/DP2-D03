@@ -17,7 +17,6 @@ import services.ActorService;
 import services.MessageService;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller

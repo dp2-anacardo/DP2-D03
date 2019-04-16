@@ -11,20 +11,37 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<acme:showtext fieldset="true" code="parade.title" value="${p.title }"/>
-<acme:showtext fieldset="true" code="parade.description" value="${p.description}"/>
-<fieldset><legend><b><spring:message code="parade.floats"/></b></legend>
-<jstl:forEach items="${p.floats}" var="f">
-	<jstl:out value="${f.title}"/>
-	<br>
-</jstl:forEach>
-</fieldset>
-<acme:showtext fieldset="true" code="parade.maxRow" value="${p.maxRow}"/>
-<acme:showtext fieldset="true" code="parade.maxColumn" value="${p.maxColumn}"/>
-<img src="${sponsorshipBanner}"/>
-<security:authorize access="hasRole('BROTHERHOOD')">
+<security:authorize access="hasRole('HACKER')">
+<jstl:if test="${application.status != 'PENDING'}">
+<acme:showtext fieldset="true" code="application.submitMoment" value="${application.submitMoment}"/>
+<acme:showtext fieldset="true" code="application.explanation" value="${application.explanation}"/>
+<acme:showtext fieldset="true" code="application.link" value="<a href="${application.link}">Link"/>
+</jstl:if>
 
-<a href="segment/brotherhood/list.do?paradeId=${p.id}">
-			<spring:message code="parade.path"/>
-		</a>
+<jstl:if test="${application.status == 'ACCEPTED' }">
+		<acme:showtext fieldset="true" code="application.status" 
+		value="<spring:message code="application.accepted"/>"/>
+</jstl:if>
+			
+<jstl:if test="${application.status == 'SUBMITTED' }">
+	<acme:showtext fieldset="true" code="application.status" 
+	value="<spring:message code="application.submitted"/>"/>
+</jstl:if>
+			
+<jstl:if test="${application.status == 'PENDING' }">
+	<acme:showtext fieldset="true" code="application.status" 
+	value="<spring:message code="application.pending"/>"/>
+</jstl:if>
+			
+<jstl:if test="${application.status == 'REJECTED' }">
+	<acme:showtext fieldset="true" code="application.status" 
+	value="<spring:message code="application.rejected"/>"/>
+	<acme:showtext fieldset="true" code="application.rejectComment" 
+	value="${application.rejectComment}"/>
+</jstl:if>
+
+<acme:showtext fieldset="true" code="application.problem" 
+value="<a href="problem/show.do?problemId=${row.problem.id}">
+		<spring:message code="application.problem"/>"/>
+		
 </security:authorize>

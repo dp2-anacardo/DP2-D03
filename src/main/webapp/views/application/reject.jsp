@@ -10,22 +10,22 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<security:authorize access="hasRole('CHAPTER')">
-<form:form action="parade/chapter/reject.do" modelAttribute="parade">
+<security:authorize access="hasRole('COMPANY')">
+<form:form action="application/company/reject.do" modelAttribute="application">
 	<form:hidden path="id" />
 	
 	<form:label path="rejectComment">
-	<spring:message code="parade.rejectComment"/>
+	<spring:message code="application.rejectComment"/>
 	</form:label>
 	<form:textarea path="rejectComment"/>
 	<form:errors cssClass="error" path="rejectComment"/>
 	<br/>
 	
 	<input type="submit" name="reject"
-		value="<spring:message code="parade.reject" />" />&nbsp; 
+		value="<spring:message code="application.reject" />" />&nbsp; 
 	<input type="button" name="cancel"
-		value="<spring:message code="parade.cancel" />"
-		onclick="javascript: relativeRedir('parade/listNotRegister.do?brotherhoodId=${parade.brotherhood.id}');" />
+		value="<spring:message code="application.cancel" />"
+		onclick="javascript: relativeRedir('application/company/list.do');" />
 	<br />
 	
 	

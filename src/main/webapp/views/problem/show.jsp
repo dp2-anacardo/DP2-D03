@@ -41,6 +41,21 @@
                     sortable="false"/>
 </display:table>
 
+<jstl:if test="${not empty problem.attachment}">
+    <display:table name="problem" id="row" requestURI="problem/show.do"
+                   class="displaytag">
+        <spring:message code="problem.attachment" var="attachmentHeader"/>
+        <display:column title="${attachmentHeader}" sortable="false">
+            <jstl:forEach items="${problem.attachment}" var="positiveWords">
+                <tr>
+                    <td><a href="<jstl:out value="${positiveWords.link}"/>"><jstl:out value="${positiveWords.link}"/></a></td>
+                </tr>
+            </jstl:forEach>
+        </display:column>
+    </display:table>
+
+
+</jstl:if>
 <display:table name="problem" id="row" requestURI="problem/show.do"
                class="displaytag">
     <spring:message code="problem.isFinal" var="isFinalHeader"/>
@@ -55,7 +70,7 @@
 </display:table>
 
 <security:authorize access="hasRole('COMPANY')">
-    <acme:cancel url="problem/delete.do?problemID=${row.id}" code="problem.delete"/>
+    <acme:cancel url="problem/company/delete.do?problemID=${row.id}" code="problem.delete"/>
     <acme:cancel url="problem/company/list.do" code="problem.goBack"/>
 
 </security:authorize>

@@ -111,7 +111,7 @@
 		 />&nbsp; 
 	
 		<input type="button" name="cancel"
-		value="<spring:message code="administrator.back" />"
+		value="<spring:message code="messageBox.goBack" />"
 		onclick="javascript: relativeRedir('/');" />
 	<br />
  	

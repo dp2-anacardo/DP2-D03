@@ -6,7 +6,6 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
@@ -15,13 +14,21 @@ import javax.validation.Valid;
 @Access(AccessType.PROPERTY)
 public class Curricula extends DomainEntity {
 
-
 	//Relationships ----------------------------------------------------------------------------------------------------
 	private Collection<EducationalData>	educationalData;
 	private MiscData					miscData;
 	private PersonalData				personalData;
 	private Collection<PositionData>	positionData;
+	private boolean						isCopy;
 
+
+	public boolean getIsCopy() {
+		return this.isCopy;
+	}
+
+	public void setIsCopy(final boolean isCopy) {
+		this.isCopy = isCopy;
+	}
 
 	@OneToMany
 	public Collection<EducationalData> getEducationalData() {

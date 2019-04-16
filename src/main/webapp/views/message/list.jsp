@@ -30,6 +30,10 @@
 	<display:column property="sender.name" title="${senderHeader}"
 		sortable="true" />
 
+	<spring:message code="message.tags" var="tagsHeader" />
+	<display:column property="tags" title="${tagsHeader}"
+					sortable="true" />
+
 	<!-- Display -->
 	<display:column>
 		<a
@@ -45,4 +49,4 @@
 	<acme:cancel url="message/create.do" code="message.create"/>
 </security:authorize>
 
-<acme:cancel url="message/list.do" code="message.goBack"/>
+<acme:cancel url="/" code="message.goBack"/>
