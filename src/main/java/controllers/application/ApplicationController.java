@@ -15,10 +15,14 @@ import org.springframework.web.servlet.ModelAndView;
 import security.LoginService;
 import services.ActorService;
 import services.ApplicationService;
+import services.CompanyService;
+import services.HackerService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Application;
+import domain.Company;
 import domain.Hacker;
+import domain.Position;
 
 @Controller
 @RequestMapping("application")
@@ -38,9 +42,6 @@ public class ApplicationController extends AbstractController {
 
 	@Autowired
 	private CompanyService		companyService;
-
-	@Autowired
-	private PositionService		positionService;
 
 
 	@RequestMapping(value = "/hacker/list", method = RequestMethod.GET)
@@ -68,8 +69,7 @@ public class ApplicationController extends AbstractController {
 		final Company company = this.companyService.findOne(user.getId());
 
 		positions = this.positionService.findPositionsByCompany(company.getId());
-		for (final Position position : positions)
-			applications = applications.addAll(position.getApplications());
+		applications = this.applicationService.getApplicationsByCompany(company);
 
 		result = new ModelAndView("application/company/list");
 		result.addObject("applications", applications);

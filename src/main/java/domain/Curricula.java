@@ -6,7 +6,6 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
@@ -41,7 +40,7 @@ public class Curricula extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = false)
+	@OneToOne(optional = false)
 	public PersonalData getPersonalData() {
 		return this.personalData;
 	}
