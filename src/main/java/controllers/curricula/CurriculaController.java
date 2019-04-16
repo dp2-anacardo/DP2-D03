@@ -54,7 +54,7 @@ public class CurriculaController extends AbstractController {
         try{
             Curricula c = this.curriculaService.findOne(curriculaId);
             Assert.notNull(c);
-            Assert.isTrue(c.isCopy()==false);
+            Assert.isTrue(c.getIsCopy()==false);
 
             Actor a = actorService.getActorLogged();
             Hacker h = hackerService.findOne(a.getId());

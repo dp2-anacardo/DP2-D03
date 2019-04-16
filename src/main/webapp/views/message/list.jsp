@@ -30,6 +30,10 @@
 	<display:column property="sender.name" title="${senderHeader}"
 		sortable="true" />
 
+	<spring:message code="message.tags" var="tagsHeader" />
+	<display:column property="tags" title="${tagsHeader}"
+					sortable="true" />
+
 	<!-- Display -->
 	<display:column>
 		<a

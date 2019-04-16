@@ -10,6 +10,6 @@ import java.util.Collection;
 
 @Repository
 public interface CurriculaRepository extends JpaRepository<Curricula, Integer> {
-    @Query("select (c) from Hacker h join h.curricula c where c.copy = false and h = ?1")
+    @Query("select (c) from Hacker h join h.curricula c where c.isCopy = false and h = ?1")
     Collection<Curricula> getCurriculaByHacker(Hacker h);
 }
