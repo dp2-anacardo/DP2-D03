@@ -75,7 +75,7 @@ public class PositionService {
 	}
 
 	private String tickerGenerator(final Position position) {
-		final String res = position.getCompany().getCommercialName().substring(0, 3).toUpperCase();
+		final String res = position.getCompany().getCommercialName().substring(0, 4).toUpperCase();
 		final Random random = new Random();
 
 		final String nums = String.format("%04d", random.nextInt(10000));
