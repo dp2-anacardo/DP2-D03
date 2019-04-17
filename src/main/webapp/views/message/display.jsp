@@ -35,10 +35,10 @@
 		sortable="false" />
 </display:table>
 
-<display:table name="mesageRecipients" id="row"
+<display:table name="mesage" id="row"
 	requestURI="message/display.do" class="displaytag">
 	<spring:message code="message.recipients" var="recipientHeader" />
-	<display:column property="email" title="${recipientHeader}"
+	<display:column property="recipient.email" title="${recipientHeader}"
 		sortable="false" />
 </display:table>
 

@@ -99,10 +99,14 @@
 				<ref bean="socialProfileAdmin1"/>
 			</list>
 		</property>
-		<property name="messages">
+		<property name="messagesR">
 			<list>
-				<ref bean = "message1"/>
-				<ref bean ="message2"/>
+				<ref bean="message2"/>
+			</list>
+		</property>
+		<property name="messagesS">
+			<list>
+				<ref bean="message1"/>
 			</list>
 		</property>
 	</bean>
@@ -145,9 +149,13 @@
 			</list>
 		</property>
 		<property name="commercialName" value="BBVA"/>
-		<property name="messages">
+		<property name="messagesR">
 			<list>
 				<ref bean="message1"/>
+			</list>
+		</property>
+		<property name="messagesS">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -169,7 +177,11 @@
 			</list>
 		</property>
 		<property name ="commercialName" value="Abengoa"/>
-		<property name ="messages">
+		<property name="messagesR">
+			<list>
+			</list>
+		</property>
+		<property name="messagesS">
 			<list>
 			</list>
 		</property>
@@ -227,7 +239,11 @@
 			</list>
 		</property>
 		<property name ="finder" ref="finderHacker1"/>
-		<property name="messages">
+		<property name="messagesR">
+			<list>
+			</list>
+		</property>
+		<property name="messagesS">
 			<list>
 				<ref bean="message2"/>
 				<ref bean="message3"/>
@@ -257,9 +273,13 @@
 			</list>
 		</property>
 		<property name ="finder" ref="finderHacker2"/>
-		<property name="messages">
+		<property name="messagesR">
 			<list>
 				<ref bean="message3"/>
+			</list>
+		</property>
+		<property name="messagesS">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -397,14 +417,10 @@
 		<property name = "tags">
 			<value>tagDePrueba</value>
 		</property>
-		<property name = "sender" ref = "company1"/>
-		<property name = "recipients">
-			<list>
-				<ref bean="admin1"/>
-			</list>
-		</property>
+		<property name = "sender" ref = "admin1"/>
+		<property name = "recipient" ref="company1"/>
 	</bean>
-	
+
 	<bean id="message2" class ="domain.Message">
 		<property name = "moment" value = "04/14/2019 16:20"/>
 		<property name = "subject" value = "prueba"/>
@@ -412,27 +428,19 @@
 		<property name = "tags">
 			<value>Aviso</value>
 		</property>
-		<property name = "sender" ref = "admin1"/>
-		<property name = "recipients">
-			<list>
-				<ref bean="hacker1"/>
-			</list>
-		</property>
+		<property name = "sender" ref = "hacker1"/>
+		<property name = "recipient" ref="admin1"/>
 	</bean>
-	
+
 	<bean id="message3" class ="domain.Message">
 		<property name = "moment" value = "04/14/2019 16:09"/>
 		<property name = "subject" value = "pruebaBorrado"/>
 		<property name = "body" value = "message3"/>
 		<property name = "tags">
-			<value>DELETED</value>
+			<value>TEST</value>
 		</property>
 		<property name = "sender" ref = "hacker1"/>
-		<property name = "recipients">
-			<list>
-				<ref bean="hacker2"/>
-			</list>
-		</property>
+		<property name = "recipient" ref="hacker2"/>
 	</bean>
 	
 	<!-- Position -->

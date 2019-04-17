@@ -47,6 +47,8 @@
 		<bean class="converters.StringToCreditCardConverter"/>
 		<bean class="converters.UrlToStringConverter"/>
 		<bean class="converters.StringToUrlConverter"/>
+		<bean class="converters.ActorToStringConverter"/>
+		<bean class="converters.StringToActorConverter"/>
 	</util:list>
 	
 </beans>

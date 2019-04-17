@@ -33,7 +33,7 @@
 		<br>
 		
 		<%-- Recipients --%>
-		<acme:select items="${actorList}" itemLabel="name" code="message.recipients" path="recipients"/>
+		<acme:select items="${actorList}" itemLabel="name" code="message.recipients" path="recipient"/>
 		<br>
 
 		<%-- Tags --%>

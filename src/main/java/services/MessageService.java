@@ -64,21 +64,17 @@ public class MessageService {
 
             final String notification1 = "Enrolment accepted \n Inscripci�n aceptada";
             final String notification2 = "Drop out brotherhood \n Salida de fraternidad";
-            final Integer actors = this.actorService.findAll().size();
 
-            if (message.getSubject().equals(notification1) || message.getSubject().equals(notification2)
-                    || (message.getRecipients().size() == actors)) {
+            if (message.getSubject().equals(notification1) || message.getSubject().equals(notification2)) {
 
-                final Collection<Actor> recipients = message.getRecipients();
-                Assert.notNull(recipients);
-                Assert.notEmpty(recipients);
+                final Actor recipient = message.getRecipient();
+                Assert.notNull(recipient);
 
                 message.getTags().add("SYSTEM");
 
                 result = this.messageRepository.save(message);
 
-                for (final Actor recipient : recipients)
-                    recipient.getMessages().add(result);
+                recipient.getMessagesR().add(result);
 
             } else {
                 final UserAccount userAccount = LoginService.getPrincipal();
@@ -86,17 +82,15 @@ public class MessageService {
                 sender = this.actorService.findByUserAccount(userAccount);
                 message.setSender(sender);
 
-                final Collection<Actor> recipients = message.getRecipients();
-                Assert.notNull(recipients);
-                Assert.notEmpty(recipients);
+                final Actor recipient = message.getRecipient();
+                Assert.notNull(recipient);
 
                 result = this.messageRepository.save(message);
 
                 if (sender != null)
-                    sender.getMessages().add(result);
+                    sender.getMessagesS().add(result);
 
-                for (final Actor recipient : recipients)
-                    recipient.getMessages().add(result);
+                recipient.getMessagesR().add(result);
             }
 
         } else
@@ -110,21 +104,53 @@ public class MessageService {
         Assert.notNull(userAccount);
         final Actor actor = this.actorService.findByUsername(userAccount.getUsername());
 
-        Assert.isTrue(message.getRecipients().contains(actor) || message.getSender().equals(actor));
+        Assert.isTrue(message.getRecipient().equals(actor) || message.getSender().equals(actor));
 
-        if (!message.getTags().contains("DELETED")) {
-            message.getTags().add("DELETED");
-            this.messageRepository.save(message);
-        } else {
-            actor.getMessages().remove(message);
-            final Integer msgInPool = this.findMessageInPool(message.getId());
-            if (msgInPool > 0)
-                actor.getMessages().remove(message);
-            else
+        if(message.getSender() != null) {
+            final Boolean sender = message.getSender().equals(actor);
+
+            if (!message.getTags().contains("DELETED")) {
+                message.getTags().add("DELETED");
+
+                if (sender)
+                    actor.getMessagesS().remove(message);
+                else
+                    actor.getMessagesR().remove(message);
+
+                this.messageRepository.save(message);
+            } else {
+                if (sender)
+                    actor.getMessagesS().remove(message);
+                else
+                    actor.getMessagesR().remove(message);
+
                 this.messageRepository.delete(message.getId());
 
+            }
+
+        }else{
+            actor.getMessagesR().remove(message);
+            this.messageRepository.delete(message.getId());
         }
 
+    }
+
+    public void broadcast(final Message m){
+        final Actor principal = this.actorService.getActorLogged();
+
+        final Collection<Actor> actors = this.actorService.findAll();
+
+        for(Actor a : actors){
+            Message msg = this.create();
+
+            msg = m;
+
+            msg.setRecipient(a);
+
+            msg.getTags().add("SYSTEM");
+
+            this.messageRepository.save(msg);
+        }
     }
 
     public void deleteAll(final Message m) {
@@ -135,29 +161,23 @@ public class MessageService {
 
     // Other methods
 
-    public Integer findMessageInPool(final int messageID) {
-        final Integer result = this.messageRepository.findMessageInPool(messageID);
-        Assert.notNull(result);
+    public Collection<Message> findInPoolByActor(final int actorID) {
+        final Collection<Message> result = new ArrayList<Message>();
+        final Collection<Message> received = this.messageRepository.findAllReceivedByActor(actorID);
+        final Collection<Message> sent = this.messageRepository.findAllSentByActor(actorID);
+
+        Assert.notNull(received);
+        result.addAll(received);
+
+        Assert.notNull(sent);
+        result.addAll(sent);
 
         return result;
     }
 
-    public Collection<Message> findAllByActor(final int actorID) {
+
+    public 	Collection<Message> findAllByActor(int actorID){
         final Collection<Message> result = this.messageRepository.findAllByActor(actorID);
-        Assert.notNull(result);
-
-        return result;
-    }
-
-    public Collection<Message> findAllReceivedByActor(final int actorID) {
-        final Collection<Message> result = this.messageRepository.findAllReceivedByActor(actorID);
-        Assert.notNull(result);
-
-        return result;
-    }
-
-    public 	Collection<Message> getMessagesByActor(int actorID){
-        final Collection<Message> result = this.messageRepository.getMessagesByActor(actorID);
         Assert.notNull(result);
 
         return result;
@@ -177,7 +197,7 @@ public class MessageService {
         result.setSubject(message.getSubject());
         result.setBody(message.getBody());
         result.setTags(message.getTags());
-        result.setRecipients(message.getRecipients());
+        result.setRecipient(message.getRecipient());
 
         this.validator.validate(result, binding);
 

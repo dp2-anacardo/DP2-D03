@@ -47,13 +47,15 @@ public class AdministratorService {
 		final UserAccount userAccount;
 		final Collection<Authority> authorities;
 		final Collection<SocialProfile> profiles;
-		final Collection<Message> boxes;
+		final Collection<Message> sent;
+		final Collection<Message> received;
 		final Administrator a = new Administrator();
 		userAccount = new UserAccount();
 		auth = new Authority();
 		authorities = new ArrayList<Authority>();
 		profiles = new ArrayList<SocialProfile>();
-		boxes = new ArrayList<Message>();
+		sent = new ArrayList<Message>();
+		received = new ArrayList<Message>();
 
 		auth.setAuthority(Authority.ADMIN);
 		authorities.add(auth);
@@ -61,8 +63,9 @@ public class AdministratorService {
 		a.setUserAccount(userAccount);
 		a.setIsBanned(false);
 		a.setIsSpammer(false);
-		a.setMessages(boxes);
 		a.setSocialProfiles(profiles);
+		a.setMessagesR(received);
+		a.setMessagesS(sent);
 
 		return a;
 	}

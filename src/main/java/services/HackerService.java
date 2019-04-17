@@ -47,14 +47,16 @@ public class HackerService {
 		final UserAccount userAccount;
 		final Collection<Authority> authorities;
 		final Collection<SocialProfile> profiles;
-		final Collection<Message> boxes;
+		final Collection<Message> sent;
+		final Collection<Message> received;
 		final Collection<Curricula> curriculas;
 		final Hacker a = new Hacker();
 		userAccount = new UserAccount();
 		auth = new Authority();
 		authorities = new ArrayList<Authority>();
 		profiles = new ArrayList<SocialProfile>();
-		boxes = new ArrayList<Message>();
+		sent = new ArrayList<Message>();
+		received = new ArrayList<Message>();
 		curriculas = new ArrayList<Curricula>();
 
 		auth.setAuthority(Authority.HACKER);
@@ -63,7 +65,8 @@ public class HackerService {
 		a.setUserAccount(userAccount);
 		a.setIsBanned(false);
 		a.setIsSpammer(false);
-		a.setMessages(boxes);
+		a.setMessagesR(received);
+		a.setMessagesS(sent);
 		a.setSocialProfiles(profiles);
 		a.setCurricula(curriculas);
 		return a;
