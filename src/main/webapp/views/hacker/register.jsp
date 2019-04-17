@@ -81,16 +81,6 @@
 	<acme:textbox code="credit.cvvCode" path="cvvCode"/>
 	<br />
 	</fieldset>
-	
-	<fieldset>
- 	<legend><spring:message code="actor.Profile" /></legend>
- 	*
-	<acme:textbox code="curricula.gitHubProfile" path="githubProfile"/>
-	<br />
-	*
-	<acme:textbox code="curricula.linkedInProfile" path="linkedInProfile"/>
-	<br />
-	</fieldset>
 	<script type="text/javascript">
 	function phoneValidation(){
 		var phoneNumber = document.getElementById("phoneNumber").value;
