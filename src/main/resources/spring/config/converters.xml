@@ -49,6 +49,10 @@
 		<bean class="converters.StringToCreditCardConverter"/>
 		<bean class="converters.UrlToStringConverter"/>
 		<bean class="converters.StringToUrlConverter"/>
+		<bean class="converters.ConfigurationToStringConverter"/>
+		<bean class="converters.StringToConfigurationConverter"/>
+		<bean class="converters.FinderToStringConverter"/>
+		<bean class="converters.StringToFinderConverter"/>
 		<bean class="converters.ActorToStringConverter"/>
 		<bean class="converters.StringToActorConverter"/>
 	</util:list>

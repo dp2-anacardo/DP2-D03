@@ -69,7 +69,7 @@ public class ConfigurationService {
         result.setVersion(config.getVersion());
         result.setSpamWords(config.getSpamWords());
 
-        resultSetsReconstruct(result, config);
+        resultSetsReconstruct(result, configF);
 
         this.validator.validate(result, binding);
 
@@ -82,7 +82,7 @@ public class ConfigurationService {
 
         config = this.configurationRepository.findOne(configF.getId());
 
-        resultSetsReconstruct(result, config);
+        resultSetsReconstruct(result, new ConfigurationForm(config));
 
         final Collection<String> sW = new ArrayList<>();
 
@@ -99,7 +99,7 @@ public class ConfigurationService {
         return result;
     }
 
-    private void resultSetsReconstruct(Configuration result, Configuration config) {
+    private void resultSetsReconstruct(Configuration result, ConfigurationForm config) {
         result.setMaxResults(config.getMaxResults());
         result.setMaxTime(config.getMaxTime());
         result.setSystemName(config.getSystemName());

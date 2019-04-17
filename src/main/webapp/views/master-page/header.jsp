@@ -26,9 +26,9 @@
 					<li class="arrow"></li>
 					<li><a href="administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>
 					<li><a href="administrator/administrator/create.do"><spring:message code="master.page.administrator.register" /></a></li>
-					
 				</ul>
 			</li>
+			<li><a class="fNiv" href="configuration/administrator/show.do"><spring:message code="master.page.configuration" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="hasRole('HACKER')">
@@ -41,8 +41,8 @@
 			<li><a class="fNiv"><spring:message	code="master.page.finder" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="finder/member/edit.do"><spring:message code="master.page.finder.edit" /></a></li>
-					<li><a href="finder/member/list.do"><spring:message code="master.page.finder.list" /></a></li>
+					<li><a href="finder/hacker/edit.do"><spring:message code="master.page.finder.edit" /></a></li>
+					<li><a href="finder/hacker/list.do"><spring:message code="master.page.finder.list" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
