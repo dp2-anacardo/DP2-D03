@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import services.PositionService;
 
@@ -35,6 +34,13 @@ public class PositionController extends AbstractController {
         return result;
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public ModelAndView search() {
+        ModelAndView result = new ModelAndView("position/search");
+        result.addObject("search", new SearchForm());
+        return result;
+    }
+
     @RequestMapping(value = "/search", method = RequestMethod.POST, params = "search")
     public ModelAndView search(@ModelAttribute("search") @Valid final SearchForm search, final BindingResult binding) {
         ModelAndView result;
@@ -50,7 +56,7 @@ public class PositionController extends AbstractController {
                 if (positions.isEmpty()) {
                     result = new ModelAndView("redirect:/position/listNotLogged.do");
                 } else {
-                    result = new ModelAndView("redirect:/position/search.do");
+                    result = new ModelAndView("position/search");
                     result.addObject("positions", positions);
                 }
             } catch (Throwable oops) {
@@ -59,4 +65,22 @@ public class PositionController extends AbstractController {
         }
         return result;
     }
+
+    /*// MODEL&VIEW
+    protected ModelAndView editModelAndView(final Configuration config) {
+        ModelAndView result;
+        final ConfigurationForm configF = new ConfigurationForm(config);
+        result = this.editModelAndView(configF, null);
+        return result;
+    }
+
+    protected ModelAndView editModelAndView(final ConfigurationForm configF, final String messageCode) {
+        ModelAndView result;
+
+        result = new ModelAndView("configuration/administrator/edit");
+        result.addObject("configF", configF);
+        result.addObject("messageCode", messageCode);
+
+        return result;
+    }*/
 }

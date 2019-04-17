@@ -12,6 +12,7 @@
 <form:form action ="position/search.do" modelAttribute="search">
 
     <acme:textboxbs code="finder.update.keyword" path="keyword"/>
+    <br>
     <acme:submit name="search" code="finder.update.update"/>&nbsp
 
 </form:form>
