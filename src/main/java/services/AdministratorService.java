@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.transaction.Transactional;
 
+import domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,6 @@ import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
-import domain.Actor;
-import domain.Administrator;
-import domain.Message;
-import domain.SocialProfile;
 import forms.AdministratorForm;
 
 @Service
@@ -29,12 +26,18 @@ public class AdministratorService {
 
 	//Managed Repositories
 	@Autowired
-	private ActorService			actorService;
+	private AdministratorRepository	administratorRepository;
 	//Supporting services
+	@Autowired
+	private ActorService			actorService;
 	@Autowired
 	private ConfigurationService	configurationService;
 	@Autowired
-	private AdministratorRepository	administratorRepository;
+	private HackerService			hackerService;
+	@Autowired
+	private CompanyService			companyService;
+	@Autowired
+	private MessageService			messageService;
 	@Autowired
 	private Validator				validator;
 
@@ -166,6 +169,28 @@ public class AdministratorService {
 
 		this.validator.validate(result, binding);
 		return result;
+	}
+
+	public void computeAllSpam() {
+
+		Collection<Hacker> hackers;
+		Collection<Company> companies;
+
+		// Make sure that the principal is an Admin
+		final Actor principal = this.actorService.getActorLogged();
+		Assert.isInstanceOf(Administrator.class, principal);
+
+		hackers = this.hackerService.findAll();
+		for (final Hacker hacker : hackers) {
+			hacker.setIsSpammer(this.messageService.findSpamRatioByActor(hacker.getId()) > .10);
+			this.hackerService.save(hacker);
+		}
+
+		companies = this.companyService.findAll();
+		for (final Company company : companies) {
+			company.setIsSpammer(this.messageService.findSpamRatioByActor(company.getId()) > .10);
+			this.companyService.save(company);
+		}
 	}
 
 }
