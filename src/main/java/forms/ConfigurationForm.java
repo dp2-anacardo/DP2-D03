@@ -18,7 +18,7 @@ public class ConfigurationForm {
     private String				welcomeMessageEn;
     private String				welcomeMessageEs;
     private Collection<String>	spamWords;
-    private String				defaultCC;
+    private String				countryCode;
     private String				addSW;
 
 
@@ -32,7 +32,7 @@ public class ConfigurationForm {
         this.welcomeMessageEn = config.getWelcomeMessageEn();
         this.welcomeMessageEs = config.getWelcomeMessageEs();
         this.spamWords = config.getSpamWords();
-        this.defaultCC = config.getCountryCode();
+        this.countryCode = config.getCountryCode();
     }
 
     public ConfigurationForm() {
@@ -71,8 +71,8 @@ public class ConfigurationForm {
         return this.spamWords;
     }
 
-    public String getDefaultCC() {
-        return this.defaultCC;
+    public String getCountryCode() {
+        return this.countryCode;
     }
 
     @SafeHtml(whitelistType = WhiteListType.NONE)
@@ -112,8 +112,8 @@ public class ConfigurationForm {
         this.spamWords = spamWords;
     }
 
-    public void setDefaultCC(final String defaultCC) {
-        this.defaultCC = defaultCC;
+    public void setCountryCode(final String countryCode) {
+        this.countryCode = countryCode;
     }
 
     public void setAddSW(final String addSW) {

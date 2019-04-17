@@ -31,9 +31,7 @@
                         path="welcomeMessageEn"/>
         <acme:textboxbs code="configuration.edit.welcomeEs"
                         path="welcomeMessageEs"/>
-        <acme:textboxbs code="configuration.edit.defaultCC" path="defaultCC"/>
-        <acme:textboxbs code="configuration.edit.vat" path="vat"/>
-        <acme:textboxbs code="configuration.edit.flatfee" path="flatFee"/>
+        <acme:textboxbs code="configuration.edit.defaultCC" path="countryCode"/>
 
         <!-- Edit words -->
 
@@ -55,6 +53,11 @@
         <form:input path="addSW"/>
         <form:errors path="addSW" cssClass="error" />
         <acme:submit name="addWord" code="configuration.edit.addSW"/>&nbsp;
+        <br>
+        <br>
+
+
+        <acme:submit name="save" code="configuration.edit"/>&nbsp;
 
 
     </form:form>

@@ -51,17 +51,7 @@
     </p>
     <p>
         <acme:showtext code="configuration.edit.defaultCC"
-                       value="${config.defaultCC}"
-                       fieldset="true"/>
-    </p>
-    <p>
-        <acme:showtext code="configuration.edit.vat"
-                       value="${config.vat}"
-                       fieldset="true"/>
-    </p>
-    <p>
-        <acme:showtext code="configuration.edit.flatfee"
-                       value="${config.flatFee}"
+                       value="${config.countryCode}"
                        fieldset="true"/>
     </p>
 

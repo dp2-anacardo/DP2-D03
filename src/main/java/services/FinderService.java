@@ -56,8 +56,15 @@ public class FinderService {
         List<Position> pro2 = null;
         List<Position> pro3 = null;
         List<Position> pro4 = null;
-        if (!(finder.getKeyWord() == null || finder.getKeyWord().equals("")))
-            pro1 = (List<Position>) this.finderRepository.getPositionsByKeyWord(finder.getKeyWord());
+        Set<Position> proAux1;
+        Set<Position> proAux2;
+
+        if (!(finder.getKeyWord() == null || finder.getKeyWord().equals(""))) {
+            proAux1 = (Set<Position>) this.finderRepository.getPositionsByKeyWord(finder.getKeyWord());
+            proAux2 = (Set<Position>) this.finderRepository.getPositionsContainsKeyWord(finder.getKeyWord());
+            proAux1.addAll(proAux2);
+            pro1.addAll(proAux1);
+        }
         if (finder.getDeadline() != null)
             pro2 = (List<Position>) this.finderRepository.getPositionsByDeadline(finder.getDeadline());
         if (finder.getMaxDeadline() != null)
