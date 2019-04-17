@@ -21,4 +21,9 @@
 		<put-attribute name="body" value="/views/position/listNotLogged.jsp" />
 	</definition>
 
+	<definition name="position/search" extends="master.page">
+		<put-attribute name="title" value="Show results search" />
+		<put-attribute name="body" value="/views/position/search.jsp" />
+	</definition>
+
 </tiles-definitions>

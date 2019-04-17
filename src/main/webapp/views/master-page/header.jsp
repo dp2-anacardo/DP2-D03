@@ -60,6 +60,7 @@
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 			<li><a href="position/listNotLogged.do"><spring:message code="master.page.position.available" /></a></li>
+			<li><a href="position/search.do"><spring:message code="master.page.search" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">
@@ -75,6 +76,7 @@
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>				
 				</ul>
 			</li>
+			<li><a href="position/search.do"><spring:message code="master.page.search" /></a></li>
 		</security:authorize>
 	</ul>
 </div>
