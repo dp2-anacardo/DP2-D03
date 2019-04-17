@@ -13,15 +13,18 @@
 <security:authorize access="hasRole('HACKER')">
 <form:form action="application/hacker/create.do" modelAttribute="application">
 	<form:hidden path="id" />
+	<form:hidden path="moment"/>
+	<form:hidden path="status"/>
+	<form:hidden path="hacker"/>
+	<form:hidden path="problem"/>
 	
 	<form:label path="curricula">
 		<spring:message code="application.selectCurricula"/>
 	</form:label>
-	<form:select path="curricula">	
-		<form:options items="${curricula}" itemValue="id" itemLabel="curricula"/>
+	<form:select path="curricula">
+		<form:options items="${curricula}" itemValue="id" itemLabel="id"/>
 	</form:select>
 	<form:errors cssClass="error" path="curricula" />
-	<br />
 	
 	<input type="submit" name="save"
 			value="<spring:message code="application.save" />" />

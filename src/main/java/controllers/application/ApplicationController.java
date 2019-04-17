@@ -133,6 +133,10 @@ public class ApplicationController extends AbstractController {
 			result = this.createModelAndView(application);
 		else
 			try {
+				Hacker hacker = application.getHacker();
+				Curricula copy = this.curriculaService.copy(application.getCurricula());
+				this.curriculaService.save2(copy);
+				hacker.getCurricula().add(copy);
 				this.applicationService.save(application);
 				result = new ModelAndView("redirect:/application/hacker/list.do");
 			} catch (final Exception e) {
@@ -275,15 +279,12 @@ public class ApplicationController extends AbstractController {
 	protected ModelAndView createModelAndView(final Application application, final String messageCode) {
 		ModelAndView result;
 		Collection<Curricula> curricula;
-		final Collection<Curricula> copied = new ArrayList<>();
 		Hacker hacker = application.getHacker();
 		curricula = hacker.getCurricula();
-		for (final Curricula c : curricula)
-			copied.add(this.curriculaService.copy(c));
 
 		result = new ModelAndView("application/hacker/create");
 		result.addObject("application", application);
-		result.addObject("curricula", copied);
+		result.addObject("curricula", curricula);
 		result.addObject("message", messageCode);
 
 		return result;
