@@ -67,6 +67,13 @@ public class EducationalDataService {
         return educationalData;
     }
 
+    public EducationalData save2(EducationalData educationalData){
+        Assert.notNull(educationalData);
+            educationalData = this.educationalDataRepository.save(educationalData);
+        return educationalData;
+    }
+
+
     public void delete(EducationalData educationalData){
         Assert.notNull(educationalData);
         Actor a = this.actorService.getActorLogged();

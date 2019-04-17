@@ -62,6 +62,14 @@ public class MiscDataService {
         return m;
     }
 
+    public MiscData save2(MiscData miscData){
+        Assert.notNull(miscData);
+
+        MiscData result = miscDataRepository.save(miscData);
+
+        return result;
+    }
+
     public void delete(MiscData m){
         Assert.notNull(m);
         Actor a = this.actorService.getActorLogged();

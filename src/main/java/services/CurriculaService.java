@@ -32,6 +32,14 @@ public class CurriculaService {
 	private ActorService		actorService;
 	@Autowired
 	private HackerService		hackerService;
+	@Autowired
+	private EducationalDataService educationalDataService;
+	@Autowired
+	private MiscDataService miscDataService;
+	@Autowired
+	private PersonalDataService personalDataService;
+	@Autowired
+	private PositionDataService positionDataService;
 
 
 	public Curricula create() {
@@ -91,17 +99,20 @@ public class CurriculaService {
 			res.setStartDate(ed.getStartDate());
 			res.setInstitution(ed.getInstitution());
 			res.setMark(ed.getMark());
+			this.educationalDataService.save2(res);
 			educationalData.add(res);
 		}
 
 		miscData.setAttachment(curricula.getMiscData().getAttachment());
 		miscData.setFreeText(curricula.getMiscData().getFreeText());
+		this.miscDataService.save2(miscData);
 
 		personalData.setFullName(curricula.getPersonalData().getFullName());
 		personalData.setGithubProfile(curricula.getPersonalData().getGithubProfile());
 		personalData.setLinkedInProfile(curricula.getPersonalData().getLinkedInProfile());
 		personalData.setPhoneNumber(curricula.getPersonalData().getPhoneNumber());
 		personalData.setStatement(curricula.getPersonalData().getStatement());
+		this.personalDataService.save(personalData);
 
 		for (final PositionData pd : curricula.getPositionData()) {
 			final PositionData res = new PositionData();
@@ -109,6 +120,7 @@ public class CurriculaService {
 			res.setEndDate(pd.getEndDate());
 			res.setStartDate(pd.getStartDate());
 			res.setTitle(pd.getTitle());
+			this.positionDataService.save2(res);
 			positionData.add(res);
 		}
 

@@ -64,6 +64,14 @@ public class PositionDataService {
         return p;
     }
 
+    public PositionData save2(PositionData positionData){
+        Assert.notNull(positionData);
+
+        PositionData result = this.positionDataRepository.save(positionData);
+
+        return result;
+    }
+
     public void delete(PositionData p){
         Assert.notNull(p);
         Actor a = this.actorService.getActorLogged();
