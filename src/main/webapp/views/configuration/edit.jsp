@@ -57,7 +57,9 @@
         <br>
 
 
-        <acme:submit name="save" code="configuration.edit"/>&nbsp;
+        <acme:submit name="save" code="configuration.edit"/>&nbsp
+        <acme:cancel url="/configuration/administrator/show.do"
+                     code="configuration.edit.cancel"/>&nbsp
 
 
     </form:form>

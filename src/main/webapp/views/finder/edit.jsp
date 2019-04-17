@@ -34,14 +34,15 @@
         <br />
 
         <acme:textbox code="finder.update.minSalary" path="minSalary"/>
+        <br>
 
         <!-- Submit and Cancel -->
 
-        <acme:submit name="save" code="finder.update.update"/>&nbsp;
+        <acme:submit name="save" code="finder.update.update"/>&nbsp
 
-        <acme:cancel url="/" code="finder.update.cancel"/>
+        <acme:cancel url="/" code="finder.update.cancel"/>&nbsp
 
-        <acme:cancel url="finder/hacker/clear.do" code="finder.update.clear"/>&nbsp;
+        <acme:cancel url="finder/hacker/clear.do" code="finder.update.clear"/>&nbsp
 
     </form:form>
 </security:authorize>
