@@ -6,17 +6,16 @@ import domain.Actor;
 import domain.Message;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.MessageService;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Controller
@@ -35,31 +34,6 @@ public class MessageController extends AbstractController {
         return new ModelAndView("redirect:/");
     }
 
-    @InitBinder
-    protected void initBinder(final WebDataBinder binder) {
-        binder.registerCustomEditor(Collection.class, "recipients", new CustomCollectionEditor(Collection.class) {
-
-            @Override
-            protected Object convertElement(final Object element) {
-                Integer id = null;
-
-                if (element instanceof String && !((String) element).equals(""))
-                    //From the JSP 'element' will be a String
-                    try {
-                        id = Integer.parseInt((String) element);
-                    } catch (final NumberFormatException e) {
-                        System.out.println("Element was " + ((String) element));
-                        e.printStackTrace();
-                    }
-                else if (element instanceof Integer)
-                    //From the database 'element' will be a Long
-                    id = (Integer) element;
-
-                return id != null ? MessageController.this.actorService.findOne(id) : null;
-            }
-        });
-    }
-
     // List -------------------------------------------------------------
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ModelAndView list() {
@@ -68,14 +42,30 @@ public class MessageController extends AbstractController {
 
         try {
             final Actor principal = this.actorService.getActorLogged();
-            messages = this.messageService.getMessagesByActor(principal.getId());
+            messages = this.messageService.findInPoolByActor(principal.getId());
         } catch (final Exception e) {
             result = this.forbiddenOperation();
             return result;
         }
 
+        ArrayList<Message> msgs = new ArrayList<Message>();
+        ArrayList<String> tgs = new ArrayList<String>();
+
+        for (Message m : messages)
+            if (m.getTags().size() > 0) {
+                for (String t : m.getTags()) {
+                    msgs.add(m);
+                    tgs.add(t);
+                }
+
+            } else {
+                msgs.add(m);
+                tgs.add("");
+            }
+
         result = new ModelAndView("message/list");
-        result.addObject("messages", messages);
+        result.addObject("messages", msgs);
+        result.addObject("tgs", tgs);
         result.addObject("requestURI", "message/list.do");
 
         return result;
@@ -114,16 +104,26 @@ public class MessageController extends AbstractController {
         Message msg;
 
         try {
-            mesage.setRecipients(this.actorService.findAll());
             msg = this.messageService.reconstruct(mesage, binding);
-            if (binding.hasErrors())
-                result = this.createModelAndView(mesage);
+            Boolean containsDeleted = false;
+            if (msg.getTags() != null) {
+                for (String tag : msg.getTags()) {
+                    if (tag.toUpperCase().equals("DELETED"))
+                        containsDeleted = true;
+                    break;
+                }
+            }
+            if (containsDeleted) {
+                binding.rejectValue("tags", "error.tag");
+                result = this.createBroadcastModelAndView(mesage);
+            } else if (binding.hasErrors() && binding.getErrorCount() > 1)
+                result = this.createBroadcastModelAndView(mesage);
             else {
-                this.messageService.save(msg);
+                this.messageService.broadcast(msg);
                 result = new ModelAndView("redirect:list.do");
             }
         } catch (final Throwable oops) {
-            result = this.createModelAndView(mesage, "message.commit.error");
+            result = this.createBroadcastModelAndView(mesage, "message.commit.error");
         }
         return result;
     }
@@ -136,7 +136,18 @@ public class MessageController extends AbstractController {
 
         try {
             msg = this.messageService.reconstruct(mesage, binding);
-            if (binding.hasErrors())
+            Boolean containsDeleted = false;
+            if (msg.getTags() != null) {
+                for (String tag : msg.getTags()) {
+                    if (tag.toUpperCase().equals("DELETED"))
+                        containsDeleted = true;
+                    break;
+                }
+            }
+            if (containsDeleted) {
+                binding.rejectValue("tags", "error.tag");
+                result = this.createModelAndView(mesage);
+            } else if (binding.hasErrors())
                 result = this.createModelAndView(mesage);
             else {
                 this.messageService.save(msg);
@@ -153,11 +164,13 @@ public class MessageController extends AbstractController {
     public ModelAndView display(@RequestParam final int messageID) {
         ModelAndView result;
         Message message;
+        Collection<Message> pool;
 
         try {
             final Actor principal = this.actorService.getActorLogged();
             message = this.messageService.findOne(messageID);
-            Assert.isTrue(principal.getMessages().contains(message));
+            pool = this.messageService.findInPoolByActor(principal.getId());
+            Assert.isTrue(pool.contains(message));
         } catch (final Exception e) {
             result = this.forbiddenOperation();
             return result;
@@ -165,7 +178,6 @@ public class MessageController extends AbstractController {
 
         result = new ModelAndView("message/display");
         result.addObject("mesage", message);
-        result.addObject("mesageRecipients", message.getRecipients());
 
         return result;
     }
@@ -175,12 +187,14 @@ public class MessageController extends AbstractController {
     public ModelAndView delete(@RequestParam final int messageID) {
         ModelAndView result;
         Message message;
+        Collection<Message> pool;
 
         try {
             try {
                 final Actor principal = this.actorService.getActorLogged();
                 message = this.messageService.findOne(messageID);
-                Assert.isTrue(principal.getMessages().contains(message));
+                pool = this.messageService.findInPoolByActor(principal.getId());
+                Assert.isTrue(pool.contains(message));
             } catch (final Exception e) {
                 result = this.forbiddenOperation();
                 return result;
@@ -209,11 +223,30 @@ public class MessageController extends AbstractController {
         ModelAndView result;
 
         final Collection<Actor> actorList = this.actorService.findAll();
+        actorList.remove(this.actorService.getActorLogged());
 
         result = new ModelAndView("message/create");
         result.addObject("mesage", mesage);
         result.addObject("message", message);
         result.addObject("actorList", actorList);
+
+        return result;
+    }
+
+    protected ModelAndView createBroadcastModelAndView(final Message mesage) {
+        ModelAndView result;
+
+        result = this.createBroadcastModelAndView(mesage, null);
+
+        return result;
+    }
+
+    protected ModelAndView createBroadcastModelAndView(final Message mesage, final String message) {
+        ModelAndView result;
+
+        result = new ModelAndView("message/broadcast");
+        result.addObject("mesage", mesage);
+        result.addObject("message", message);
 
         return result;
     }

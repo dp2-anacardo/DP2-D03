@@ -56,7 +56,9 @@ public class Actor extends DomainEntity {
 
 	//Relationships
 	@Expose
-	private Collection<Message>			messages;
+	private Collection<Message>			messagesR;
+	@Expose
+	private Collection<Message>			messagesS;
 	@Expose
 	private UserAccount					userAccount;
 	@Expose
@@ -132,9 +134,15 @@ public class Actor extends DomainEntity {
 	//Relationships
 
 	@Valid
-	@ManyToMany(cascade = CascadeType.ALL)
-	public Collection<Message> getMessages() {
-		return this.messages;
+	@OneToMany(cascade = CascadeType.ALL)
+	public Collection<Message> getMessagesR() {
+		return this.messagesR;
+	}
+
+	@Valid
+	@OneToMany(cascade = CascadeType.ALL)
+	public Collection<Message> getMessagesS() {
+		return this.messagesS;
 	}
 
 	@Valid
@@ -149,9 +157,14 @@ public class Actor extends DomainEntity {
 		return this.socialProfiles;
 	}
 
-	public void setMessages(final Collection<Message> messages) {
-		this.messages = messages;
+	public void setMessagesR(final Collection<Message> messagesR) {
+		this.messagesR = messagesR;
 	}
+
+	public void setMessagesS(final Collection<Message> messagesS) {
+		this.messagesS = messagesS;
+	}
+
 
 	public void setUserAccount(final UserAccount userAccount) {
 		this.userAccount = userAccount;

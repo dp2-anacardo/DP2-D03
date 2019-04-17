@@ -51,6 +51,8 @@
 		<bean class="converters.StringToConfigurationConverter"/>
 		<bean class="converters.FinderToStringConverter"/>
 		<bean class="converters.StringToFinderConverter"/>
+		<bean class="converters.ActorToStringConverter"/>
+		<bean class="converters.StringToActorConverter"/>
 	</util:list>
 	
 </beans>

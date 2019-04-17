@@ -19,6 +19,8 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<jstl:set var="count" value="0" scope="page" />
+
 <display:table name="messages" id="row" requestURI="message/list.do"
 	pagesize="5" class="displaytag">
 
@@ -30,10 +32,18 @@
 	<display:column property="sender.name" title="${senderHeader}"
 		sortable="true" />
 
-	<spring:message code="message.tags" var="tagsHeader" />
-	<display:column property="tags" title="${tagsHeader}"
-					sortable="true" />
+<%--	<spring:message code="message.tags" var="tagsHeader" />--%>
+<%--	<display:column title="${tagsHeader}">--%>
+<%--		<jstl:forEach var="text" items="${row.tags}" varStatus="loop">--%>
+<%--			${text}${!loop.last ? ',' : ''}&nbsp--%>
+<%--		</jstl:forEach>--%>
+<%--	</display:column>--%>
 
+	<spring:message code="message.tags" var="tagsHeader" />
+	<display:column title="${tagsHeader}" sortable="true">
+		<jstl:out value="${tgs[count]}"/>
+	</display:column>
+	<jstl:set var="count" value="${count + 1}" scope="page"/>
 	<!-- Display -->
 	<display:column>
 		<a

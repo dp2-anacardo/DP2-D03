@@ -4,16 +4,7 @@ package domain;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -87,11 +78,11 @@ public class Message extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private Actor				sender;
-	private Collection<Actor>	recipients;
+	private Actor	recipient;
 
 
 	@Valid
-	@OneToOne(optional = true)
+	@ManyToOne(optional = true)
 	public Actor getSender() {
 		return this.sender;
 	}
@@ -102,13 +93,13 @@ public class Message extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@ManyToMany
-	public Collection<Actor> getRecipients() {
-		return this.recipients;
+	@ManyToOne(optional = false)
+	public Actor getRecipient() {
+		return this.recipient;
 	}
 
-	public void setRecipients(final Collection<Actor> recipients) {
-		this.recipients = recipients;
+	public void setRecipient(final Actor recipient) {
+		this.recipient = recipient;
 	}
 
 }

@@ -10,8 +10,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 @Entity
 @Access(AccessType.PROPERTY)
 public class Hacker extends Actor {
@@ -33,7 +31,6 @@ public class Hacker extends Actor {
 	}
 
 	@Valid
-	@NotEmpty
 	@OneToMany
 	public Collection<Curricula> getCurricula() {
 		return this.curricula;
