@@ -7,9 +7,12 @@ import domain.PositionData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import repositories.PositionDataRepository;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.Collection;
 
 @Service
@@ -26,6 +29,27 @@ public class PositionDataService {
     private HackerService hackerService;
     @Autowired
     private CurriculaService curriculaService;
+    @Autowired
+    private Validator validator;
+
+    public PositionData reconstruct(PositionData p, BindingResult binding){
+        PositionData result;
+        if(p.getId()==0){
+            result = this.create();
+        }else{
+            result = this.positionDataRepository.findOne(p.getId());
+        }
+        result.setDescription(p.getDescription());
+        result.setEndDate(p.getEndDate());
+        result.setStartDate(p.getStartDate());
+        result.setTitle(p.getTitle());
+
+        validator.validate(result,binding);
+
+        if(binding.hasErrors())
+            throw new ValidationException();
+        return result;
+    }
 
     public PositionData create(){
         Actor a = this.actorService.getActorLogged();

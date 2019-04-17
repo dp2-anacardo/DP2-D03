@@ -27,6 +27,13 @@
             </a>
         </display:column>
 
+        <display:column>
+            <a
+                    href="curricula/hacker/delete.do?curriculaId=${row.id}">
+                <spring:message code="curricula.delete" />
+            </a>
+        </display:column>
+
     </display:table>
 
     <acme:cancel url="curricula/hacker/create.do" code="curricula.create"/>

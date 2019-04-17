@@ -7,9 +7,12 @@ import domain.MiscData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import repositories.MiscDataRepository;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.Collection;
 
 @Service
@@ -26,6 +29,24 @@ public class MiscDataService {
     private HackerService hackerService;
     @Autowired
     private CurriculaService curriculaService;
+    @Autowired
+    private Validator validator;
+
+    public MiscData reconstruct(MiscData m, BindingResult binding){
+        MiscData result;
+        if(m.getId()==0){
+            result = this.create();
+        }else{
+            result = this.miscDataRepository.findOne(m.getId());
+        }
+        result.setAttachment(m.getAttachment());
+        result.setFreeText(m.getFreeText());
+
+        validator.validate(result,binding);
+        if(binding.hasErrors())
+            throw new ValidationException();
+        return result;
+    }
 
     public MiscData create(){
         Actor a = this.actorService.getActorLogged();
@@ -50,7 +71,10 @@ public class MiscDataService {
         Hacker h = this.hackerService.findOne(a.getId());
         Curricula curricula = this.curriculaService.findOne(curriculaId);
         Assert.notNull(h);
-        Assert.isTrue(h.getCurricula().contains(curricula));
+        if(m.getId()!=0){
+            Assert.isTrue(h.getCurricula().contains(curricula));
+        }
+
 
         if(m.getId()==0){
             Assert.isTrue(curricula.getMiscData()==null);
@@ -62,12 +86,4 @@ public class MiscDataService {
         return m;
     }
 
-    public void delete(MiscData m){
-        Assert.notNull(m);
-        Actor a = this.actorService.getActorLogged();
-        Hacker h = this.hackerService.findOne(a.getId());
-        Assert.notNull(h);
-
-        this.miscDataRepository.delete(m);
-    }
 }
