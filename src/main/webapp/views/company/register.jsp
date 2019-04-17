@@ -20,63 +20,70 @@
 
 	<form:hidden path="id" />
  
+ 	<fieldset>
+ 	<legend><spring:message code="actor.PersonalData" /></legend>
+ 	*
 	<acme:textbox code="actor.username" path="username"/>
 	<br />
 	
 	<form:label path="password" >
-		<spring:message code="actor.password" />
+		<spring:message code="actor.password" />*
 	</form:label>
 	<form:password path="password" id="password"/>
 	<form:errors cssClass="error" path="password" />
 	<br />
 	
 	<form:label path="confirmPass">
-		<spring:message code="actor.confirmPass" />
+		<spring:message code="actor.confirmPass" />*
 	</form:label>
 	<form:password path="confirmPass" id="confirmPassword"/>
 	<form:errors cssClass="error" path="password" />
 	<br />
 	
-	
+	*
 	<acme:textbox code="actor.name" path="name"/>
 	<br />
 	
+	*
 	<acme:textbox code="actor.surname" path="surname"/>
 	<br />
-	
+	*
 	<acme:textbox code="actor.commercialName" path="commercialName"/>
 	<br />
 	
 	<acme:textbox code="actor.photo" path="photo"/>
 	<br />
-	
+	*
 	<acme:textbox code="actor.email" path="email"/>
 	<br />
-	
+	*
 	<acme:textbox code="actor.phoneNumber" path="phoneNumber"/>
 	<br />
 	
 	<acme:textbox code="actor.address" path="address"/>
 	<br />
-	
+	*
 	<acme:textbox code="actor.vatNumber" path="vatNumber"/>
 	<br />
-	
+	</fieldset>
+	<fieldset>
+ 	<legend><spring:message code="actor.CreditCard" /></legend>
+ 	*
 	<acme:textbox code="credit.holderName" path="holderName"/>
 	<br />
-	
+	*
 	<acme:textbox code="credit.brandName" path="brandName"/>
 	<br />
-	
+	*
 	<acme:textbox code="credit.number" path="number"/>
 	<br />
-	
+	*
 	<acme:textbox code="credit.expiration" path="expiration"/>
 	<br />
-	
+	*
 	<acme:textbox code="credit.cvvCode" path="cvvCode"/>
 	<br />
-	
+	</fieldset>
 	<script type="text/javascript">
 	function phoneValidation(){
 		var phoneNumber = document.getElementById("phoneNumber").value;

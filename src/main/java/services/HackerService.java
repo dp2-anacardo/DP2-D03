@@ -36,8 +36,6 @@ public class HackerService {
 	@Autowired
 	private HackerRepository		hackerRepository;
 	@Autowired
-	private FinderService			finderService;
-	@Autowired
 	private Validator				validator;
 
 

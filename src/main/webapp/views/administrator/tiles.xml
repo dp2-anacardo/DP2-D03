@@ -21,4 +21,9 @@
 		<put-attribute name="body" value="/views/administrator/register.jsp" />
 	</definition>
 	
+	<definition name="administrator/administrator/edit" extends="master.page">
+		<put-attribute name="title" value="Edit personal data" />
+		<put-attribute name="body" value="/views/administrator/edit.jsp" />
+	</definition>
+	
 </tiles-definitions>
