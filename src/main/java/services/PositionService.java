@@ -1,12 +1,11 @@
 
 package services;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
+import domain.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -26,7 +25,11 @@ public class PositionService {
 
 	//Supporting services
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
+	@Autowired
+	private FinderService 			finderService;
+	@Autowired
+	private ConfigurationService	configurationService;
 
 
 	public Position create() {
@@ -95,5 +98,27 @@ public class PositionService {
 		positions = this.positionRepository.getPositionsByCompany(company.getId());
 
 		return positions;
+	}
+
+	public Collection<Position> searchPositions(String keyword){
+		Collection<Position> res = Collections.emptyList();
+		List<Position> proAux1;
+		List<Position> proAux2;
+
+		if (!(keyword == null || keyword.equals(""))) {
+			proAux1 = (List<Position>) this.finderService.getPositionsByKeyWord(keyword);
+			proAux2 = (List<Position>) this.finderService.getPositionsContainsKeyWord(keyword);
+
+			Set<Position> set = new LinkedHashSet<>(proAux1);
+			set.addAll(proAux2);
+			res = new ArrayList<>(set);
+		}
+
+		Configuration conf;
+		conf = this.configurationService.getConfiguration();
+
+		res = this.finderService.maxPosition(res, conf);
+
+		return res;
 	}
 }

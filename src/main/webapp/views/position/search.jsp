@@ -7,9 +7,20 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<security:authorize access="hasRole('HACKER')">
-    <display:table pagesize="5" class="position" name="positions" requestURI="finder/hacker/list.do" id="row">
+<form:form action ="position/search.do" modelAttribute="search">
+
+    <acme:textboxbs code="finder.update.keyword" path="keyword"/>
+    <br>
+    <acme:submit name="search" code="finder.update.update"/>&nbsp
+
+</form:form>
+
+<br>
+
+<jstl:if test="${positions!=null}">
+    <display:table pagesize="5" class="position" name="positions" requestURI="position/search" id="row">
 
         <!-- Action links -->
 
@@ -25,4 +36,4 @@
         <display:column property="deadline" title="${deadline}" format="{0,date,dd/MM/yyyy HH:mm}"/>
 
     </display:table>
-</security:authorize>
+</jstl:if>

@@ -62,15 +62,16 @@ public class FinderController extends AbstractController {
             this.finderService.save(finder);
         }
 
-        if (finder.getPositions().isEmpty())
-            result = new ModelAndView("redirect:/position/listForMembers.do");
-        else {
+        if (finder.getPositions().isEmpty()) {
+            result = new ModelAndView("redirect:/position/listNotLogged.do");
+
+        } else {
 
             positions = finder.getPositions();
 
             result.addObject("positions", positions);
             result.addObject("finder", finder);
-            result.addObject("requestURI", "finder/member/list.do");
+            result.addObject("requestURI", "finder/hacker/list.do");
         }
 
         return result;
@@ -101,7 +102,7 @@ public class FinderController extends AbstractController {
         else
             try {
                 this.finderService.save(finder);
-                result = new ModelAndView("redirect:list.do");
+                result = new ModelAndView("redirect:/finder/hacker/list.do");
             } catch (final Throwable oops) {
                 result = this.createEditModelAndView(finder, oops.getMessage()/* "finder.update.error" */);
             }
@@ -126,7 +127,7 @@ public class FinderController extends AbstractController {
 
         this.finderService.save(finder);
 
-        result = new ModelAndView("redirect:/position/listForMembers.do");
+        result = new ModelAndView("redirect:/position/listNotLogged.do");
 
         return result;
     }

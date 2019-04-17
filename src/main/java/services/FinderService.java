@@ -56,14 +56,16 @@ public class FinderService {
         List<Position> pro2 = null;
         List<Position> pro3 = null;
         List<Position> pro4 = null;
-        Set<Position> proAux1;
-        Set<Position> proAux2;
+        List<Position> proAux1;
+        List<Position> proAux2;
 
         if (!(finder.getKeyWord() == null || finder.getKeyWord().equals(""))) {
-            proAux1 = (Set<Position>) this.finderRepository.getPositionsByKeyWord(finder.getKeyWord());
-            proAux2 = (Set<Position>) this.finderRepository.getPositionsContainsKeyWord(finder.getKeyWord());
-            proAux1.addAll(proAux2);
-            pro1.addAll(proAux1);
+            proAux1 = (List<Position>) this.finderRepository.getPositionsByKeyWord(finder.getKeyWord());
+            proAux2 = (List<Position>) this.finderRepository.getPositionsContainsKeyWord(finder.getKeyWord());
+
+            Set<Position> set = new LinkedHashSet<>(proAux1);
+            set.addAll(proAux2);
+            pro1 = new ArrayList<>(set);
         }
         if (finder.getDeadline() != null)
             pro2 = (List<Position>) this.finderRepository.getPositionsByDeadline(finder.getDeadline());
@@ -90,16 +92,7 @@ public class FinderService {
         Configuration conf;
         conf = this.configurationService.getConfiguration();
 
-        if (result.size() > conf.getMaxResults()) {
-
-            final List<Position> copy = (List<Position>) result;
-
-            final List<Position> paradesLim = new ArrayList<>();
-            for (int i = 0; i < conf.getMaxResults(); i++)
-                paradesLim.add(copy.get(i));
-            result = paradesLim;
-
-        }
+        result = this.maxPosition(result, conf);
 
         finder.setPositions(result);
         final Date moment = new Date();
@@ -132,5 +125,27 @@ public class FinderService {
     public void delete(final Finder f) {
         Assert.notNull(f);
         this.finderRepository.delete(f);
+    }
+
+    public Collection<Position> getPositionsByKeyWord(String keyword){
+        return this.finderRepository.getPositionsByKeyWord(keyword);
+    }
+
+    public Collection<Position> getPositionsContainsKeyWord(String keyword){
+        return this.finderRepository.getPositionsContainsKeyWord(keyword);
+    }
+
+    public Collection<Position> maxPosition(Collection<Position> result, Configuration configuration){
+        if (result.size() > configuration.getMaxResults()) {
+
+            final List<Position> copy = (List<Position>) result;
+
+            final List<Position> paradesLim = new ArrayList<>();
+            for (int i = 0; i < configuration.getMaxResults(); i++)
+                paradesLim.add(copy.get(i));
+            result = paradesLim;
+        }
+
+        return result;
     }
 }
