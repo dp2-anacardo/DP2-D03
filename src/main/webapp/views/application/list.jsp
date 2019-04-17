@@ -22,14 +22,14 @@
 	<spring:message code="application.explanation" var="explanation"/>
 	<display:column title="${explanation}">
 		<jstl:if test="${row.status != 'PENDING' }">
-			<jstl:out value="${row.explanation}" ></jstl:out>
+			<jstl:out value="${row.explanation}"/>
 		</jstl:if>
 	</display:column>
-	
+
 	<spring:message code="application.link" var="link"/>
 	<display:column title="${link}">
 		<jstl:if test="${row.status != 'PENDING' }">
-			<jstl:out value="<a href="${row.link}">Link"></jstl:out>
+			<a href="${row.link}">${row.link}</a>
 		</jstl:if>
 	</display:column>
 	
@@ -60,21 +60,21 @@
 		</display:column>
 	
 	<spring:message code="application.problem" var="problem"/>
-	<display:column title="${problem}">
-		<jstl:out value="<a href="problem/show.do?problemId=${row.problem.id}">
-		<spring:message code="application.problem"/>"></jstl:out>
-	</display:column>
-	
+		<display:column title="${problem}">
+			<a href="problem/show.do?problemID=${row.problem.id}">
+				<spring:message code="application.problem"/></a>
+		</display:column>
+
 	<display:column>
+		<jstl:if test="${row.status == 'PENDING'}">
 		<a href="application/hacker/update.do?applicationId=${row.id}">
-			<spring:message code="application.update"/>
-		</a>
+		<spring:message code="application.update"/></a>
+		</jstl:if>
 	</display:column>
 	
 	<display:column>
 		<a href="application/hacker/show.do?applicationId=${row.id}">
-			<spring:message code="application.show"/>
-		</a>
+		<spring:message code="application.show"/></a>
 	</display:column>
 </display:table>
 </security:authorize>
@@ -94,7 +94,7 @@
 	
 	<spring:message code="application.link" var="link"/>
 	<display:column title="${link}">
-		<jstl:out value="<a href="${row.link}">${row.link}"></jstl:out>
+		<a href="${row.link}">${row.link}</a>
 	</display:column>
 	
 	<spring:message code="application.status" var="status"/>
@@ -121,34 +121,33 @@
 	
 	<spring:message code="application.problem" var="problem"/>
 	<display:column title="${problem}">
-		<jstl:out value="<a href="problem/show.do?problemId=${row.problem.id}">
-		<spring:message code="application.problem"/>"></jstl:out>
+		<a href="problem/show.do?problemID=${row.problem.id}">
+			<spring:message code="application.problem"/></a>
 	</display:column>
 	
 	<spring:message code="application.hacker" var="hacker"/>
 	<display:column title="${hacker}">
-		<jstl:out value="<a href="hacker/show.do?hackerId=${row.hacker.id}">
-		<spring:message code="application.hacker"/>"></jstl:out>
+		<a href="hacker/show.do?hackerId=${row.hacker.id}">
+		<spring:message code="application.hacker"/></a>
 	</display:column>
 	
 	<spring:message code="application.curricula" var="curricula"/>
 	<display:column title="${curricula}">
-		<jstl:out value="<a href="curricula/show.do?curriculaId=${row.curricula.id}">
-		<spring:message code="application.curricula"/>"></jstl:out>
+		<a href="curricula/show.do?curriculaId=${row.curricula.id}">
+			<spring:message code="application.curricula"/></a>
 	</display:column>
 	
 	<display:column>
 		<jstl:if test="${row.status == 'SUBMITTED'}">
-		<a href="application/company/accept.do?applicationId=${row.id}">
-			<spring:message code="application.accept"/>
-		</a>
+			<a href="application/company/accept.do?applicationId=${row.id}">
+			<spring:message code="application.accept"/></a>
 		</jstl:if>
 	</display:column>
 	
 	<display:column>
 		<jstl:if test="${row.status == 'SUBMITTED'}">
-		<a href="application/company/reject.do?applicationId=${row.id}">
-			<spring:message code="application.reject"/>
+			<a href="application/company/reject.do?applicationId=${row.id}">
+				<spring:message code="application.reject"/></a>
 		</a>
 		</jstl:if>
 	</display:column>	

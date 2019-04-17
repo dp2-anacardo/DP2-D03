@@ -15,33 +15,36 @@
 <jstl:if test="${application.status != 'PENDING'}">
 <acme:showtext fieldset="true" code="application.submitMoment" value="${application.submitMoment}"/>
 <acme:showtext fieldset="true" code="application.explanation" value="${application.explanation}"/>
-<acme:showtext fieldset="true" code="application.link" value="<a href="${application.link}">Link"/>
+
+<fieldset><legend><spring:message code="application.link"/></legend>
+	<a href='${application.link}'>${application.link}</a>
+</fieldset>
 </jstl:if>
 
+<fieldset><legend><spring:message code="application.status"/></legend>
 <jstl:if test="${application.status == 'ACCEPTED' }">
-		<acme:showtext fieldset="true" code="application.status" 
-		value="<spring:message code="application.accepted"/>"/>
+		<spring:message code="application.accepted"/>
 </jstl:if>
 			
 <jstl:if test="${application.status == 'SUBMITTED' }">
-	<acme:showtext fieldset="true" code="application.status" 
-	value="<spring:message code="application.submitted"/>"/>
+	<spring:message code="application.submitted"/>
 </jstl:if>
 			
 <jstl:if test="${application.status == 'PENDING' }">
-	<acme:showtext fieldset="true" code="application.status" 
-	value="<spring:message code="application.pending"/>"/>
+	<spring:message code="application.pending"/>
 </jstl:if>
+
+<jstl:if test="${application.status == 'REJECTED' }">
+	<spring:message code="application.rejected"/></jstl:if>
+</fieldset>
 			
 <jstl:if test="${application.status == 'REJECTED' }">
-	<acme:showtext fieldset="true" code="application.status" 
-	value="<spring:message code="application.rejected"/>"/>
-	<acme:showtext fieldset="true" code="application.rejectComment" 
+	<acme:showtext fieldset="true" code='application.rejectComment'
 	value="${application.rejectComment}"/>
 </jstl:if>
 
-<acme:showtext fieldset="true" code="application.problem" 
-value="<a href="problem/show.do?problemId=${row.problem.id}">
-		<spring:message code="application.problem"/>"/>
+<fieldset><legend><spring:message code="application.problem"/></legend>
+	<a href="problem/show.do?problemID=${application.problem.id}"><spring:message code="application.problem"/>
+</fieldset>
 		
 </security:authorize>

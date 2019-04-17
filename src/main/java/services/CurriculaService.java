@@ -119,7 +119,7 @@ public class CurriculaService {
 		result.setPersonalData(personalData);
 		result.setPositionData(positionData);
 		result.setIsCopy(true);
-		result = this.curriculaRepository.save(result);
+		result = this.save(result);
 
 		return result;
 	}

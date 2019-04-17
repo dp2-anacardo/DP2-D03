@@ -211,7 +211,7 @@ public class ApplicationController extends AbstractController {
 	@RequestMapping(value = "/company/reject", method = RequestMethod.POST, params = "reject")
 	public ModelAndView reject(Application application, final BindingResult binding) {
 		ModelAndView result;
-		application = this.applicationService.reconstruct(application, binding);
+		application = this.applicationService.reconstructReject(application, binding);
 
 		if (application.getRejectComment().equals("")) {
 			binding.rejectValue("rejectComment", "error.rejectComment");
@@ -220,15 +220,12 @@ public class ApplicationController extends AbstractController {
 		} else if (binding.hasErrors()) {
 			result = this.rejectModelAndView(application);
 			return result;
-		} else
-			try {
+		} else{
 				this.applicationService.rejectApplication(application);
+				this.applicationService.save(application);
 				result = new ModelAndView("redirect:/application/company/list.do");
 				return result;
-			} catch (final Exception e) {
-				result = this.rejectModelAndView(application, "application.commit.error");
-				return result;
-			}
+		}
 	}
 
 	protected ModelAndView rejectModelAndView(final Application application) {
@@ -279,8 +276,7 @@ public class ApplicationController extends AbstractController {
 		ModelAndView result;
 		Collection<Curricula> curricula;
 		final Collection<Curricula> copied = new ArrayList<>();
-		final Actor actor = this.actorService.getActorLogged();
-		final Hacker hacker = this.hackerService.findOne(actor.getId());
+		Hacker hacker = application.getHacker();
 		curricula = hacker.getCurricula();
 		for (final Curricula c : curricula)
 			copied.add(this.curriculaService.copy(c));

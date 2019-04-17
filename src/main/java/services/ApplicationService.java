@@ -4,6 +4,7 @@ package services;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -72,6 +73,24 @@ public class ApplicationService {
 		return result;
 	}
 
+	public Application reconstructReject(final Application application, final BindingResult binding) {
+		Application result;
+			result = this.applicationRepository.findOne(application.getId());
+			application.setStatus(result.getStatus());
+			application.setSubmitMoment(result.getSubmitMoment());
+			application.setVersion(result.getVersion());
+			application.setCurricula(result.getCurricula());
+			application.setExplanation(result.getExplanation());
+			application.setLink(result.getLink());
+			application.setProblem(result.getProblem());
+			application.setHacker(result.getHacker());
+			application.setMoment(result.getMoment());
+			application.setRejectComment(application.getRejectComment());
+			this.validator.validate(application, binding);
+			result = application;
+		return result;
+	}
+
 	public Application create(final int positionId) {
 		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
 		Application application;
@@ -96,7 +115,10 @@ public class ApplicationService {
 		problems = this.problemService.getProblemsFinalByCompany(position.getCompany());
 
 		//Generamos un int random que vaya de 0 a el tamaño de los problemas -1
-		final int valorRandom = (int) Math.random() * problems.size();
+		//random.nextInt genera un int random desde 0 a el valor como parametro -1
+		Random random = new Random();
+		int valorRandom = random.nextInt(problems.size());
+
 		//Cogemos un problema random de la lista de problemas
 		problem = problems.get(valorRandom);
 		//Le hacemos el set a la application
@@ -124,7 +146,8 @@ public class ApplicationService {
 
 	public Application save(final Application application) {
 		Assert.notNull(application);
-		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
+		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER")
+		|| this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
 
 		Application result;
 
