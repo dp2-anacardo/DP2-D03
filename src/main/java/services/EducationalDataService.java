@@ -7,10 +7,14 @@ import domain.Hacker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import repositories.EducationalDataRepository;
 import security.UserAccount;
 
+import javax.naming.Binding;
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.Collection;
 
 @Service
@@ -27,6 +31,26 @@ public class EducationalDataService {
     private HackerService hackerService;
     @Autowired
     private CurriculaService curriculaService;
+    @Autowired
+    private Validator validator;
+
+    public EducationalData reconstruct(EducationalData educationalData, BindingResult binding){
+        EducationalData result;
+        if(educationalData.getId()==0){
+            result = this.create();
+        }else{
+            result = this.educationalDataRepository.findOne(educationalData.getId());
+        }
+        result.setDegree(educationalData.getDegree());
+        result.setEndDate(educationalData.getEndDate());
+        result.setInstitution(educationalData.getInstitution());
+        result.setMark(educationalData.getMark());
+        result.setStartDate(educationalData.getStartDate());
+        validator.validate(result,binding);
+        if(binding.hasErrors())
+            throw new ValidationException();
+        return result;
+    }
 
     public EducationalData create(){
         UserAccount userAccount;

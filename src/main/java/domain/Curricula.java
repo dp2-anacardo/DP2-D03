@@ -3,11 +3,7 @@ package domain;
 
 import java.util.Collection;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.Valid;
 
 @Entity
@@ -30,7 +26,7 @@ public class Curricula extends DomainEntity {
 		this.isCopy = isCopy;
 	}
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	public Collection<EducationalData> getEducationalData() {
 		return this.educationalData;
 	}
@@ -39,7 +35,7 @@ public class Curricula extends DomainEntity {
 		this.educationalData = educationalData;
 	}
 
-	@OneToOne(optional = true)
+	@OneToOne(optional = true,cascade = CascadeType.ALL)
 	public MiscData getMiscData() {
 		return this.miscData;
 	}
@@ -49,7 +45,7 @@ public class Curricula extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne(optional = false)
+	@OneToOne(optional = false,cascade = CascadeType.ALL)
 	public PersonalData getPersonalData() {
 		return this.personalData;
 	}
@@ -58,7 +54,7 @@ public class Curricula extends DomainEntity {
 		this.personalData = personalData;
 	}
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	public Collection<PositionData> getPositionData() {
 		return this.positionData;
 	}

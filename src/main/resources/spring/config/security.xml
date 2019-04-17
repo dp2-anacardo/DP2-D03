@@ -62,6 +62,13 @@
          <security:intercept-url pattern="/hacker/hacker/**" access="hasAnyRole('HACKER')" />
 
 
+
+        <security:intercept-url pattern="/personalData/hacker/**" access="hasAnyRole('HACKER')"/>
+        <security:intercept-url pattern="/educationalData/hacker/**" access="hasAnyRole('HACKER')"/>
+        <security:intercept-url pattern="/positionData/hacker/**" access="hasAnyRole('HACKER')"/>
+        <security:intercept-url pattern="/miscData/hacker/**" access="hasAnyRole('HACKER')"/>
+
+
         <security:intercept-url pattern="/**" access="permitAll"/>
 
         <security:form-login
