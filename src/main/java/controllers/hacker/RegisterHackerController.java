@@ -6,10 +6,12 @@ import javax.validation.Valid;
 import org.hibernate.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
@@ -80,6 +82,21 @@ public class RegisterHackerController extends AbstractController {
 					result = this.createEditModelAndView(hackerForm, "error.duplicated");
 				result = this.createEditModelAndView(hackerForm, "error.commit.error");
 			}
+		return result;
+	}
+
+	@RequestMapping(value="/company/show", method = RequestMethod.GET)
+	public ModelAndView showCompany(@RequestParam int hackerId){
+		ModelAndView result;
+
+		try{
+			Assert.notNull(hackerId);
+			Hacker hacker = hackerService.findOne(hackerId);
+			result = new ModelAndView("hacker/company/show");
+			result.addObject("hacker", hacker);
+		}catch (Throwable oops){
+			result = new ModelAndView("redirect/misc/403");
+		}
 		return result;
 	}
 

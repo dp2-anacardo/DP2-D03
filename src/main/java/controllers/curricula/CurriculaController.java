@@ -1,10 +1,7 @@
 package controllers.curricula;
 
 import controllers.AbstractController;
-import domain.Actor;
-import domain.Curricula;
-import domain.Hacker;
-import domain.PersonalData;
+import domain.*;
 import org.hibernate.stat.internal.ConcurrentCollectionStatisticsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,16 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import services.ActorService;
-import services.CurriculaService;
-import services.HackerService;
-import services.PersonalDataService;
+import services.*;
 
 import javax.validation.ValidationException;
 import java.util.Collection;
 
 @Controller
-@RequestMapping("/curricula/hacker")
+@RequestMapping("/curricula")
 public class CurriculaController extends AbstractController {
 
     @Autowired
@@ -40,7 +34,10 @@ public class CurriculaController extends AbstractController {
     @Autowired
     private PersonalDataService personalDataService;
 
-    @RequestMapping(value="/list", method = RequestMethod.GET)
+    @Autowired
+    private CompanyService companyService;
+
+    @RequestMapping(value="/hacker/list", method = RequestMethod.GET)
     public ModelAndView list(){
         ModelAndView result;
         try{
@@ -57,7 +54,7 @@ public class CurriculaController extends AbstractController {
         return result;
     }
 
-    @RequestMapping(value = "/display", method = RequestMethod.GET)
+    @RequestMapping(value = "/hacker/display", method = RequestMethod.GET)
     public ModelAndView show(@RequestParam int curriculaId){
         ModelAndView result;
         try{
@@ -69,7 +66,6 @@ public class CurriculaController extends AbstractController {
             Hacker h = hackerService.findOne(a.getId());
             Assert.notNull(h);
             Assert.isTrue(h.getCurricula().contains(c));
-
             result = new ModelAndView("curricula/hacker/display");
             result.addObject("curricula",c);
         }catch(Throwable oops){
@@ -78,7 +74,25 @@ public class CurriculaController extends AbstractController {
         return result;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/company/display", method = RequestMethod.GET)
+    public ModelAndView showCompany(@RequestParam int curriculaId){
+        ModelAndView result;
+        try{
+            Curricula c = this.curriculaService.findOne(curriculaId);
+            Assert.notNull(c);
+
+            Actor a = actorService.getActorLogged();
+            Company company = companyService.findOne(a.getId());
+            Assert.notNull(company);
+            result = new ModelAndView("curricula/company/display");
+            result.addObject("curricula",c);
+        }catch(Throwable oops){
+            result = new ModelAndView("redirect:/misc/403");
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
     public ModelAndView create(){
         ModelAndView result;
         try{
@@ -91,7 +105,7 @@ public class CurriculaController extends AbstractController {
         return result;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/hacker/create", method = RequestMethod.POST)
     public ModelAndView save(@ModelAttribute("personalD") PersonalData p, BindingResult binding){
         ModelAndView result;
         try{
@@ -109,7 +123,7 @@ public class CurriculaController extends AbstractController {
         return result;
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/hacker/delete", method = RequestMethod.GET)
     public ModelAndView delete(@RequestParam int curriculaId){
         ModelAndView result;
         try{

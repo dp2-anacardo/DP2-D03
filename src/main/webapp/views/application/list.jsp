@@ -127,13 +127,13 @@
 	
 	<spring:message code="application.hacker" var="hacker"/>
 	<display:column title="${hacker}">
-		<a href="hacker/show.do?hackerId=${row.hacker.id}">
+		<a href="hacker/company/show.do?hackerId=${row.hacker.id}">
 		<spring:message code="application.hacker"/></a>
 	</display:column>
 	
 	<spring:message code="application.curricula" var="curricula"/>
 	<display:column title="${curricula}">
-		<a href="curricula/show.do?curriculaId=${row.curricula.id}">
+		<a href="curricula/company/display.do?curriculaId=${row.curricula.id}">
 			<spring:message code="application.curricula"/></a>
 	</display:column>
 	
