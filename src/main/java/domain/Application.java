@@ -45,7 +45,6 @@ public class Application extends DomainEntity {
 		this.moment = moment;
 	}
 
-	@NotBlank
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getExplanation() {
 		return this.explanation;
@@ -55,7 +54,6 @@ public class Application extends DomainEntity {
 		this.explanation = explanation;
 	}
 
-	@NotBlank
 	@URL
 	@SafeHtml(whitelistType = WhiteListType.NONE)
 	public String getLink() {

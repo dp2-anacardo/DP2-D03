@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,29 +48,22 @@ public class ApplicationService {
 	private PositionService			positionService;
 
 	@Autowired
+	private CurriculaService curriculaService;
+
+	@Autowired
 	private Validator				validator;
 
 
 	public Application reconstruct(final Application application, final BindingResult binding) {
 		Application result;
-		if (application.getId() == 0) {
-			result = application;
-			this.validator.validate(application, binding);
-		} else {
-			result = this.applicationRepository.findOne(application.getId());
-			application.setStatus("SUBMITTED");
-			application.setSubmitMoment(new Date());
-			application.setVersion(result.getVersion());
-			application.setCurricula(result.getCurricula());
-			application.setExplanation(result.getExplanation());
-			application.setLink(result.getLink());
-			application.setProblem(result.getProblem());
-			application.setHacker(result.getHacker());
-			application.setMoment(result.getMoment());
-			application.setRejectComment(result.getRejectComment());
-			this.validator.validate(application, binding);
-			result = application;
-		}
+
+		result = this.applicationRepository.findOne(application.getId());
+		result.setExplanation(application.getExplanation());
+		result.setLink(application.getLink());
+		validator.validate(result,binding);
+		if(binding.hasErrors())
+			throw new ValidationException();
+
 		return result;
 	}
 
@@ -91,7 +85,7 @@ public class ApplicationService {
 		return result;
 	}
 
-	public Application create(final int positionId) {
+	public Application create() {
 		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
 		Application application;
 
@@ -116,58 +110,6 @@ public class ApplicationService {
 
 		return applications;
 	}
-
-	public Application saveHacker(Application application, int positionId) {
-		Assert.notNull(application);
-		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
-
-		application.setMoment(new Date());
-		application.setStatus("PENDING");
-
-		//Tenemos que coger la lista de problemas de la posición a la que se le
-		//va a hacer la application
-		final List<Problem> problems;
-		//Cogemos la position usando el findOne y usando el id como parametro
-		final Position position = this.positionService.findOne(positionId);
-		Problem problem;
-
-		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
-		final Hacker hacker = this.hackerService.findOne(user.getId());
-		application.setHacker(hacker);
-
-		//Cogemos los problemas que son finales y que esten relacionados con la
-		//position que cogemos antes, que esta luego esta relacionada con la
-		//company que tiene los problemas
-		problems = this.problemService.getProblemsFinalByCompany(position.getCompany());
-
-		//Generamos un int random que vaya de 0 a el tamaño de los problemas -1
-		//random.nextInt genera un int random desde 0 a el valor como parametro -1
-		Random random = new Random();
-		int valorRandom = random.nextInt(problems.size());
-
-		//Cogemos un problema random de la lista de problemas
-		problem = problems.get(valorRandom);
-		//Le hacemos el set a la application
-		application.setProblem(problem);
-
-		application = this.applicationRepository.save(application);
-
-		return application;
-	}
-
-	public Application saveHackerUpdate(final Application application) {
-		Assert.notNull(application);
-		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
-
-		Application result = application;
-		result.setSubmitMoment(new Date());
-		result.setStatus("SUBMITTED");
-
-		result = this.applicationRepository.save(application);
-
-		return result;
-	}
-
 	public Application saveCompany(Application application){
 		Assert.notNull(application);
 		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
@@ -224,4 +166,50 @@ public class ApplicationService {
 		return applications;
 	}
 
+
+	//PARTE DEL HACKER--------------------------------------------------------------------------------------------------
+
+	public Application saveHacker(Application application, int positionId) {
+		Application result;
+		Assert.notNull(application);
+		Assert.isTrue(application.getId()==0);
+		Assert.notNull(positionId);
+		Position p = this.positionService.findOne(positionId);
+		Assert.notNull(p);
+		Assert.isTrue(p.getIsFinal()==true && p.getIsCancelled() == false);
+
+
+		Actor a = this.actorService.getActorLogged();
+		Hacker h = this.hackerService.findOne(a.getId());
+		Assert.notNull(h);
+
+		application.setHacker(h);
+		application.setMoment(new Date());
+		application.setStatus("PENDING");
+		application.setCurricula(this.curriculaService.copy(application.getCurricula()));
+		List<Problem> problems = (List<Problem>) p.getProblems();
+		Random random = new Random();
+		int valorRandom = random.nextInt(problems.size());
+		application.setProblem(problems.get(valorRandom));
+
+		result = this.applicationRepository.save(application);
+
+		p.getApplications().add(result);
+
+		return result;
+
+	}
+
+	public Application saveHackerUpdate(final Application application) {
+		Assert.notNull(application);
+		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
+
+		Application result = application;
+		result.setSubmitMoment(new Date());
+		result.setStatus("SUBMITTED");
+
+		result = this.applicationRepository.save(application);
+
+		return result;
+	}
 }

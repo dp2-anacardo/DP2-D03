@@ -7,7 +7,9 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +29,8 @@ import domain.Company;
 import domain.Curricula;
 import domain.Hacker;
 import domain.Position;
+
+import javax.validation.ValidationException;
 
 @Controller
 @RequestMapping("application")
@@ -104,75 +108,7 @@ public class ApplicationController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int positionId) {
-		ModelAndView result;
-		Application application;
 
-		try {
-			Assert.notNull(positionId);
-			application = this.applicationService.create(positionId);
-			result = this.createModelAndView(application);
-			return result;
-		} catch (final Exception e) {
-			result = new ModelAndView("redirect:/position/hacker/list.do");
-			return result;
-		}
-	}
-
-	@RequestMapping(value = "/hacker/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(Application application, final BindingResult binding) {
-		ModelAndView result;
-		application = this.applicationService.reconstruct(application, binding);
-
-		if (binding.hasErrors())
-			result = this.createModelAndView(application);
-		else
-			try {
-				Hacker hacker = application.getHacker();
-				Curricula copy = this.curriculaService.copy(application.getCurricula());
-				this.curriculaService.save2(copy);
-				hacker.getCurricula().add(copy);
-				this.applicationService.saveHacker(application);
-				result = new ModelAndView("redirect:/application/hacker/list.do");
-			} catch (final Exception e) {
-				result = this.createModelAndView(application, "application.commit.error");
-			}
-		return result;
-	}
-
-	@RequestMapping(value = "/hacker/update", method = RequestMethod.GET)
-	public ModelAndView update(@RequestParam final int applicationId) {
-		ModelAndView result;
-		Application application;
-
-		try {
-			Assert.notNull(applicationId);
-			application = this.applicationService.findOne(applicationId);
-			result = this.updateModelAndView(application);
-			return result;
-		} catch (final Exception e) {
-			result = new ModelAndView("redirect:/application/hacker/list.do");
-			return result;
-		}
-	}
-
-	@RequestMapping(value = "/hacker/update", method = RequestMethod.POST, params = "update")
-	public ModelAndView update(Application application, final BindingResult binding) {
-		ModelAndView result;
-		application = this.applicationService.reconstruct(application, binding);
-
-		if (binding.hasErrors())
-			result = this.updateModelAndView(application);
-		else
-			try {
-				this.applicationService.saveHacker(application);
-				result = new ModelAndView("redirect:/application/hacker/list.do");
-			} catch (final Exception e) {
-				result = this.updateModelAndView(application, "application.commit.error");
-			}
-		return result;
-	}
 
 	@RequestMapping(value = "/company/accept", method = RequestMethod.GET)
 	public ModelAndView accept(@RequestParam final int applicationId) {
@@ -183,7 +119,7 @@ public class ApplicationController extends AbstractController {
 			Assert.notNull(applicationId);
 			application = this.applicationService.findOne(applicationId);
 			this.applicationService.acceptApplication(application);
-			this.applicationService.save(application);
+			this.applicationService.saveCompany(application);
 			result = new ModelAndView("redirect:/application/company/list.do");
 			return result;
 		} catch (final Exception e) {
@@ -222,7 +158,7 @@ public class ApplicationController extends AbstractController {
 			return result;
 		} else{
 				this.applicationService.rejectApplication(application);
-				this.applicationService.save(application);
+				this.applicationService.saveCompany(application);
 				result = new ModelAndView("redirect:/application/company/list.do");
 				return result;
 		}
@@ -246,44 +182,77 @@ public class ApplicationController extends AbstractController {
 		return result;
 	}
 
-	protected ModelAndView updateModelAndView(final Application application) {
+
+	//PARTE DEL HACKER--------------------------------------------------------------------------------------------------
+
+	@RequestMapping(value = "/hacker/create", method = RequestMethod.GET)
+	public ModelAndView create(@RequestParam int positionId){
 		ModelAndView result;
-
-		result = this.updateModelAndView(application, null);
-
+		try{
+			Actor a = this.actorService.getActorLogged();
+			Hacker h = this.hackerService.findOne(a.getId());
+			Application application = this.applicationService.create();
+			result = new ModelAndView("application/hacker/create");
+			result.addObject("application",application);
+			result.addObject("positionId",positionId);
+			result.addObject("curricula",h.getCurricula());
+		}catch(Throwable oops){
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 
-	protected ModelAndView updateModelAndView(final Application application, final String messageCode) {
+	@RequestMapping(value="/hacker/create", method = RequestMethod.POST)
+	public ModelAndView saveCreate(@ModelAttribute("application")Application application,@RequestParam int positionId,BindingResult binding){
 		ModelAndView result;
-
-		result = new ModelAndView("application/hacker/update");
-		result.addObject("application", application);
-		result.addObject("message", messageCode);
-
+		try{
+			this.applicationService.saveHacker(application,positionId);
+			result = new ModelAndView("redirect:/application/hacker/list.do");
+		}catch (Throwable oops){
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 
-	protected ModelAndView createModelAndView(final Application application) {
+	@RequestMapping(value = "/hacker/update", method = RequestMethod.GET)
+	public ModelAndView update(@RequestParam int applicationId){
 		ModelAndView result;
+		try{
+			Application a = this.applicationService.findOne(applicationId);
+			Actor ac = this.actorService.getActorLogged();
+			Hacker h = this.hackerService.findOne(ac.getId());
+			Assert.isTrue(a.getHacker().equals(h));
 
-		result = this.createModelAndView(application, null);
-
+			result = new ModelAndView("application/hacker/update");
+			result.addObject("application",a);
+		}catch (Throwable oops){
+			result = new ModelAndView("redirect:/misc/403/");
+		}
 		return result;
 	}
 
-	protected ModelAndView createModelAndView(final Application application, final String messageCode) {
+	@RequestMapping(value = "/hacker/update", method = RequestMethod.POST)
+	public ModelAndView saveUpdate(@ModelAttribute("application")Application application,BindingResult binding){
 		ModelAndView result;
-		Collection<Curricula> curricula;
-		Hacker hacker = hackerService.findOne(actorService.getActorLogged().getId());
-		curricula = hacker.getCurricula();
-
-		result = new ModelAndView("application/hacker/create");
-		result.addObject("application", application);
-		result.addObject("curricula", curricula);
-		result.addObject("message", messageCode);
-
+		if(StringUtils.isEmpty(application.getExplanation()) || StringUtils.isEmpty(application.getLink()) ) {
+			binding.rejectValue("explanation", "error.explanation");
+			binding.rejectValue("link", "error.link");
+			result = new ModelAndView("application/hacker/update");
+			result.addObject("application",application);
+		}else{
+			try {
+				application = this.applicationService.reconstruct(application, binding);
+				this.applicationService.saveHackerUpdate(application);
+				result = new ModelAndView("redirect:/application/hacker/list.do");
+			}catch (ValidationException v){
+				result = new ModelAndView("application/hacker/update");
+				result.addObject(application);
+			}catch (Throwable oops){
+				result = new ModelAndView("application/hacker/update");
+				result.addObject("application",application);
+				result.addObject("message","application.commit.error");
+			}
+		}
 		return result;
 	}
-
 }

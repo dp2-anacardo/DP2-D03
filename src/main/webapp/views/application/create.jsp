@@ -13,10 +13,7 @@
 <security:authorize access="hasRole('HACKER')">
 <form:form action="application/hacker/create.do" modelAttribute="application">
 	<form:hidden path="id" readOnly = "true"/>
-	<form:hidden path="moment"/>
-	<form:hidden path="status"/>
-	<form:hidden path="hacker"/>
-	<form:hidden path="problem"/>
+	<input type="hidden" name="positionId" value="${positionId}" readonly>
 	
 	<form:label path="curricula">
 		<spring:message code="application.selectCurricula"/>
@@ -25,10 +22,11 @@
 		<form:options items="${curricula}" itemValue="id" itemLabel="id"/>
 	</form:select>
 	<form:errors cssClass="error" path="curricula" />
+	</br>
 	
 	<input type="submit" name="save"
 			value="<spring:message code="application.save" />" />
 			
-	<acme:cancel url="position/hacker/list.do" code="application.cancel"/>
+	<acme:cancel url="application/hacker/list.do" code="application.cancel"/>
 </form:form>
 </security:authorize>

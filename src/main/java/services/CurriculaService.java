@@ -95,50 +95,62 @@ public class CurriculaService {
 	public Curricula copy(final Curricula curricula) {
 		Assert.notNull(curricula);
 		Curricula result;
-		final Collection<EducationalData> educationalData = new ArrayList<>();
-		final MiscData miscData = new MiscData();
-		final PersonalData personalData = new PersonalData();
-		final Collection<PositionData> positionData = new ArrayList<>();
+		Collection<EducationalData> educationalData = new ArrayList<>();
+		MiscData miscData = new MiscData();
+		PersonalData personalData = new PersonalData();
+		Collection<PositionData> positionData = new ArrayList<>();
+		result = new Curricula();
 
-		for (final EducationalData ed : curricula.getEducationalData()) {
-			final EducationalData res = new EducationalData();
-			res.setDegree(ed.getDegree());
-			res.setEndDate(ed.getEndDate());
-			res.setStartDate(ed.getStartDate());
-			res.setInstitution(ed.getInstitution());
-			res.setMark(ed.getMark());
-			this.educationalDataService.save2(res);
-			educationalData.add(res);
+		if(curricula.getEducationalData() != null){
+			for (final EducationalData ed : curricula.getEducationalData()) {
+				EducationalData res = new EducationalData();
+				res.setDegree(ed.getDegree());
+				res.setEndDate(ed.getEndDate());
+				res.setStartDate(ed.getStartDate());
+				res.setInstitution(ed.getInstitution());
+				res.setMark(ed.getMark());
+				res = this.educationalDataService.save2(res);
+				educationalData.add(res);
+			}
+			result.setEducationalData(educationalData);
+		}
+		if(curricula.getMiscData()!=null){
+			miscData.setAttachment(curricula.getMiscData().getAttachment());
+			miscData.setFreeText(curricula.getMiscData().getFreeText());
+			miscData = this.miscDataService.save2(miscData);
+			result.setMiscData(miscData);
 		}
 
-		miscData.setAttachment(curricula.getMiscData().getAttachment());
-		miscData.setFreeText(curricula.getMiscData().getFreeText());
-		this.miscDataService.save2(miscData);
 
 		personalData.setFullName(curricula.getPersonalData().getFullName());
 		personalData.setGithubProfile(curricula.getPersonalData().getGithubProfile());
 		personalData.setLinkedInProfile(curricula.getPersonalData().getLinkedInProfile());
 		personalData.setPhoneNumber(curricula.getPersonalData().getPhoneNumber());
 		personalData.setStatement(curricula.getPersonalData().getStatement());
-		this.personalDataService.save(personalData);
+		personalData = this.personalDataService.save(personalData);
 
-		for (final PositionData pd : curricula.getPositionData()) {
-			final PositionData res = new PositionData();
-			res.setDescription(pd.getDescription());
-			res.setEndDate(pd.getEndDate());
-			res.setStartDate(pd.getStartDate());
-			res.setTitle(pd.getTitle());
-			this.positionDataService.save2(res);
-			positionData.add(res);
+		if(curricula.getPositionData() != null){
+			for (final PositionData pd : curricula.getPositionData()) {
+				PositionData res = new PositionData();
+				res.setDescription(pd.getDescription());
+				res.setEndDate(pd.getEndDate());
+				res.setStartDate(pd.getStartDate());
+				res.setTitle(pd.getTitle());
+				res = this.positionDataService.save2(res);
+				positionData.add(res);
+			}
+			result.setPositionData(positionData);
 		}
 
-		result = new Curricula();
 
-		result.setEducationalData(educationalData);
-		result.setMiscData(miscData);
+
+
+
 		result.setPersonalData(personalData);
-		result.setPositionData(positionData);
+
 		result.setIsCopy(true);
+
+		result = this.curriculaRepository.save(result);
 
 		return result;
 	}
