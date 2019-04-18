@@ -1,19 +1,29 @@
 package controllers.position;
 
 import controllers.AbstractController;
+import domain.Actor;
+import domain.Company;
 import domain.Position;
+import domain.Problem;
 import forms.SearchForm;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import services.ActorService;
+import services.CompanyService;
 import services.PositionService;
+import services.ProblemService;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +33,15 @@ public class PositionController extends AbstractController {
 
     @Autowired
     private PositionService positionService;
+
+    @Autowired
+    private ActorService actorService;
+
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
+    private ProblemService problemService;
 
     @RequestMapping(value = "/listNotLogged", method = RequestMethod.GET)
     public ModelAndView listNotLogged(){
@@ -34,6 +53,161 @@ public class PositionController extends AbstractController {
 
         return result;
     }
+
+    @RequestMapping(value = "/company/list", method = RequestMethod.GET)
+    public ModelAndView list(){
+        ModelAndView result;
+        try {
+            int id = this.actorService.getActorLogged().getId();
+            Company c = this.companyService.findOne(id);
+            Collection<Position> positions = this.positionService.getPositionsByCompanyAll(c);
+
+            result = new ModelAndView("position/company/list");
+            result.addObject("positions", positions);
+            result.addObject("RequestURI", "position/company/list.do");
+        }catch(Throwable oops){
+            result = new ModelAndView("redirect:/misc/403");
+        }
+        return result;
+
+    }
+
+    @RequestMapping(value = "/company/create", method = RequestMethod.GET)
+    public ModelAndView create(){
+        ModelAndView result;
+        Position position;
+        position = new Position();
+        Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
+        Collection<Problem> problems = this.problemService.findAllByCompany(c.getId());
+        result = this.createEditModelAndView(position);
+        result.addObject("problems", problems);
+        return result;
+    }
+
+    //TODO: Meter comprobaciones en servicio
+    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveDraft")
+    public ModelAndView saveDraft(Position position, BindingResult binding){
+        ModelAndView result;
+        Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+
+        if (position.getIsFinal() == true){
+            result = this.createEditModelAndView(position, "position.commit.error");
+            result.addObject("problems", problems);
+        }else {
+            position.setIsFinal(false);
+
+            try {
+                Actor a = this.actorService.getActorLogged();
+                Company c = this.companyService.findOne(a.getId());
+                Assert.notNull(c);
+                position.setCompany(c);
+
+                position = this.positionService.reconstruct(position, binding);
+                position = this.positionService.saveDraft(position);
+                result = new ModelAndView("redirect:list.do");
+            } catch (ValidationException e) {
+                result = this.createEditModelAndView(position, null);
+                result.addObject("problems", problems);
+            } catch (final Throwable oops) {
+                result = this.createEditModelAndView(position, "position.commit.error");
+                result.addObject("problems", problems);
+            }
+        }
+        return result;
+    }
+
+    //TODO: Meter comprobaciones en Asserts en Servicio
+    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveFinal")
+    public ModelAndView saveFinal(Position position, BindingResult binding){
+        ModelAndView result;
+        Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+        if(position.getProblems()==null){
+            result = this.createEditModelAndView(position, "position.commit.error");
+            result.addObject("problems", problems);
+        }
+        else if (position.getProblems().size() < 2 || position.getIsFinal() == true){
+           result = this.createEditModelAndView(position, "position.commit.error");
+           result.addObject("problems", problems);
+       }else {
+           position.setIsFinal(true);
+
+           try {
+               Actor a = this.actorService.getActorLogged();
+               Company c = this.companyService.findOne(a.getId());
+               Assert.notNull(c);
+               position.setCompany(c);
+               position = this.positionService.reconstruct(position, binding);
+               position = this.positionService.saveFinal(position);
+               result = new ModelAndView("redirect:list.do");
+           } catch (ValidationException e) {
+               result = this.createEditModelAndView(position, null);
+               result.addObject("problems", problems);
+           } catch (final Throwable oops) {
+               result = this.createEditModelAndView(position, "position.commit.error");
+           }
+       }
+        return result;
+    }
+
+    //TODO: Sin hacer ni comprobar
+    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "cancel")
+    public ModelAndView cancel(Position position, BindingResult binding){
+        ModelAndView result;
+
+        if (position.getIsFinal() == false){
+            result = this.createEditModelAndView(position, "position.commit.error");
+        }else {
+            position.setIsCancelled(true);
+            try {
+                Actor a = this.actorService.getActorLogged();
+                Company c = this.companyService.findOne(a.getId());
+                Assert.notNull(c);
+                position = this.positionService.reconstruct(position, binding);
+                result = new ModelAndView("redirect:list.do");
+            } catch (ValidationException e) {
+                result = this.createEditModelAndView(position, null);
+            } catch (final Throwable oops) {
+                result = this.createEditModelAndView(position, "position.commit.error");
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/company/edit", method = RequestMethod.GET)
+    public ModelAndView edit(@RequestParam final int positionId){
+        ModelAndView result;
+        Position position;
+
+        position = this.positionService.findOne(positionId);
+        Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
+
+        if (position == null || position.getIsFinal() == true || !(position.getCompany().equals(c)))
+            result = new ModelAndView("redirect:/misc/403");
+        else
+            try {
+                Collection<Problem> problems = this.problemService.findAllByCompany(c.getId());
+                result = this.createEditModelAndView(position);
+                result.addObject("problems",problems);
+            }catch(Throwable oops) {
+                result = new ModelAndView("redirect:/misc/403");
+            }
+        return result;
+    }
+
+    //TODO: comprobar
+    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "delete")
+    public ModelAndView delete(@RequestParam int positionId) {
+        ModelAndView result;
+        try {
+            this.positionService.delete(this.positionService.findOne(positionId));
+            result = new ModelAndView("redirect:list.do");
+        } catch (final Throwable oops) {
+            result =  new ModelAndView("redirect:/misc/403");
+        }
+
+        return result;
+    }
+
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
     public ModelAndView show(@RequestParam int positionId){
@@ -75,6 +249,21 @@ public class PositionController extends AbstractController {
                 result = new ModelAndView("redirect:/");
             }
         }
+        return result;
+    }
+
+    private ModelAndView createEditModelAndView(Position position){
+        ModelAndView result;
+        result =this.createEditModelAndView(position, null);
+        return result;
+    }
+
+    private ModelAndView createEditModelAndView(Position position, String messageCode){
+        ModelAndView result;
+
+        result = new ModelAndView("position/company/edit");
+        result.addObject("position",position);
+        result.addObject("message", messageCode);
         return result;
     }
 

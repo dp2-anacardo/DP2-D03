@@ -55,7 +55,7 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="problem/company/list.do"><spring:message code="master.page.company.problem" /></a></li>
-
+					<li><a href="position/company/list.do"><spring:message code="master.page.position.list" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>

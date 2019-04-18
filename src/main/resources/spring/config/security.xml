@@ -66,6 +66,7 @@
         <security:intercept-url pattern="/hacker/company/**" access="hasAnyRole('COMPANY')"/>
 
         <security:intercept-url pattern="/position/listNotLogged.do" access="permitAll"/>
+        <security:intercept-url pattern="/position/company/**" access="hasAnyRole('COMPANY')"/>
         <security:intercept-url pattern="/position/search.do" access="permitAll"/>
 
 

@@ -33,5 +33,5 @@
 
 
 
-    <acme:cancel url="profile/action-1.do" code="messageBox.goBack" />
+    <acme:cancel url="profile/myInformation.do" code="messageBox.goBack" />
 </security:authorize>

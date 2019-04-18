@@ -64,7 +64,7 @@
     <display:column property="company.commercialName" title="${company}"
                     sortable="false"/>
 </display:table>
-
-<acme:cancel url="/position/listNotLogged.do" code="position.goBack"/>
+<!-- TODO:Poner botón para vuelva a vista anterior -->
+<acme:cancel url="position/company/list.do" code="position.goBack"/>
 
 

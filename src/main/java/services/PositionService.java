@@ -4,16 +4,20 @@ package services;
 import java.util.*;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import domain.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import repositories.PositionRepository;
 import security.UserAccount;
 import domain.Company;
 import domain.Position;
+
 
 @Service
 @Transactional
@@ -30,7 +34,10 @@ public class PositionService {
 	private FinderService 			finderService;
 	@Autowired
 	private ConfigurationService	configurationService;
-
+	@Autowired
+	private Validator validator;
+	@Autowired
+	private CompanyService companyService;
 
 	public Position create() {
 		UserAccount userAccount;
@@ -38,7 +45,6 @@ public class PositionService {
 		Assert.isTrue(userAccount.getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
 
 		final Position position = new Position();
-
 		return position;
 	}
 
@@ -59,6 +65,8 @@ public class PositionService {
 		Assert.notNull(position);
 
 		if (position.getId() == 0) {
+			Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
+			position.setCompany(c);
 			position.setTicker(this.tickerGenerator(position));
 			position = this.positionRepository.save(position);
 		} else
@@ -66,7 +74,22 @@ public class PositionService {
 		return position;
 	}
 
-	public void delete(final Position position) {
+	public Position saveDraft(Position position){
+		Assert.notNull(position);
+		Assert.isTrue(position.getIsFinal()==false);
+		position.setIsFinal(false);
+		Position result = this.save(position);
+		return result;
+	}
+
+	public Position saveFinal(Position position) {
+		Assert.notNull(position);
+		position.setIsFinal(true);
+		Position result = this.save(position);
+		return result;
+	}
+
+		public void delete(final Position position) {
 		Assert.notNull(position);
 
 		UserAccount userAccount;
@@ -100,6 +123,17 @@ public class PositionService {
 		return positions;
 	}
 
+	public Collection<Position> getPositionsByCompanyAll(final Company company) {
+		Collection<Position> positions;
+
+		positions = this.positionRepository.getPositionsByCompanyAll(company.getId());
+
+		return positions;
+	}
+
+
+
+
 	public Collection<Position> searchPositions(String keyword){
 		Collection<Position> res = Collections.emptyList();
 		List<Position> proAux1;
@@ -120,5 +154,30 @@ public class PositionService {
 		res = this.finderService.maxPosition(res, conf);
 
 		return res;
+	}
+
+	public Position reconstruct(Position p, BindingResult binding){
+		Position result;
+		if(p.getId() == 0){
+			result = this.create();
+		}else{
+			result = this.positionRepository.findOne(p.getId());
+		}
+		result.setTitle(p.getTitle());
+		result.setDescription(p.getDescription());
+		result.setDeadline(p.getDeadline());
+		result.setSkill(p.getSkill());
+		result.setTechnology(p.getTechnology());
+		result.setProfile(p.getProfile());
+		result.setSalary(p.getSalary());
+		result.setProblems(p.getProblems());
+		result.setIsFinal(p.getIsFinal());
+		result.setTicker(this.tickerGenerator(p));
+
+		validator.validate(result, binding);
+		if (binding.hasErrors()){
+			throw new ValidationException();
+		}
+		return result;
 	}
 }
