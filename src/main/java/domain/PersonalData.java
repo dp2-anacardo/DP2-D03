@@ -2,6 +2,7 @@ package domain;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -49,6 +50,7 @@ public class PersonalData extends DomainEntity{
         this.phoneNumber = phoneNumber;
     }
     @NotBlank
+    @URL
     @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getGithubProfile() {
         return githubProfile;
@@ -58,6 +60,7 @@ public class PersonalData extends DomainEntity{
         this.githubProfile = githubProfile;
     }
     @NotBlank
+    @URL
     @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     public String getLinkedInProfile() {
         return linkedInProfile;

@@ -14,14 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.AdministratorService;
-import services.FinderService;
 import services.HackerService;
 import controllers.AbstractController;
 import datatype.CreditCard;
-import domain.Curricula;
-import domain.Finder;
 import domain.Hacker;
-import domain.PersonalData;
 import forms.HackerForm;
 
 @Controller
@@ -35,8 +31,6 @@ public class RegisterHackerController extends AbstractController {
 	private ActorService			actorService;
 	@Autowired
 	private AdministratorService	administratorService;
-	@Autowired
-	private FinderService			finderService;
 
 
 	@ExceptionHandler(TypeMismatchException.class)
@@ -70,28 +64,15 @@ public class RegisterHackerController extends AbstractController {
 			result = this.createEditModelAndView(hackerForm);
 		else
 			try {
-				Finder finderCreate;
-				Finder finder;
-				finderCreate = this.finderService.create();
-				finder = this.finderService.save(finderCreate);
-				final Curricula curricula = new Curricula();
-				final PersonalData p = new PersonalData();
+
 				final CreditCard c = new CreditCard();
 				c.setBrandName(hackerForm.getBrandName());
 				c.setCvv(hackerForm.getCvvCode());
 				c.setExpirationYear(hackerForm.getExpiration());
 				c.setHolder(hackerForm.getHolderName());
 				c.setNumber(hackerForm.getNumber());
-				p.setFullName(hackerForm.getName() + " " + hackerForm.getSurname());
-				p.setGithubProfile(hackerForm.getGithubProfile());
-				p.setLinkedInProfile(hackerForm.getLinkedInProfile());
-				p.setStatement("Registrado");
-				p.setPhoneNumber(hackerForm.getPhoneNumber());
-				curricula.setPersonalData(p);
 				hacker = this.hackerService.reconstruct(hackerForm, binding);
-				hacker.setFinder(finder);
 				hacker.setCreditCard(c);
-				hacker.getCurricula().add(curricula);
 				this.hackerService.save(hacker);
 				result = new ModelAndView("redirect:/");
 			} catch (final Throwable oops) {

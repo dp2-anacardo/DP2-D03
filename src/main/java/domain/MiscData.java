@@ -27,7 +27,6 @@ public class MiscData extends DomainEntity{
         this.freeText = freeText;
     }
 
-    @NotEmpty
     @ElementCollection(fetch = FetchType.EAGER)
     @Valid
     public Collection<Url> getAttachment() {

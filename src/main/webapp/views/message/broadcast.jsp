@@ -19,7 +19,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="message/broadcast.do" modelAttribute="mesage">
+<form:form action="message/administrator/broadcast.do" modelAttribute="mesage">
 
 	<security:authorize access="hasRole('ADMIN')">
 

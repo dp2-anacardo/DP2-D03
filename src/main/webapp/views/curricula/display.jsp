@@ -62,7 +62,7 @@
 
         <display:column>
             <a
-                    href="educationalData/hacker/edit.do?educationalDataId=${row.id}">
+                    href="educationalData/hacker/edit.do?educationalDataId=${row.id}&curriculaId=${curricula.id}">
                 <spring:message code="curricula.edit" />
             </a>
         </display:column>
@@ -100,7 +100,7 @@
 
         <display:column>
             <a
-                    href="positionData/hacker/edit.do?positionDataId=${row.id}">
+                    href="positionData/hacker/edit.do?positionDataId=${row.id}&curriculaId=${curricula.id}">
                 <spring:message code="curricula.edit" />
             </a>
         </display:column>
@@ -134,7 +134,7 @@
 
         <display:column>
             <a
-                    href="miscData/hacker/edit.do?miscDataId=${row.id}">
+                    href="miscData/hacker/edit.do?miscDataId=${row.id}&curriculaId=${curricula.id}">
                 <spring:message code="curricula.edit" />
             </a>
         </display:column>

@@ -7,9 +7,12 @@ import domain.PersonalData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import repositories.PersonalDataRepository;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.Collection;
 
 @Service
@@ -25,7 +28,27 @@ public class PersonalDataService {
     @Autowired
     private HackerService hackerService;
     @Autowired
-    private CurriculaService curriculaService;
+    private Validator validator;
+
+    public PersonalData reconstruct(PersonalData personalData, BindingResult binding){
+        PersonalData result;
+        if(personalData.getId() == 0){
+            result = this.create();
+        }else{
+            result = this.personalDataRepository.findOne(personalData.getId());
+        }
+        result.setFullName(personalData.getFullName());
+        result.setGithubProfile(personalData.getGithubProfile());
+        result.setLinkedInProfile(personalData.getLinkedInProfile());
+        result.setPhoneNumber(personalData.getPhoneNumber());
+        result.setStatement(personalData.getStatement());
+
+        validator.validate(result,binding);
+        if(binding.hasErrors()){
+            throw new ValidationException();
+        }
+        return result;
+    }
 
     public PersonalData create(){
         Actor a = this.actorService.getActorLogged();

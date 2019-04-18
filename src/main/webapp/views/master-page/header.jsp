@@ -24,11 +24,13 @@
 			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
+					<li><a href="message/administrator/broadcast.do"><spring:message code="master.page.administrator.broadcast" /></a></li>
+					<li><a href="administrator/actorList.do"><spring:message code="master.page.administrator.actorList" /></a></li>
 					<li><a href="administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>
 					<li><a href="administrator/administrator/create.do"><spring:message code="master.page.administrator.register" /></a></li>
-					
 				</ul>
 			</li>
+			<li><a class="fNiv" href="configuration/administrator/show.do"><spring:message code="master.page.configuration" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="hasRole('HACKER')">
@@ -41,8 +43,8 @@
 			<li><a class="fNiv"><spring:message	code="master.page.finder" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="finder/member/edit.do"><spring:message code="master.page.finder.edit" /></a></li>
-					<li><a href="finder/member/list.do"><spring:message code="master.page.finder.list" /></a></li>
+					<li><a href="finder/hacker/edit.do"><spring:message code="master.page.finder.edit" /></a></li>
+					<li><a href="finder/hacker/list.do"><spring:message code="master.page.finder.list" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
@@ -59,6 +61,8 @@
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
+			<li><a href="position/listNotLogged.do"><spring:message code="master.page.position.available" /></a></li>
+			<li><a href="position/search.do"><spring:message code="master.page.search" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">
@@ -74,6 +78,8 @@
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>				
 				</ul>
 			</li>
+			<li><a href="position/listNotLogged.do"><spring:message code="master.page.position.available" /></a></li>
+			<li><a href="position/search.do"><spring:message code="master.page.search" /></a></li>
 		</security:authorize>
 	</ul>
 </div>

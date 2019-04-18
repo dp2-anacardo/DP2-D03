@@ -18,6 +18,7 @@ import security.Authority;
 import security.UserAccount;
 import domain.Actor;
 import domain.Curricula;
+import domain.Finder;
 import domain.Hacker;
 import domain.Message;
 import domain.SocialProfile;
@@ -37,6 +38,8 @@ public class HackerService {
 	private HackerRepository		hackerRepository;
 	@Autowired
 	private Validator				validator;
+	@Autowired
+	private FinderService			finderService;
 
 
 	public Hacker create() {
@@ -102,6 +105,12 @@ public class HackerService {
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			final String res = encoder.encodePassword(hacker.getUserAccount().getPassword(), null);
 			hacker.getUserAccount().setPassword(res);
+			Finder finderCreate;
+			Finder finder;
+			finderCreate = this.finderService.create();
+			finder = this.finderService.save(finderCreate);
+			hacker.setFinder(finder);
+
 		}
 		result = this.hackerRepository.save(hacker);
 		return result;
