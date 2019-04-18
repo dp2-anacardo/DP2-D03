@@ -17,6 +17,7 @@ import security.UserAccount;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional
@@ -240,6 +241,115 @@ public class AdministratorService {
                 }
 
         return spam;
+    }
+
+    public List<Double> getStatsPositionsPerCompany(){
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgNumberOfPositions());
+        result.add(this.administratorRepository.getMinimumNumberOfPositions());
+        result.add(this.administratorRepository.getMaximumNumberOfPositions());
+        result.add(this.administratorRepository.getStddevNumberOfPositions());
+
+        return result;
+    }
+
+    public List<Double> getStatsApplicationsPerHacker(){
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgNumberOfApplications());
+        result.add(this.administratorRepository.getMinimumNumberOfApplications());
+        result.add(this.administratorRepository.getMaximumNumberOfApplications());
+        result.add(this.administratorRepository.getStddevNumberOfApplications());
+
+        return result;
+    }
+
+    public List<Company> getCompaniesWithOfferedMorePositions(){
+
+        List<Company> result = new ArrayList<>();
+
+        result.addAll(this.administratorRepository.getCompaniesWithMorePositionsOffered());
+
+        return result;
+    }
+
+    public List<Hacker> getHackersWithMoreApplications(){
+
+        List<Hacker> result = new ArrayList<>();
+
+        result.addAll(this.administratorRepository.getHackersWithMoreApplications());
+
+        return result;
+    }
+
+    public List<Double> getStatsSalariesOffered(){
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgSalaryOffered());
+        result.add(this.administratorRepository.getMinSalaryOffered());
+        result.add(this.administratorRepository.getMaxSalaryOffered());
+        result.add(this.administratorRepository.getStddevSalaryOffered());
+
+        return result;
+    }
+
+    public Position getBestPositionSalaryOffered(){
+
+        Position position;
+
+        position = this.administratorRepository.getBestPositionSalaryOffered().get(0);
+
+        return position;
+    }
+
+    public Position getWorstPositionSalaryOffered(){
+
+        Position position;
+
+        position = this.administratorRepository.getWorstPositionSalaryOffered().get(0);
+
+        return position;
+    }
+
+    public List<Double> getStatsCurricula(){
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgNumberOfCurricula());
+        result.add(this.administratorRepository.getMinimumNumberOfCurricula());
+        result.add(this.administratorRepository.getMaximumNumberOfCurricula());
+        result.add(this.administratorRepository.getStddevNumberOfCurricula());
+
+        return result;
+    }
+
+    public List<Double> getStatsFinder(){
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgResultFinder());
+        result.add(this.administratorRepository.getMinimumResultFinder());
+        result.add(this.administratorRepository.getMaximumResultFinder());
+        result.add(this.administratorRepository.getStddevResultFinder());
+
+        return result;
+    }
+
+    public Double getRatioOfNotEmptyFinders(){
+
+        Double result = this.administratorRepository.getRatioOfNotEmptyFinders();
+
+        return result;
+    }
+
+    public Double getRatioOfEmptyFinders(){
+
+        Double result = this.administratorRepository.getRatioOfEmptyFinders();
+
+        return result;
     }
 
 }
