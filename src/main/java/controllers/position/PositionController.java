@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,7 +60,7 @@ public class PositionController extends AbstractController {
         try {
             int id = this.actorService.getActorLogged().getId();
             Company c = this.companyService.findOne(id);
-            Collection<Position> positions = this.positionService.getPositionsByCompany(c);
+            Collection<Position> positions = this.positionService.getPositionsByCompanyAll(c);
 
             result = new ModelAndView("position/company/list");
             result.addObject("positions", positions);
@@ -86,12 +87,20 @@ public class PositionController extends AbstractController {
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveDraft")
     public ModelAndView saveDraft(Position position, BindingResult binding){
         ModelAndView result;
+        Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+
         if (position.getIsFinal() == true){
             result = this.createEditModelAndView(position, "position.commit.error");
+            result.addObject("problems", problems);
         }else {
             position.setIsFinal(false);
-            Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+
             try {
+                Actor a = this.actorService.getActorLogged();
+                Company c = this.companyService.findOne(a.getId());
+                Assert.notNull(c);
+                position.setCompany(c);
+
                 position = this.positionService.reconstruct(position, binding);
                 position = this.positionService.saveDraft(position);
                 result = new ModelAndView("redirect:list.do");
@@ -100,6 +109,7 @@ public class PositionController extends AbstractController {
                 result.addObject("problems", problems);
             } catch (final Throwable oops) {
                 result = this.createEditModelAndView(position, "position.commit.error");
+                result.addObject("problems", problems);
             }
         }
         return result;
@@ -108,12 +118,22 @@ public class PositionController extends AbstractController {
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveFinal")
     public ModelAndView saveFinal(Position position, BindingResult binding){
         ModelAndView result;
-       if (position.getProblems().size() < 2 || position.getIsFinal() == true){
+        Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+        if(position.getProblems()==null){
+            result = this.createEditModelAndView(position, "position.commit.error");
+            result.addObject("problems", problems);
+        }
+        else if (position.getProblems().size() < 2 || position.getIsFinal() == true){
            result = this.createEditModelAndView(position, "position.commit.error");
+           result.addObject("problems", problems);
        }else {
            position.setIsFinal(true);
-           Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+
            try {
+               Actor a = this.actorService.getActorLogged();
+               Company c = this.companyService.findOne(a.getId());
+               Assert.notNull(c);
+               position.setCompany(c);
                position = this.positionService.reconstruct(position, binding);
                position = this.positionService.saveFinal(position);
                result = new ModelAndView("redirect:list.do");

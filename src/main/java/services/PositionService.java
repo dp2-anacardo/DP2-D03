@@ -78,14 +78,14 @@ public class PositionService {
 		Assert.notNull(position);
 		Assert.isTrue(position.getIsFinal()==false);
 		position.setIsFinal(false);
-		Position result = this.positionRepository.save(position);
+		Position result = this.save(position);
 		return result;
 	}
 
 	public Position saveFinal(Position position) {
 		Assert.notNull(position);
 		position.setIsFinal(true);
-		Position result = this.positionRepository.save(position);
+		Position result = this.save(position);
 		return result;
 	}
 
@@ -122,6 +122,17 @@ public class PositionService {
 
 		return positions;
 	}
+
+	public Collection<Position> getPositionsByCompanyAll(final Company company) {
+		Collection<Position> positions;
+
+		positions = this.positionRepository.getPositionsByCompanyAll(company.getId());
+
+		return positions;
+	}
+
+
+
 
 	public Collection<Position> searchPositions(String keyword){
 		Collection<Position> res = Collections.emptyList();
@@ -160,6 +171,8 @@ public class PositionService {
 		result.setProfile(p.getProfile());
 		result.setSalary(p.getSalary());
 		result.setProblems(p.getProblems());
+		result.setIsFinal(p.getIsFinal());
+		result.setTicker(this.tickerGenerator(p));
 
 		validator.validate(result, binding);
 		if (binding.hasErrors()){

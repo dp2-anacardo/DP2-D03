@@ -14,6 +14,7 @@
     <security:authorize
             access="hasAnyRole('COMPANY')">
 
+        <form:input type ="hidden" path="id" readonly="true"/>
 
         <acme:textbox code="position.title" path="title" />
         <br
