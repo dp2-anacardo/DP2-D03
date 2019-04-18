@@ -4,16 +4,20 @@ package services;
 import java.util.*;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import domain.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import repositories.PositionRepository;
 import security.UserAccount;
 import domain.Company;
 import domain.Position;
+
 
 @Service
 @Transactional
@@ -30,7 +34,8 @@ public class PositionService {
 	private FinderService 			finderService;
 	@Autowired
 	private ConfigurationService	configurationService;
-
+	@Autowired
+	private Validator validator;
 
 	public Position create() {
 		UserAccount userAccount;
@@ -120,5 +125,24 @@ public class PositionService {
 		res = this.finderService.maxPosition(res, conf);
 
 		return res;
+	}
+
+	public Position reconstruct(Position p, BindingResult binding){
+		Position result;
+		if(p.getId() == 0){
+			result = this.create();
+		}else{
+			result = this.positionRepository.findOne(p.getId());
+		}
+		result.setTitle(p.getTitle());
+		result.setDescription(p.getDescription());
+		result.setDeadline(p.getDeadline());
+		result.setProfile(p.getProfile());
+
+		validator.validate(result, binding);
+		if (binding.hasErrors()){
+			throw new ValidationException();
+		}
+		return result;
 	}
 }
