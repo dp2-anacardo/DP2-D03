@@ -14,11 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.AdministratorService;
-import services.FinderService;
 import services.HackerService;
 import controllers.AbstractController;
 import datatype.CreditCard;
-import domain.Finder;
 import domain.Hacker;
 import forms.HackerForm;
 
@@ -33,8 +31,6 @@ public class RegisterHackerController extends AbstractController {
 	private ActorService			actorService;
 	@Autowired
 	private AdministratorService	administratorService;
-	@Autowired
-	private FinderService			finderService;
 
 
 	@ExceptionHandler(TypeMismatchException.class)
@@ -68,10 +64,7 @@ public class RegisterHackerController extends AbstractController {
 			result = this.createEditModelAndView(hackerForm);
 		else
 			try {
-				Finder finderCreate;
-				Finder finder;
-				finderCreate = this.finderService.create();
-				finder = this.finderService.save(finderCreate);
+
 				final CreditCard c = new CreditCard();
 				c.setBrandName(hackerForm.getBrandName());
 				c.setCvv(hackerForm.getCvvCode());
@@ -79,7 +72,6 @@ public class RegisterHackerController extends AbstractController {
 				c.setHolder(hackerForm.getHolderName());
 				c.setNumber(hackerForm.getNumber());
 				hacker = this.hackerService.reconstruct(hackerForm, binding);
-				hacker.setFinder(finder);
 				hacker.setCreditCard(c);
 				this.hackerService.save(hacker);
 				result = new ModelAndView("redirect:/");
