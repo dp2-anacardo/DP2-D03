@@ -3,6 +3,7 @@ package repositories;
 
 import domain.Company;
 import domain.Hacker;
+import domain.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -59,11 +60,14 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
     @Query("select stddev(p.salary) from Position p where p.isFinal = true and p.isCancelled = false")
     Double getStddevSalaryOffered();
 
-    @Query("select p,max(p.salary) from Position p where p.isFinal = true and p.isCancelled = false")
-    List<Object> getBestPositionSalaryOffered();
+    //@Query("select p,max(p.salary) from Position p where p.isFinal = true and p.isCancelled = false")
+    //List<Object> getBestPositionSalaryOffered();
 
-    @Query("select p,min(p.company) from Position p where p.isFinal = true and p.isCancelled = false")
-    List<Object> getWorstPositionSalaryOffered();
+    @Query("select p from Position p where p.isFinal = true and p.isCancelled = false order by max(p.salary)")
+    List<Position> getBestPositionSalaryOffered();
+
+    @Query("select p from Position p where p.isFinal = true and p.isCancelled = false order by min(p.salary)")
+    List<Position> getWorstPositionSalaryOffered();
 
     @Query("select avg(h.curricula.size)*1.0 from Hacker h")
     Double getAvgNumberOfCurricula();

@@ -244,8 +244,6 @@ public class AdministratorService {
     }
 
     public List<Double> getStatsPositionsPerCompany(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
-
         List<Double> result = new ArrayList<>();
 
         result.add(this.administratorRepository.getAvgNumberOfPositions());
@@ -257,7 +255,6 @@ public class AdministratorService {
     }
 
     public List<Double> getStatsApplicationsPerHacker(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         List<Double> result = new ArrayList<>();
 
@@ -270,7 +267,6 @@ public class AdministratorService {
     }
 
     public List<Company> getCompaniesWithOfferedMorePositions(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         List<Company> result = new ArrayList<>();
 
@@ -280,7 +276,6 @@ public class AdministratorService {
     }
 
     public List<Hacker> getHackersWithMoreApplications(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         List<Hacker> result = new ArrayList<>();
 
@@ -290,7 +285,6 @@ public class AdministratorService {
     }
 
     public List<Double> getStatsSalariesOffered(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         List<Double> result = new ArrayList<>();
 
@@ -303,27 +297,24 @@ public class AdministratorService {
     }
 
     public Position getBestPositionSalaryOffered(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         Position position;
 
-        position = (Position) this.administratorRepository.getBestPositionSalaryOffered().get(0);
+        position = this.administratorRepository.getBestPositionSalaryOffered().get(0);
 
         return position;
     }
 
     public Position getWorstPositionSalaryOffered(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         Position position;
 
-        position = (Position) this.administratorRepository.getWorstPositionSalaryOffered().get(0);
+        position = this.administratorRepository.getWorstPositionSalaryOffered().get(0);
 
         return position;
     }
 
     public List<Double> getStatsCurricula(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         List<Double> result = new ArrayList<>();
 
@@ -336,7 +327,6 @@ public class AdministratorService {
     }
 
     public List<Double> getStatsFinder(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         List<Double> result = new ArrayList<>();
 
@@ -349,7 +339,6 @@ public class AdministratorService {
     }
 
     public Double getRatioOfNotEmptyFinders(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         Double result = this.administratorRepository.getRatioOfNotEmptyFinders();
 
@@ -357,7 +346,6 @@ public class AdministratorService {
     }
 
     public Double getRatioOfEmptyFinders(){
-        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 
         Double result = this.administratorRepository.getRatioOfEmptyFinders();
 
