@@ -1,6 +1,8 @@
 package controllers.position;
 
 import controllers.AbstractController;
+import domain.Actor;
+import domain.Company;
 import domain.Position;
 import forms.SearchForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import services.ActorService;
+import services.CompanyService;
 import services.PositionService;
 
 import javax.validation.Valid;
@@ -24,6 +28,12 @@ public class PositionController extends AbstractController {
     @Autowired
     private PositionService positionService;
 
+    @Autowired
+    private ActorService actorService;
+
+    @Autowired
+    private CompanyService companyService;
+
     @RequestMapping(value = "/listNotLogged", method = RequestMethod.GET)
     public ModelAndView listNotLogged(){
         ModelAndView result;
@@ -33,6 +43,24 @@ public class PositionController extends AbstractController {
         result.addObject("RequestURI", "position/listNotLogged.do");
 
         return result;
+    }
+
+    @RequestMapping(value = "/company/list", method = RequestMethod.GET)
+    public ModelAndView list(){
+        ModelAndView result;
+        try {
+            int id = this.actorService.getActorLogged().getId();
+            Company c = this.companyService.findOne(id);
+            Collection<Position> positions = this.positionService.getPositionsByCompany(c);
+
+            result = new ModelAndView("position/company/list");
+            result.addObject("positions", positions);
+            result.addObject("RequestURI", "position/company/list.do");
+        }catch(Throwable oops){
+            result = new ModelAndView("redirect:/misc/403");
+        }
+        return result;
+
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
