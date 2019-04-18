@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import domain.Administrator;
 
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
@@ -40,11 +41,11 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
     @Query("select stddev(1.0*(select count(a) from Application a where a.hacker.id = h.id)) from Hacker h")
     Double getStddevNumberOfApplications();
 
-    @Query("select max(p.company) from Position p where p.isFinal = true and p.isCancelled = false")
-    Company getCompanyWithMorePositionsOffered();
+    @Query("select p.company from Position p group by p.company order by count(p) desc")
+    List<Company> getCompaniesWithMorePositionsOffered();
 
-    @Query("select max(a.hacker) from Application a")
-    Hacker getHackerWithMoreApplications();
+    @Query("select a.hacker from Application a group by a.hacker order by count(a) desc")
+    List<Hacker> getHackersWithMoreApplications();
 
     @Query("select avg(p.salary) from Position p where p.isFinal = true and p.isCancelled = false")
     Double getAvgSalaryOffered();
@@ -59,10 +60,10 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
     Double getStddevSalaryOffered();
 
     @Query("select p,max(p.salary) from Position p where p.isFinal = true and p.isCancelled = false")
-    Collection<Object> getBestPositionSalaryOffered();
+    List<Object> getBestPositionSalaryOffered();
 
     @Query("select p,min(p.company) from Position p where p.isFinal = true and p.isCancelled = false")
-    Collection<Object> getWorstPositionSalaryOffered();
+    List<Object> getWorstPositionSalaryOffered();
 
     @Query("select avg(h.curricula.size)*1.0 from Hacker h")
     Double getAvgNumberOfCurricula();
