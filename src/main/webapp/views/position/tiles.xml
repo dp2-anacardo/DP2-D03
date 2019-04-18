@@ -23,7 +23,7 @@
 
 	<definition name="position/company/list" extends="master.page">
 		<put-attribute name="title" value="Positions" />
-		<put-attribute name="body" value="/views/position/listNotLogged.jsp" />
+		<put-attribute name="body" value="/views/position/list.jsp" />
 	</definition>
 
 	<definition name="position/show" extends="master.page">
@@ -32,8 +32,8 @@
 	</definition>
 
 	<definition name="position/company/edit" extends="master.page">
-		<put-attribute name="title" value="" />
-		<put-attribute name="body" value="/views/position/listNotLogged.jsp" />
+		<put-attribute name="title" value="Position" />
+		<put-attribute name="body" value="/views/position/edit.jsp" />
 	</definition>
 
 	<definition name="position/search" extends="master.page">

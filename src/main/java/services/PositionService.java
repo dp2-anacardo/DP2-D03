@@ -36,6 +36,8 @@ public class PositionService {
 	private ConfigurationService	configurationService;
 	@Autowired
 	private Validator validator;
+	@Autowired
+	private CompanyService companyService;
 
 	public Position create() {
 		UserAccount userAccount;
@@ -43,7 +45,6 @@ public class PositionService {
 		Assert.isTrue(userAccount.getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
 
 		final Position position = new Position();
-
 		return position;
 	}
 
@@ -64,6 +65,8 @@ public class PositionService {
 		Assert.notNull(position);
 
 		if (position.getId() == 0) {
+			Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
+			position.setCompany(c);
 			position.setTicker(this.tickerGenerator(position));
 			position = this.positionRepository.save(position);
 		} else
@@ -73,6 +76,7 @@ public class PositionService {
 
 	public Position saveDraft(Position position){
 		Assert.notNull(position);
+		Assert.isTrue(position.getIsFinal()==false);
 		position.setIsFinal(false);
 		Position result = this.positionRepository.save(position);
 		return result;
@@ -151,7 +155,11 @@ public class PositionService {
 		result.setTitle(p.getTitle());
 		result.setDescription(p.getDescription());
 		result.setDeadline(p.getDeadline());
+		result.setSkill(p.getSkill());
+		result.setTechnology(p.getTechnology());
 		result.setProfile(p.getProfile());
+		result.setSalary(p.getSalary());
+		result.setProblems(p.getProblems());
 
 		validator.validate(result, binding);
 		if (binding.hasErrors()){

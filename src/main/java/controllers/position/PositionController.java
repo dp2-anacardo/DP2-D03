@@ -4,6 +4,7 @@ import controllers.AbstractController;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
+import domain.Problem;
 import forms.SearchForm;
 import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.CompanyService;
 import services.PositionService;
+import services.ProblemService;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,6 +38,9 @@ public class PositionController extends AbstractController {
 
     @Autowired
     private CompanyService companyService;
+
+    @Autowired
+    private ProblemService problemService;
 
     @RequestMapping(value = "/listNotLogged", method = RequestMethod.GET)
     public ModelAndView listNotLogged(){
@@ -70,43 +76,54 @@ public class PositionController extends AbstractController {
         ModelAndView result;
         Position position;
         position = new Position();
+        Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
+        Collection<Problem> problems = this.problemService.findAllByCompany(c.getId());
         result = this.createEditModelAndView(position);
+        result.addObject("problems", problems);
         return result;
     }
 
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveDraft")
     public ModelAndView saveDraft(Position position, BindingResult binding){
         ModelAndView result;
-        position.setIsFinal(false);
-        position = this.positionService.reconstruct(position, binding);
-
-        if (binding.hasErrors())
-            result = this.createEditModelAndView(position);
-        else
+        if (position.getIsFinal() == true){
+            result = this.createEditModelAndView(position, "position.commit.error");
+        }else {
+            position.setIsFinal(false);
+            Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
             try {
-                this.positionService.saveDraft(position);
+                position = this.positionService.reconstruct(position, binding);
+                position = this.positionService.saveDraft(position);
                 result = new ModelAndView("redirect:list.do");
+            } catch (ValidationException e) {
+                result = this.createEditModelAndView(position, null);
+                result.addObject("problems", problems);
             } catch (final Throwable oops) {
                 result = this.createEditModelAndView(position, "position.commit.error");
             }
+        }
         return result;
     }
 
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveFinal")
     public ModelAndView saveFinal(Position position, BindingResult binding){
         ModelAndView result;
-        position.setIsFinal(true);
-        position = this.positionService.reconstruct(position, binding);
-
-        if (binding.hasErrors())
-            result = this.createEditModelAndView(position);
-        else
-            try {
-                this.positionService.saveFinal(position);
-                result = new ModelAndView("redirect:list.do");
-            } catch (final Throwable oops) {
-                result = this.createEditModelAndView(position, "position.commit.error");
-            }
+       if (position.getProblems().size() < 2 || position.getIsFinal() == true){
+           result = this.createEditModelAndView(position, "position.commit.error");
+       }else {
+           position.setIsFinal(true);
+           Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+           try {
+               position = this.positionService.reconstruct(position, binding);
+               position = this.positionService.saveFinal(position);
+               result = new ModelAndView("redirect:list.do");
+           } catch (ValidationException e) {
+               result = this.createEditModelAndView(position, null);
+               result.addObject("problems", problems);
+           } catch (final Throwable oops) {
+               result = this.createEditModelAndView(position, "position.commit.error");
+           }
+       }
         return result;
     }
 
@@ -116,22 +133,29 @@ public class PositionController extends AbstractController {
         Position position;
 
         position = this.positionService.findOne(positionId);
+        Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
 
-        if (position == null || position.getIsFinal() == true)
+        if (position == null || position.getIsFinal() == true || !(position.getCompany().equals(c)))
             result = new ModelAndView("redirect:/misc/403");
         else
-            result = this.createEditModelAndView(position);
+            try {
+                Collection<Problem> problems = this.problemService.findAllByCompany(c.getId());
+                result = this.createEditModelAndView(position);
+                result.addObject("problems",problems);
+            }catch(Throwable oops) {
+                result = new ModelAndView("redirect:/misc/403");
+            }
         return result;
     }
 
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "delete")
-    public ModelAndView delete(final Position position) {
+    public ModelAndView delete(@RequestParam int positionId) {
         ModelAndView result;
         try {
-            this.positionService.delete(this.positionService.findOne(position.getId()));
+            this.positionService.delete(this.positionService.findOne(positionId));
             result = new ModelAndView("redirect:list.do");
         } catch (final Throwable oops) {
-            result = this.createEditModelAndView(position, "position.commit.error");
+            result =  new ModelAndView("redirect:/misc/403");
         }
 
         return result;

@@ -13,7 +13,7 @@ import domain.Position;
 @Repository
 public interface PositionRepository extends JpaRepository<Position, Integer> {
 
-	@Query("select p from Position p where p.isFinal = true")
+	@Query("select p from Position p where p.isFinal = true and p.isCancelled = false")
 	List<Position> getPositionsAvailable();
 
 	@Query("select p from Position p join p.company c where p.isFinal = true and c.id=?1")

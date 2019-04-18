@@ -9,6 +9,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net" %>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
+<security:authorize access="hasRole('COMPANY')">
 <display:table name="positions" id="row" requestURI="${requestURI}"
                pagesize="5" class="displaytag">
 
@@ -21,5 +22,13 @@
     <display:column> <a href="position/show.do?positionId=${row.id}">
         <spring:message code="position.show" /></a> </display:column>
 
+    <display:column> <a href="position/company/edit.do?positionId=${row.id}">
+        <spring:message code="position.edit" /></a> </display:column>
+
+
 
 </display:table>
+
+    <input type="button" value="<spring:message code="position.create" />"
+           onclick="javascript: relativeRedir('position/company/create.do');" />
+</security:authorize>
