@@ -12,7 +12,7 @@
 
 <security:authorize access="hasRole('HACKER')">
 <form:form action="application/hacker/create.do" modelAttribute="application">
-	<form:hidden path="id" />
+	<form:hidden path="id" readOnly = "true"/>
 	<form:hidden path="moment"/>
 	<form:hidden path="status"/>
 	<form:hidden path="hacker"/>

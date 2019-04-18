@@ -108,14 +108,10 @@ public class ApplicationController extends AbstractController {
 	public ModelAndView create(@RequestParam final int positionId) {
 		ModelAndView result;
 		Application application;
-		Position position;
 
 		try {
 			Assert.notNull(positionId);
-			position = this.positionService.findOne(positionId);
-			final Collection<Application> applications = position.getApplications();
 			application = this.applicationService.create(positionId);
-			applications.add(application);
 			result = this.createModelAndView(application);
 			return result;
 		} catch (final Exception e) {
@@ -137,7 +133,7 @@ public class ApplicationController extends AbstractController {
 				Curricula copy = this.curriculaService.copy(application.getCurricula());
 				this.curriculaService.save2(copy);
 				hacker.getCurricula().add(copy);
-				this.applicationService.save(application);
+				this.applicationService.saveHacker(application);
 				result = new ModelAndView("redirect:/application/hacker/list.do");
 			} catch (final Exception e) {
 				result = this.createModelAndView(application, "application.commit.error");
@@ -170,7 +166,7 @@ public class ApplicationController extends AbstractController {
 			result = this.updateModelAndView(application);
 		else
 			try {
-				this.applicationService.save(application);
+				this.applicationService.saveHacker(application);
 				result = new ModelAndView("redirect:/application/hacker/list.do");
 			} catch (final Exception e) {
 				result = this.updateModelAndView(application, "application.commit.error");
@@ -279,7 +275,7 @@ public class ApplicationController extends AbstractController {
 	protected ModelAndView createModelAndView(final Application application, final String messageCode) {
 		ModelAndView result;
 		Collection<Curricula> curricula;
-		Hacker hacker = application.getHacker();
+		Hacker hacker = hackerService.findOne(actorService.getActorLogged().getId());
 		curricula = hacker.getCurricula();
 
 		result = new ModelAndView("application/hacker/create");

@@ -95,34 +95,7 @@ public class ApplicationService {
 		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
 		Application application;
 
-		//Tenemos que coger la lista de problemas de la posición a la que se le
-		//va a hacer la application
-		final List<Problem> problems;
-		//Cogemos la position usando el findOne y usando el id como parametro
-		final Position position = this.positionService.findOne(positionId);
-		Problem problem;
-
 		application = new Application();
-		application.setMoment(new Date());
-		application.setStatus("PENDING");
-		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
-		final Hacker hacker = this.hackerService.findOne(user.getId());
-		application.setHacker(hacker);
-
-		//Cogemos los problemas que son finales y que esten relacionados con la
-		//position que cogemos antes, que esta luego esta relacionada con la
-		//company que tiene los problemas
-		problems = this.problemService.getProblemsFinalByCompany(position.getCompany());
-
-		//Generamos un int random que vaya de 0 a el tamaño de los problemas -1
-		//random.nextInt genera un int random desde 0 a el valor como parametro -1
-		Random random = new Random();
-		int valorRandom = random.nextInt(problems.size());
-
-		//Cogemos un problema random de la lista de problemas
-		problem = problems.get(valorRandom);
-		//Le hacemos el set a la application
-		application.setProblem(problem);
 
 		return application;
 	}
@@ -144,10 +117,60 @@ public class ApplicationService {
 		return applications;
 	}
 
-	public Application save(final Application application) {
+	public Application saveHacker(Application application, int positionId) {
 		Assert.notNull(application);
-		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER")
-		|| this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
+		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
+
+		application.setMoment(new Date());
+		application.setStatus("PENDING");
+
+		//Tenemos que coger la lista de problemas de la posición a la que se le
+		//va a hacer la application
+		final List<Problem> problems;
+		//Cogemos la position usando el findOne y usando el id como parametro
+		final Position position = this.positionService.findOne(positionId);
+		Problem problem;
+
+		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
+		final Hacker hacker = this.hackerService.findOne(user.getId());
+		application.setHacker(hacker);
+
+		//Cogemos los problemas que son finales y que esten relacionados con la
+		//position que cogemos antes, que esta luego esta relacionada con la
+		//company que tiene los problemas
+		problems = this.problemService.getProblemsFinalByCompany(position.getCompany());
+
+		//Generamos un int random que vaya de 0 a el tamaño de los problemas -1
+		//random.nextInt genera un int random desde 0 a el valor como parametro -1
+		Random random = new Random();
+		int valorRandom = random.nextInt(problems.size());
+
+		//Cogemos un problema random de la lista de problemas
+		problem = problems.get(valorRandom);
+		//Le hacemos el set a la application
+		application.setProblem(problem);
+
+		application = this.applicationRepository.save(application);
+
+		return application;
+	}
+
+	public Application saveHackerUpdate(final Application application) {
+		Assert.notNull(application);
+		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
+
+		Application result = application;
+		result.setSubmitMoment(new Date());
+		result.setStatus("SUBMITTED");
+
+		result = this.applicationRepository.save(application);
+
+		return result;
+	}
+
+	public Application saveCompany(Application application){
+		Assert.notNull(application);
+		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
 
 		Application result;
 
