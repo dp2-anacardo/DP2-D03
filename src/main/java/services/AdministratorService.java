@@ -269,6 +269,26 @@ public class AdministratorService {
         return result;
     }
 
+    public List<Company> getCompaniesWithOfferedMorePositions(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        List<Company> result = new ArrayList<>();
+
+        result.addAll(this.administratorRepository.getCompaniesWithMorePositionsOffered());
+
+        return result;
+    }
+
+    public List<Hacker> getHackersWithMoreApplications(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        List<Hacker> result = new ArrayList<>();
+
+        result.addAll(this.administratorRepository.getHackersWithMoreApplications());
+
+        return result;
+    }
+
     public List<Double> getStatsSalariesOffered(){
         Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
 

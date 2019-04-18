@@ -41,11 +41,11 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
     @Query("select stddev(1.0*(select count(a) from Application a where a.hacker.id = h.id)) from Hacker h")
     Double getStddevNumberOfApplications();
 
-    @Query("select p.company from Position p where p.isFinal = true and p.isCancelled = true order by p.company desc")
-    Company getCompanyWithMorePositionsOffered();
+    @Query("select p.company from Position p group by p.company order by count(p) desc")
+    List<Company> getCompaniesWithMorePositionsOffered();
 
-    @Query("select max(a.hacker) from Application a")
-    Hacker getHackerWithMoreApplications();
+    @Query("select a.hacker from Application a group by a.hacker order by count(a) desc")
+    List<Hacker> getHackersWithMoreApplications();
 
     @Query("select avg(p.salary) from Position p where p.isFinal = true and p.isCancelled = false")
     Double getAvgSalaryOffered();
