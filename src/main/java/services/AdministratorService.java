@@ -17,6 +17,7 @@ import security.UserAccount;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional
@@ -240,6 +241,32 @@ public class AdministratorService {
                 }
 
         return spam;
+    }
+
+    public List<Double> getStatsPositionsPerCompany(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgNumberOfPositions());
+        result.add(this.administratorRepository.getMinimumNumberOfPositions());
+        result.add(this.administratorRepository.getMaximumNumberOfPositions());
+        result.add(this.administratorRepository.getStddevNumberOfPositions());
+
+        return result;
+    }
+
+    public List<Double> getStatsApplicationsPerHacker(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgNumberOfApplications());
+        result.add(this.administratorRepository.getMinimumNumberOfApplications());
+        result.add(this.administratorRepository.getMaximumNumberOfApplications());
+        result.add(this.administratorRepository.getStddevNumberOfApplications());
+
+        return result;
     }
 
 }
