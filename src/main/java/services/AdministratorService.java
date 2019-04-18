@@ -269,4 +269,79 @@ public class AdministratorService {
         return result;
     }
 
+    public List<Double> getStatsSalariesOffered(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgSalaryOffered());
+        result.add(this.administratorRepository.getMinSalaryOffered());
+        result.add(this.administratorRepository.getMaxSalaryOffered());
+        result.add(this.administratorRepository.getStddevSalaryOffered());
+
+        return result;
+    }
+
+    public Position getBestPositionSalaryOffered(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        Position position;
+
+        position = (Position) this.administratorRepository.getBestPositionSalaryOffered().get(0);
+
+        return position;
+    }
+
+    public Position getWorstPositionSalaryOffered(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        Position position;
+
+        position = (Position) this.administratorRepository.getWorstPositionSalaryOffered().get(0);
+
+        return position;
+    }
+
+    public List<Double> getStatsCurricula(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgNumberOfCurricula());
+        result.add(this.administratorRepository.getMinimumNumberOfCurricula());
+        result.add(this.administratorRepository.getMaximumNumberOfCurricula());
+        result.add(this.administratorRepository.getStddevNumberOfCurricula());
+
+        return result;
+    }
+
+    public List<Double> getStatsFinder(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        List<Double> result = new ArrayList<>();
+
+        result.add(this.administratorRepository.getAvgResultFinder());
+        result.add(this.administratorRepository.getMinimumResultFinder());
+        result.add(this.administratorRepository.getMaximumResultFinder());
+        result.add(this.administratorRepository.getStddevResultFinder());
+
+        return result;
+    }
+
+    public Double getRatioOfNotEmptyFinders(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        Double result = this.administratorRepository.getRatioOfNotEmptyFinders();
+
+        return result;
+    }
+
+    public Double getRatioOfEmptyFinders(){
+        Assert.isTrue(LoginService.getPrincipal().getAuthorities().iterator().next().equals("ADMIN"));
+
+        Double result = this.administratorRepository.getRatioOfEmptyFinders();
+
+        return result;
+    }
+
 }
