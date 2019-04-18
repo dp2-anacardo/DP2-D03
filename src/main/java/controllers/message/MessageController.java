@@ -84,21 +84,21 @@ public class MessageController extends AbstractController {
     }
 
     // Create Broadcast ------------------------------------------------------------------------
-    @RequestMapping(value = "/broadcast", method = RequestMethod.GET)
+    @RequestMapping(value = "administrator/broadcast", method = RequestMethod.GET)
     public ModelAndView broadcast() {
         ModelAndView result;
         Message mesage;
 
         mesage = this.messageService.create();
 
-        result = new ModelAndView("message/broadcast");
+        result = new ModelAndView("message/administrator/broadcast");
         result.addObject("mesage", mesage);
 
         return result;
     }
 
     // Send Broadcast  -------------------------------------------------------------
-    @RequestMapping(value = "/broadcast", method = RequestMethod.POST, params = "send")
+    @RequestMapping(value = "administrator/broadcast", method = RequestMethod.POST, params = "send")
     public ModelAndView sendBroadcast(@ModelAttribute("mesage") final Message mesage, final BindingResult binding) {
         ModelAndView result;
         Message msg;
@@ -120,7 +120,7 @@ public class MessageController extends AbstractController {
                 result = this.createBroadcastModelAndView(mesage);
             else {
                 this.messageService.broadcast(msg);
-                result = new ModelAndView("redirect:list.do");
+                result = new ModelAndView("redirect:/message/list.do");
             }
         } catch (final Throwable oops) {
             result = this.createBroadcastModelAndView(mesage, "message.commit.error");
@@ -244,7 +244,7 @@ public class MessageController extends AbstractController {
     protected ModelAndView createBroadcastModelAndView(final Message mesage, final String message) {
         ModelAndView result;
 
-        result = new ModelAndView("message/broadcast");
+        result = new ModelAndView("message/administrator/broadcast");
         result.addObject("mesage", mesage);
         result.addObject("message", message);
 
