@@ -49,7 +49,7 @@
 
         <acme:submit name="saveFinal" code="position.saveFinal"/>
 
-        <acme:submit name="cancel" code="position.cancel"/>
+        <acme:submit name="delete" code="position.delete"/>
 
         <acme:cancel url="position/company/list.do" code="position.goBack"/>
 

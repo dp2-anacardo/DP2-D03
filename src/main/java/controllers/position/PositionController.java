@@ -84,6 +84,7 @@ public class PositionController extends AbstractController {
         return result;
     }
 
+    //TODO: Meter comprobaciones en servicio
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveDraft")
     public ModelAndView saveDraft(Position position, BindingResult binding){
         ModelAndView result;
@@ -115,6 +116,7 @@ public class PositionController extends AbstractController {
         return result;
     }
 
+    //TODO: Meter comprobaciones en Asserts en Servicio
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveFinal")
     public ModelAndView saveFinal(Position position, BindingResult binding){
         ModelAndView result;
@@ -147,6 +149,30 @@ public class PositionController extends AbstractController {
         return result;
     }
 
+    //TODO: Sin hacer ni comprobar
+    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "cancel")
+    public ModelAndView cancel(Position position, BindingResult binding){
+        ModelAndView result;
+
+        if (position.getIsFinal() == false){
+            result = this.createEditModelAndView(position, "position.commit.error");
+        }else {
+            position.setIsCancelled(true);
+            try {
+                Actor a = this.actorService.getActorLogged();
+                Company c = this.companyService.findOne(a.getId());
+                Assert.notNull(c);
+                position = this.positionService.reconstruct(position, binding);
+                result = new ModelAndView("redirect:list.do");
+            } catch (ValidationException e) {
+                result = this.createEditModelAndView(position, null);
+            } catch (final Throwable oops) {
+                result = this.createEditModelAndView(position, "position.commit.error");
+            }
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/company/edit", method = RequestMethod.GET)
     public ModelAndView edit(@RequestParam final int positionId){
         ModelAndView result;
@@ -168,6 +194,7 @@ public class PositionController extends AbstractController {
         return result;
     }
 
+    //TODO: comprobar
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "delete")
     public ModelAndView delete(@RequestParam int positionId) {
         ModelAndView result;

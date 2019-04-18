@@ -21,10 +21,17 @@
 
     <display:column> <a href="position/show.do?positionId=${row.id}">
         <spring:message code="position.show" /></a> </display:column>
+    <display:column>
+        <jstl:if test="${row.isFinal == false}">
+        <a href="position/company/edit.do?positionId=${row.id}">
+        <spring:message code="position.edit" /></a> </jstl:if>
+    </display:column>
 
-    <display:column> <a href="position/company/edit.do?positionId=${row.id}">
-        <spring:message code="position.edit" /></a> </display:column>
-
+    <display:column>
+        <jstl:if test="${row.isFinal == true}">
+            <acme:submit name="cancel" code="position.cancel"/>
+        </jstl:if>
+    </display:column>
 
 
 </display:table>
