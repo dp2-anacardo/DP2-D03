@@ -60,8 +60,10 @@
         <security:intercept-url pattern="/problem/show.do" access="hasAnyRole('COMPANY', 'HACKER')"/>
 
         <security:intercept-url pattern="/curricula/hacker/**" access="hasAnyRole('HACKER')"/>
+        <security:intercept-url pattern="/curricula/company/**" access="hasRole('COMPANY')"/>
         <security:intercept-url pattern="/company/company/**" access="hasAnyRole('COMPANY')"/>
         <security:intercept-url pattern="/hacker/hacker/**" access="hasAnyRole('HACKER')"/>
+        <security:intercept-url pattern="/hacker/company/**" access="hasAnyRole('COMPANY')"/>
 
         <security:intercept-url pattern="/position/listNotLogged.do" access="permitAll"/>
         <security:intercept-url pattern="/position/search.do" access="permitAll"/>

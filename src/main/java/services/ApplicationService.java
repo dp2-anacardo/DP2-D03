@@ -166,6 +166,22 @@ public class ApplicationService {
 		return applications;
 	}
 
+	public Collection<Application> getApplicationsByPosition(int positionId){
+		Assert.notNull(positionId);
+		Collection<Application> applications;
+
+		applications = applicationRepository.getApplicationsByPosition(positionId);
+
+		return applications;
+	}
+
+	public Position getPositionByApplication(int applicationId){
+		Assert.notNull(applicationId);
+
+		Position position = this.applicationRepository.getPositionByApplication(applicationId);
+
+		return position;
+	}
 
 	//PARTE DEL HACKER--------------------------------------------------------------------------------------------------
 

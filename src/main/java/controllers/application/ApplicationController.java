@@ -71,19 +71,23 @@ public class ApplicationController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
-	public ModelAndView listCompany() {
+	public ModelAndView listCompany(@RequestParam int positionId) {
 		ModelAndView result;
 		Collection<Application> applications;
 
 		final Actor user = this.actorService.findByUsername(LoginService.getPrincipal().getUsername());
 		final Company company = this.companyService.findOne(user.getId());
 
-		applications = this.applicationService.getApplicationsByCompany(company);
-
-		result = new ModelAndView("application/company/list");
-		result.addObject("applications", applications);
-		result.addObject("requestURI", "application/company/list.do");
-
+		try {
+			Position position = positionService.findOne(positionId);
+			Assert.isTrue(position.getCompany().equals(company));
+			applications = this.applicationService.getApplicationsByPosition(positionId);
+			result = new ModelAndView("application/company/list");
+			result.addObject("applications", applications);
+			result.addObject("requestURI", "application/company/list.do?positionId="+positionId);
+		}catch (Throwable oops){
+			result = new ModelAndView("redirect:/position/company/list.do");
+		}
 		return result;
 	}
 
@@ -102,7 +106,7 @@ public class ApplicationController extends AbstractController {
 			Assert.isTrue(application.getHacker().equals(hacker));
 			result = new ModelAndView("application/hacker/show");
 			result.addObject("application", application);
-		} catch (final Exception e) {
+		} catch (Throwable oops) {
 			result = new ModelAndView("redirect:/application/hacker/list.do");
 		}
 		return result;
@@ -120,10 +124,11 @@ public class ApplicationController extends AbstractController {
 			application = this.applicationService.findOne(applicationId);
 			this.applicationService.acceptApplication(application);
 			this.applicationService.saveCompany(application);
-			result = new ModelAndView("redirect:/application/company/list.do");
+			int positionId = this.applicationService.getPositionByApplication(applicationId).getId();
+			result = new ModelAndView("redirect:/application/company/list.do?positionId="+positionId);
 			return result;
-		} catch (final Exception e) {
-			result = new ModelAndView("redirect:/application/company/list.do");
+		} catch (Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
 			return result;
 		}
 	}
@@ -138,8 +143,8 @@ public class ApplicationController extends AbstractController {
 			application = this.applicationService.findOne(applicationId);
 			result = this.rejectModelAndView(application);
 			return result;
-		} catch (final Exception e) {
-			result = new ModelAndView("redirect:/application/company/list.do");
+		} catch (Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
 			return result;
 		}
 	}
@@ -157,9 +162,10 @@ public class ApplicationController extends AbstractController {
 			result = this.rejectModelAndView(application);
 			return result;
 		} else{
+				int positionId = this.applicationService.getPositionByApplication(application.getId()).getId();
 				this.applicationService.rejectApplication(application);
 				this.applicationService.saveCompany(application);
-				result = new ModelAndView("redirect:/application/company/list.do");
+				result = new ModelAndView("redirect:/application/company/list.do?positionId="+positionId);
 				return result;
 		}
 	}

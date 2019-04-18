@@ -26,6 +26,11 @@
 		<put-attribute name="body" value="/views/curricula/display.jsp" />
 	</definition>
 
+	<definition name="curricula/company/display" extends="master.page">
+		<put-attribute name="title" value="Curricula" />
+		<put-attribute name="body" value="/views/curricula/display.jsp" />
+	</definition>
+
 	<definition name="curricula/hacker/create" extends="master.page">
 		<put-attribute name="title" value="Creación de Curricula" />
 		<put-attribute name="body" value="/views/curricula/create.jsp" />
