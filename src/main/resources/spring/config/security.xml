@@ -38,6 +38,7 @@
         <security:intercept-url pattern="/hacker/create.do" access="permitAll" />
         <security:intercept-url pattern="/company/create.do" access="permitAll" />
         <security:intercept-url pattern="/profile/**" access="isAuthenticated()"/>
+        <security:intercept-url pattern="/socialProfile/**" access="isAuthenticated()"/>
 
         <security:intercept-url pattern="/application/hacker/**" access="hasRole('HACKER')"/>
         <security:intercept-url pattern="/finder/hacker/**" access="hasRole('HACKER')"/>

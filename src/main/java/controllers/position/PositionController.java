@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import services.PositionService;
 
@@ -30,6 +31,17 @@ public class PositionController extends AbstractController {
         result = new ModelAndView("position/listNotLogged");
         result.addObject("positions", positionsAvailables);
         result.addObject("RequestURI", "position/listNotLogged.do");
+
+        return result;
+    }
+
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
+    public ModelAndView show(@RequestParam int positionId){
+        ModelAndView result;
+        Position p = this.positionService.findOne(positionId);
+
+        result = new ModelAndView("position/show");
+        result.addObject("position", p);
 
         return result;
     }

@@ -33,6 +33,7 @@
 		<value>/views/company/tiles.xml</value>
 		<value>/views/curricula/tiles.xml</value>
 		<value>/views/position/tiles.xml</value>
+		<value>/views/socialProfile/tiles.xml</value>
 	</util:list>
 
 </beans>

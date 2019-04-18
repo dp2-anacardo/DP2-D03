@@ -33,6 +33,7 @@
 		<value>/views/company/messages</value>
 		<value>/views/curricula/messages</value>
 		<value>/views/position/messages</value>
+		<value>/views/socialProfile/messages</value>
 	</util:list>
 
 </beans>
