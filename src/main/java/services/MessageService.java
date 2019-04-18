@@ -62,15 +62,13 @@ public class MessageService {
         if (message.getId() == 0) {
             Assert.notNull(message);
 
-            final String notification1 = "Enrolment accepted \n Inscripci�n aceptada";
-            final String notification2 = "Drop out brotherhood \n Salida de fraternidad";
+            final String notification1 = "An application has changed its status.";
+            final String notification2 = "A new position matches your criteria.";
 
             if (message.getSubject().equals(notification1) || message.getSubject().equals(notification2)) {
 
                 final Actor recipient = message.getRecipient();
                 Assert.notNull(recipient);
-
-                message.getTags().add("SYSTEM");
 
                 result = this.messageRepository.save(message);
 

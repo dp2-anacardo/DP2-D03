@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
+import domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -18,12 +19,6 @@ import org.springframework.validation.Validator;
 import repositories.ApplicationRepository;
 import security.LoginService;
 import security.UserAccount;
-import domain.Actor;
-import domain.Application;
-import domain.Company;
-import domain.Hacker;
-import domain.Position;
-import domain.Problem;
 
 @Service
 @Transactional
@@ -49,6 +44,9 @@ public class ApplicationService {
 
 	@Autowired
 	private CurriculaService curriculaService;
+
+	@Autowired
+	private MessageService messageService;
 
 	@Autowired
 	private Validator				validator;
@@ -132,6 +130,15 @@ public class ApplicationService {
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
 		Assert.isTrue(applications.contains(application));
 		application.setStatus("ACCEPTED");
+
+		//TODO Probar cuando se puedan aceptar las applications
+//		Message msg = this.messageService.create();
+//		msg.setRecipient(application.getHacker());
+//		msg.setSubject("An application has changed its status.");
+//		msg.setBody("The application for the position has changed its status to ACCEPTED");
+//		msg.getTags().add("NOTIFICATION");
+
+
 	}
 
 	public void rejectApplication(final Application application) {
@@ -146,6 +153,13 @@ public class ApplicationService {
 		Assert.isTrue(applications.contains(application));
 		Assert.isTrue(!application.getRejectComment().equals(""));
 		application.setStatus("REJECTED");
+
+		//TODO Probar cuando se puedan rechazar las applications
+//		Message msg = this.messageService.create();
+//		msg.setRecipient(application.getHacker());
+//		msg.setSubject("An application has changed its status.");
+//		msg.setBody("The application for the position has changed its status to REJECTED");
+//		msg.getTags().add("NOTIFICATION");
 	}
 
 	public Collection<Application> getApplicationsByHacker(final Hacker hacker) {

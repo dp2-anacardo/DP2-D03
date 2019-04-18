@@ -48,26 +48,29 @@
         <display:column title="${attachmentHeader}" sortable="false">
             <jstl:forEach items="${problem.attachment}" var="positiveWords">
                 <tr>
-                    <td><a href="<jstl:out value="${positiveWords.link}"/>"><jstl:out value="${positiveWords.link}"/></a></td>
+                    <td><a href="<jstl:out value="${positiveWords.link}"/>"><jstl:out
+                            value="${positiveWords.link}"/></a></td>
                 </tr>
             </jstl:forEach>
         </display:column>
     </display:table>
 
-
 </jstl:if>
-<display:table name="problem" id="row" requestURI="problem/show.do"
-               class="displaytag">
-    <spring:message code="problem.isFinal" var="isFinalHeader"/>
-    <display:column title="${isFinalHeader}" sortable="false">
-        <jstl:if test="${row.isFinal eq true}">
-            <spring:message code="problem.isFinal.final"/>
-        </jstl:if>
-        <jstl:if test="${row.isFinal eq false}">
-            <spring:message code="problem.isFinal.draft"/>
-        </jstl:if>
-    </display:column>
-</display:table>
+<security:authorize access="hasRole('COMPANY')">
+
+    <display:table name="problem" id="row" requestURI="problem/show.do"
+                   class="displaytag">
+        <spring:message code="problem.isFinal" var="isFinalHeader"/>
+        <display:column title="${isFinalHeader}" sortable="false">
+            <jstl:if test="${row.isFinal eq true}">
+                <spring:message code="problem.isFinal.final"/>
+            </jstl:if>
+            <jstl:if test="${row.isFinal eq false}">
+                <spring:message code="problem.isFinal.draft"/>
+            </jstl:if>
+        </display:column>
+    </display:table>
+</security:authorize>
 
 <security:authorize access="hasRole('COMPANY')">
     <acme:cancel url="problem/company/delete.do?problemID=${row.id}" code="problem.delete"/>
@@ -76,6 +79,8 @@
 </security:authorize>
 
 <security:authorize access="hasRole('HACKER')">
-    <acme:cancel url="problem/hacker/list.do" code="problem.goBack"/>
+    <input type="button" name="cancel"
+           value="<spring:message code="message.goBack" />"
+           onclick="javascript: window.history.back();" />
 
 </security:authorize>
