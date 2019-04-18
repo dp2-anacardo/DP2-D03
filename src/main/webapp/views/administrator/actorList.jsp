@@ -14,6 +14,11 @@
 <display:table name="actors" id="row" requestURI="${requestURI}"
                pagesize="5" class="displaytag">
 
+    <spring:message code="actor.show" var="show" />
+    <display:column title="${show}">
+        <acme:cancel url='administrator/actorList/showActor.do?actorId=${row.id}' code="actor.show" />
+    </display:column>
+
     <spring:message code="actor.name" var="name"/>
     <display:column property="name" title="${name}"/>
 

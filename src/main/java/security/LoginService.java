@@ -10,6 +10,7 @@
 
 package security;
 
+import domain.Actor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -20,58 +21,63 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import services.ActorService;
 
 @Service
 @Transactional
 public class LoginService implements UserDetailsService {
 
-	// Managed repository -----------------------------------------------------
+    // Managed repository -----------------------------------------------------
 
-	@Autowired
-	UserAccountRepository	userRepository;
+    @Autowired
+    UserAccountRepository userRepository;
+
+    @Autowired
+    ActorService actorService;
 
 
-	// Business methods -------------------------------------------------------
+    // Business methods -------------------------------------------------------
 
-	@Override
-	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		Assert.notNull(username);
+    @Override
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        Assert.notNull(username);
 
-		UserDetails result;
+        UserDetails result;
+        final Actor actor = this.actorService.findByUsername(username);
+        result = this.userRepository.findByUsername(username);
+        Assert.notNull(result);
+        Assert.isTrue(!actor.getIsBanned());
+        // WARNING: The following sentences prevent lazy initialisation problems!
+        Assert.notNull(result.getAuthorities());
+        result.getAuthorities().size();
 
-		result = this.userRepository.findByUsername(username);
-		Assert.notNull(result);
-		// WARNING: The following sentences prevent lazy initialisation problems!
-		Assert.notNull(result.getAuthorities());
-		result.getAuthorities().size();
+        return result;
+    }
 
-		return result;
-	}
+    public static UserAccount getPrincipal() {
+        UserAccount result;
+        SecurityContext context;
+        Authentication authentication;
+        Object principal;
 
-	public static UserAccount getPrincipal() {
-		UserAccount result;
-		SecurityContext context;
-		Authentication authentication;
-		Object principal;
+        // If the asserts in this method fail, then you're
+        // likely to have your Tomcat's working directory
+        // corrupt. Please, clear your browser's cache, stop
+        // Tomcat, update your Maven's project configuration,
+        // clean your project, clean Tomcat's working directory,
+        // republish your project, and start it over.
 
-		// If the asserts in this method fail, then you're
-		// likely to have your Tomcat's working directory
-		// corrupt. Please, clear your browser's cache, stop
-		// Tomcat, update your Maven's project configuration,
-		// clean your project, clean Tomcat's working directory,
-		// republish your project, and start it over.
+        context = SecurityContextHolder.getContext();
+        Assert.notNull(context);
+        authentication = context.getAuthentication();
+        Assert.notNull(authentication);
+        principal = authentication.getPrincipal();
+        Assert.isTrue(principal instanceof UserAccount);
+        result = (UserAccount) principal;
+        Assert.notNull(result);
+        Assert.isTrue(result.getId() != 0);
 
-		context = SecurityContextHolder.getContext();
-		Assert.notNull(context);
-		authentication = context.getAuthentication();
-		Assert.notNull(authentication);
-		principal = authentication.getPrincipal();
-		Assert.isTrue(principal instanceof UserAccount);
-		result = (UserAccount) principal;
-		Assert.notNull(result);
-		Assert.isTrue(result.getId() != 0);
-
-		return result;
-	}
+        return result;
+    }
 
 }

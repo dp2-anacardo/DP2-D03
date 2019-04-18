@@ -13,6 +13,7 @@ package controllers.administrator;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import domain.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -95,29 +96,29 @@ public class ManageActorsController extends AbstractController {
 		return result;
 	}
 
-//	@RequestMapping(value = "/actorList/showMember", method = RequestMethod.GET)
-//	public ModelAndView showMember(@RequestParam final int actorId) {
-//		ModelAndView result;
-//
-//		result = new ModelAndView("administrator/actorList/showMember");
-//
-//		try {
-//
-//			final Actor actor = this.actorService.findOne(actorId);
-//			Assert.notNull(actor);
-//
-//			Boolean member = false;
-//			if (actor instanceof Member)
-//				member = true;
-//
-//			result.addObject("actor", actor);
-//			result.addObject("member", member);
-//
-//		} catch (final Throwable oops) {
-//			return new ModelAndView("redirect:/misc/403");
-//		}
-//
-//		return result;
-//	}
+	@RequestMapping(value = "/actorList/showActor", method = RequestMethod.GET)
+	public ModelAndView showMember(@RequestParam final int actorId) {
+		ModelAndView result;
+
+		result = new ModelAndView("administrator/actorList/showActor");
+
+		try {
+
+			final Actor actor = this.actorService.findOne(actorId);
+			Assert.notNull(actor);
+
+			Boolean company = false;
+			if (actor instanceof Company)
+				company = true;
+
+			result.addObject("actor", actor);
+			result.addObject("company", company);
+
+		} catch (final Throwable oops) {
+			return new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
 
 }

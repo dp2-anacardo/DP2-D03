@@ -142,6 +142,7 @@ public class MessageService {
 
         for(Actor a : actors){
             Message msg = this.create();
+            Message result;
 
             msg = m;
 
@@ -149,7 +150,9 @@ public class MessageService {
 
             msg.getTags().add("SYSTEM");
 
-            this.messageRepository.save(msg);
+            result = this.messageRepository.save(msg);
+
+            a.getMessagesR().add(result);
         }
     }
 
@@ -163,8 +166,8 @@ public class MessageService {
 
     public Collection<Message> findInPoolByActor(final int actorID) {
         final Collection<Message> result = new ArrayList<Message>();
-        final Collection<Message> received = this.messageRepository.findAllReceivedByActor(actorID);
-        final Collection<Message> sent = this.messageRepository.findAllSentByActor(actorID);
+        final Collection<Message> received = this.messageRepository.findAllReceivedInPoolByActor(actorID);
+        final Collection<Message> sent = this.messageRepository.findAllSentInPoolByActor(actorID);
 
         Assert.notNull(received);
         result.addAll(received);
@@ -176,8 +179,8 @@ public class MessageService {
     }
 
 
-    public 	Collection<Message> findAllByActor(int actorID){
-        final Collection<Message> result = this.messageRepository.findAllByActor(actorID);
+    public 	Collection<Message> findAllSentByActor(int actorID){
+        final Collection<Message> result = this.messageRepository.findAllSentByActor(actorID);
         Assert.notNull(result);
 
         return result;
