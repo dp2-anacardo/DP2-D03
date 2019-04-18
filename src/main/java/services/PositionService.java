@@ -71,7 +71,21 @@ public class PositionService {
 		return position;
 	}
 
-	public void delete(final Position position) {
+	public Position saveDraft(Position position){
+		Assert.notNull(position);
+		position.setIsFinal(false);
+		Position result = this.positionRepository.save(position);
+		return result;
+	}
+
+	public Position saveFinal(Position position) {
+		Assert.notNull(position);
+		position.setIsFinal(true);
+		Position result = this.positionRepository.save(position);
+		return result;
+	}
+
+		public void delete(final Position position) {
 		Assert.notNull(position);
 
 		UserAccount userAccount;

@@ -21,6 +21,9 @@
     <display:column> <a href="position/show.do?positionId=${row.id}">
         <spring:message code="position.show" /></a> </display:column>
 
+
+
+
     <security:authorize access="hasRole('HACKER')">
         <display:column> <a href="position/show.do?positionId=${row.id}">
             <spring:message code="position.application" /></a> </display:column>
@@ -29,3 +32,8 @@
 
 
 </display:table>
+
+<security:authorize access="hasRole('COMPANY')">
+    <input type="button" value="<spring:message code="position.create" />"
+           onclick="javascript: relativeRedir('position/company/create.do');" />
+</security:authorize>

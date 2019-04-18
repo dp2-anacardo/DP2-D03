@@ -5,8 +5,10 @@ import domain.Actor;
 import domain.Company;
 import domain.Position;
 import forms.SearchForm;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +65,79 @@ public class PositionController extends AbstractController {
 
     }
 
+    @RequestMapping(value = "/company/create", method = RequestMethod.GET)
+    public ModelAndView create(){
+        ModelAndView result;
+        Position position;
+        position = new Position();
+        result = this.createEditModelAndView(position);
+        return result;
+    }
+
+    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveDraft")
+    public ModelAndView saveDraft(Position position, BindingResult binding){
+        ModelAndView result;
+        position.setIsFinal(false);
+        position = this.positionService.reconstruct(position, binding);
+
+        if (binding.hasErrors())
+            result = this.createEditModelAndView(position);
+        else
+            try {
+                this.positionService.saveDraft(position);
+                result = new ModelAndView("redirect:list.do");
+            } catch (final Throwable oops) {
+                result = this.createEditModelAndView(position, "position.commit.error");
+            }
+        return result;
+    }
+
+    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveFinal")
+    public ModelAndView saveFinal(Position position, BindingResult binding){
+        ModelAndView result;
+        position.setIsFinal(true);
+        position = this.positionService.reconstruct(position, binding);
+
+        if (binding.hasErrors())
+            result = this.createEditModelAndView(position);
+        else
+            try {
+                this.positionService.saveFinal(position);
+                result = new ModelAndView("redirect:list.do");
+            } catch (final Throwable oops) {
+                result = this.createEditModelAndView(position, "position.commit.error");
+            }
+        return result;
+    }
+
+    @RequestMapping(value = "/company/edit", method = RequestMethod.GET)
+    public ModelAndView edit(@RequestParam final int positionId){
+        ModelAndView result;
+        Position position;
+
+        position = this.positionService.findOne(positionId);
+
+        if (position == null || position.getIsFinal() == true)
+            result = new ModelAndView("redirect:/misc/403");
+        else
+            result = this.createEditModelAndView(position);
+        return result;
+    }
+
+    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "delete")
+    public ModelAndView delete(final Position position) {
+        ModelAndView result;
+        try {
+            this.positionService.delete(this.positionService.findOne(position.getId()));
+            result = new ModelAndView("redirect:list.do");
+        } catch (final Throwable oops) {
+            result = this.createEditModelAndView(position, "position.commit.error");
+        }
+
+        return result;
+    }
+
+
     @RequestMapping(value = "/show", method = RequestMethod.GET)
     public ModelAndView show(@RequestParam int positionId){
         ModelAndView result;
@@ -103,6 +178,21 @@ public class PositionController extends AbstractController {
                 result = new ModelAndView("redirect:/");
             }
         }
+        return result;
+    }
+
+    private ModelAndView createEditModelAndView(Position position){
+        ModelAndView result;
+        result =this.createEditModelAndView(position, null);
+        return result;
+    }
+
+    private ModelAndView createEditModelAndView(Position position, String messageCode){
+        ModelAndView result;
+
+        result = new ModelAndView("position/company/edit");
+        result.addObject("position",position);
+        result.addObject("message", messageCode);
         return result;
     }
 

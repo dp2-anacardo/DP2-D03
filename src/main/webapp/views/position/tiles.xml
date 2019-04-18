@@ -31,6 +31,10 @@
 		<put-attribute name="body" value="/views/position/show.jsp" />
 	</definition>
 
+	<definition name="position/company/edit" extends="master.page">
+		<put-attribute name="title" value="" />
+		<put-attribute name="body" value="/views/position/listNotLogged.jsp" />
+	</definition>
 
 	<definition name="position/search" extends="master.page">
 		<put-attribute name="title" value="Show results search" />
