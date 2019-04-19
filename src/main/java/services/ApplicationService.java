@@ -132,12 +132,12 @@ public class ApplicationService {
 		application.setStatus("ACCEPTED");
 
 		//TODO Probar cuando se puedan aceptar las applications
-//		Message msg = this.messageService.create();
-//		msg.setRecipient(application.getHacker());
-//		msg.setSubject("An application has changed its status.");
-//		msg.setBody("The application for the position has changed its status to ACCEPTED");
-//		msg.getTags().add("NOTIFICATION");
-// 		this.messageService.save(msg);
+		Message msg = this.messageService.create();
+		msg.setRecipient(application.getHacker());
+		msg.setSubject("An application has changed its status.");
+		msg.setBody("The application for the position has changed its status to ACCEPTED");
+		msg.getTags().add("NOTIFICATION");
+ 		this.messageService.save(msg);
 
 
 
@@ -157,12 +157,12 @@ public class ApplicationService {
 		application.setStatus("REJECTED");
 
 		//TODO Probar cuando se puedan rechazar las applications
-//		Message msg = this.messageService.create();
-//		msg.setRecipient(application.getHacker());
-//		msg.setSubject("An application has changed its status.");
-//		msg.setBody("The application for the position has changed its status to REJECTED");
-//		msg.getTags().add("NOTIFICATION");
-//		this.messageService.save(msg);
+		Message msg = this.messageService.create();
+		msg.setRecipient(application.getHacker());
+		msg.setSubject("An application has changed its status.");
+		msg.setBody("The application for the position has changed its status to REJECTED");
+		msg.getTags().add("NOTIFICATION");
+		this.messageService.save(msg);
 	}
 
 	public Collection<Application> getApplicationsByHacker(final Hacker hacker) {

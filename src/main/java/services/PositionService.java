@@ -88,17 +88,17 @@ public class PositionService {
         Position result = this.save(position);
 
         //TODO Probar cuando se puedan crear las positions
-//        for (Hacker h : hackerService.findAll()) {
-//            Collection<Position> res = finderService.search(h.getFinder());
-//            if (res.contains(result)) {
-//                Message msg = this.messageService.create();
-//                msg.setRecipient(h);
-//                msg.setSubject("A new position matches your criteria.");
-//                msg.setBody("A new position that matches your criteria has been published");
-//                msg.getTags().add("NOTIFICATION");
-//                this.messageService.save(msg);
-//            }
-//        }
+        for (Hacker h : hackerService.findAll()) {
+            Collection<Position> res = finderService.search(h.getFinder());
+            if (res.contains(result)) {
+                Message msg = this.messageService.create();
+                msg.setRecipient(h);
+                msg.setSubject("A new position matches your criteria.");
+                msg.setBody("A new position that matches your criteria has been published.");
+                msg.getTags().add("NOTIFICATION");
+                this.messageService.save(msg);
+            }
+        }
 
         return result;
     }
