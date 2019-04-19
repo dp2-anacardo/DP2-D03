@@ -78,7 +78,7 @@ public class PositionController extends AbstractController {
         Position position;
         position = new Position();
         Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
-        Collection<Problem> problems = this.problemService.findAllByCompany(c.getId());
+        Collection<Problem> problems = this.problemService.getProblemsFinalByCompany(c);
         result = this.createEditModelAndView(position);
         result.addObject("problems", problems);
         return result;
@@ -88,7 +88,7 @@ public class PositionController extends AbstractController {
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveDraft")
     public ModelAndView saveDraft(Position position, BindingResult binding){
         ModelAndView result;
-        Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+        Collection<Problem> problems = this.problemService.getProblemsFinalByCompany((Company) this.actorService.getActorLogged());
 
         if (position.getIsFinal() == true){
             result = this.createEditModelAndView(position, "position.commit.error");
@@ -120,7 +120,7 @@ public class PositionController extends AbstractController {
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveFinal")
     public ModelAndView saveFinal(Position position, BindingResult binding){
         ModelAndView result;
-        Collection<Problem> problems = this.problemService.findAllByCompany(this.actorService.getActorLogged().getId());
+        Collection<Problem> problems = this.problemService.getProblemsFinalByCompany((Company) this.actorService.getActorLogged());
         if(position.getProblems()==null){
             result = this.createEditModelAndView(position, "position.commit.error");
             result.addObject("problems", problems);
@@ -185,7 +185,7 @@ public class PositionController extends AbstractController {
             result = new ModelAndView("redirect:/misc/403");
         else
             try {
-                Collection<Problem> problems = this.problemService.findAllByCompany(c.getId());
+                Collection<Problem> problems = this.problemService.getProblemsFinalByCompany(c);;
                 result = this.createEditModelAndView(position);
                 result.addObject("problems",problems);
             }catch(Throwable oops) {

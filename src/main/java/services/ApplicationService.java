@@ -137,6 +137,8 @@ public class ApplicationService {
 //		msg.setSubject("An application has changed its status.");
 //		msg.setBody("The application for the position has changed its status to ACCEPTED");
 //		msg.getTags().add("NOTIFICATION");
+// 		this.messageService.save(msg);
+
 
 
 	}
@@ -160,6 +162,7 @@ public class ApplicationService {
 //		msg.setSubject("An application has changed its status.");
 //		msg.setBody("The application for the position has changed its status to REJECTED");
 //		msg.getTags().add("NOTIFICATION");
+//		this.messageService.save(msg);
 	}
 
 	public Collection<Application> getApplicationsByHacker(final Hacker hacker) {
