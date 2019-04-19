@@ -506,6 +506,8 @@
 		</property>
 		<property name = "applications">
 			<list>
+				<ref bean ="application3"/>
+				<ref bean="application4"/>
 			</list>
 		</property>
 	</bean>
@@ -675,6 +677,29 @@
 		<property name = "status" value="REJECTED"/>
 		<property name = "submitMoment" value ="14/04/2019 14:30"/>
 		<property name = "rejectComment" value="You did it wrong"/>
+		<property name = "hacker" ref="hacker2"/>
+		<property name = "problem" ref ="problem1"/>
+		<property name = "curricula" ref="curriculaHacker2"/>
+	</bean>
+
+	<bean id="application3" class ="domain.Application">
+		<property name = "moment" value = "14/04/2019 13:00"/>
+		<property name = "explanation" value = "I used a switch for all cases"/>
+		<property name = "link" value = "http://www.link.com"/>
+		<property name = "status" value="ACCEPTED"/>
+		<property name = "submitMoment" value ="14/04/2019 14:30"/>
+		<property name = "rejectComment" value=""/>
+		<property name = "hacker" ref="hacker2"/>
+		<property name = "problem" ref ="problem1"/>
+		<property name = "curricula" ref="curriculaHacker2"/>
+	</bean>
+
+	<bean id="application4" class ="domain.Application">
+		<property name = "moment" value = "14/04/2019 13:00"/>
+		<property name = "explanation" value = ""/>
+		<property name = "link" value = ""/>
+		<property name = "status" value="PENDING"/>
+		<property name = "rejectComment" value=""/>
 		<property name = "hacker" ref="hacker2"/>
 		<property name = "problem" ref ="problem1"/>
 		<property name = "curricula" ref="curriculaHacker2"/>
