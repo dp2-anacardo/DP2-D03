@@ -236,6 +236,9 @@ public class ApplicationService {
 	public Application saveHackerUpdate(final Application application) {
 		Assert.notNull(application);
 		Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
+		Assert.isTrue(application.getStatus().equals("PENDING"));
+		Assert.isTrue(!application.getExplanation().equals(""));
+		Assert.isTrue(!application.getLink().equals(""));
 
 		Application result = application;
 		result.setSubmitMoment(new Date());
