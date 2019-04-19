@@ -86,6 +86,8 @@ public class PositionService {
         Assert.notNull(position);
         position.setIsFinal(true);
         Position result = this.save(position);
+        Assert.isTrue(position.getProblems().size() < 2);
+        Assert.isTrue(position.getIsFinal() == false);
 
         //TODO Probar cuando se puedan crear las positions
         for (Hacker h : hackerService.findAll()) {
@@ -105,10 +107,10 @@ public class PositionService {
 
     public void delete(final Position position) {
         Assert.notNull(position);
-
         UserAccount userAccount;
         userAccount = this.actorService.getActorLogged().getUserAccount();
         Assert.isTrue(userAccount.getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
+        Assert.isTrue(position.getIsFinal() == false);
 
         this.positionRepository.delete(position);
 

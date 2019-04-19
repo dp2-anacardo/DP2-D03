@@ -28,8 +28,14 @@
     </display:column>
 
     <display:column>
-        <jstl:if test="${row.isFinal == true}">
-            <acme:submit name="cancel" code="position.cancel"/>
+        <jstl:if test="${row.isFinal == true && row.isCancelled == false}">
+            <acme:cancel code="position.cancel" url="position/company/cancel.do?positionId=${row.id}"/>
+        </jstl:if>
+    </display:column>
+
+    <display:column>
+        <jstl:if test="${row.isFinal == false}">
+            <acme:cancel code="position.delete" url="position/company/delete.do?positionId=${row.id}"/>
         </jstl:if>
     </display:column>
 
