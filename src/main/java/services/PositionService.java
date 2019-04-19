@@ -62,14 +62,15 @@ public class PositionService {
         userAccount = this.actorService.getActorLogged().getUserAccount();
         Assert.isTrue(userAccount.getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
 
+        Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
+        Assert.notNull(c);
         Assert.notNull(position);
 
         if (position.getId() == 0) {
-            Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
-            position.setCompany(c);
             position.setTicker(this.tickerGenerator(position));
             position = this.positionRepository.save(position);
         } else
+            Assert.isTrue(position.getCompany().equals(c));
             position = this.positionRepository.save(position);
         return position;
     }
@@ -84,10 +85,12 @@ public class PositionService {
 
     public Position saveFinal(Position position) {
         Assert.notNull(position);
+        Assert.isTrue(position.getProblems().size() >= 2);
+        if(position.getId() !=0){
+            Assert.isTrue(position.getIsFinal() == false);
+        }
         position.setIsFinal(true);
         Position result = this.save(position);
-        Assert.isTrue(position.getProblems().size() < 2);
-        Assert.isTrue(position.getIsFinal() == false);
 
         //TODO Probar cuando se puedan crear las positions
         for (Hacker h : hackerService.findAll()) {
@@ -174,6 +177,8 @@ public class PositionService {
         Position result;
         if (p.getId() == 0) {
             result = this.create();
+            result.setCompany(p.getCompany());
+            result.setIsFinal(p.getIsFinal());
         } else {
             result = this.positionRepository.findOne(p.getId());
         }
@@ -185,8 +190,8 @@ public class PositionService {
         result.setProfile(p.getProfile());
         result.setSalary(p.getSalary());
         result.setProblems(p.getProblems());
-        result.setIsFinal(p.getIsFinal());
         result.setTicker(this.tickerGenerator(p));
+
 
         validator.validate(result, binding);
         if (binding.hasErrors()) {

@@ -74,7 +74,9 @@
         </display:column>
     </display:table>
 </jstl:if>
-<!-- TODO:Poner botón para vuelva a vista anterior -->
-<acme:cancel url="position/company/list.do" code="position.goBack"/>
+
+<input type="button" name="cancel"
+         value="<spring:message code="position.goBack" />"
+         onclick="javascript: window.history.back();" />
 
 

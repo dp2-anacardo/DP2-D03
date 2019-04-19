@@ -89,18 +89,12 @@ public class PositionController extends AbstractController {
         ModelAndView result;
         Collection<Problem> problems = this.problemService.getProblemsFinalByCompany((Company) this.actorService.getActorLogged());
 
-        if (position.getIsFinal() == true){
-            result = this.createEditModelAndView(position, "position.commit.error");
-            result.addObject("problems", problems);
-        }else {
-            position.setIsFinal(false);
-
             try {
-                Actor a = this.actorService.getActorLogged();
-                Company c = this.companyService.findOne(a.getId());
-                Assert.notNull(c);
-                position.setCompany(c);
-
+                Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
+                if(position.getId() == 0) {
+                    position.setCompany(c);
+                    position.setIsFinal(false);
+                }
                 position = this.positionService.reconstruct(position, binding);
                 position = this.positionService.saveDraft(position);
                 result = new ModelAndView("redirect:list.do");
@@ -111,7 +105,6 @@ public class PositionController extends AbstractController {
                 result = this.createEditModelAndView(position, "position.commit.error");
                 result.addObject("problems", problems);
             }
-        }
         return result;
     }
 
@@ -119,21 +112,13 @@ public class PositionController extends AbstractController {
     public ModelAndView saveFinal(Position position, BindingResult binding){
         ModelAndView result;
         Collection<Problem> problems = this.problemService.getProblemsFinalByCompany((Company) this.actorService.getActorLogged());
-        if(position.getProblems()==null){
-            result = this.createEditModelAndView(position, "position.commit.error");
-            result.addObject("problems", problems);
-        }
-        else if (position.getProblems().size() < 2 || position.getIsFinal() == true){
-           result = this.createEditModelAndView(position, "position.commit.error");
-           result.addObject("problems", problems);
-       }else {
-           position.setIsFinal(true);
-
            try {
                Actor a = this.actorService.getActorLogged();
                Company c = this.companyService.findOne(a.getId());
-               Assert.notNull(c);
-               position.setCompany(c);
+               if(position.getId() == 0) {
+                   position.setCompany(c);
+                   position.setIsFinal(true);
+               }
                position = this.positionService.reconstruct(position, binding);
                position = this.positionService.saveFinal(position);
                result = new ModelAndView("redirect:list.do");
@@ -142,8 +127,8 @@ public class PositionController extends AbstractController {
                result.addObject("problems", problems);
            } catch (final Throwable oops) {
                result = this.createEditModelAndView(position, "position.commit.error");
+               result.addObject("problems", problems);
            }
-       }
         return result;
     }
     
