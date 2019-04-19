@@ -97,7 +97,6 @@ public class Position extends DomainEntity {
 		this.salary = salary;
 	}
 
-	//TODO: Revisar para pattern
 	@NotBlank
 	@SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
 	public String getTicker() {

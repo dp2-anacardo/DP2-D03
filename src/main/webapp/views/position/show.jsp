@@ -64,6 +64,16 @@
     <display:column property="company.commercialName" title="${company}"
                     sortable="false"/>
 </display:table>
+
+<jstl:if test="${row.isCancelled == true}">
+    <display:table name="position" id="row" requestURI="position/show.do"
+               class="displaytag">
+        <spring:message code="position.status" var="status"/>
+        <display:column title="${status}" sortable="false">
+            Cancelled
+        </display:column>
+    </display:table>
+</jstl:if>
 <!-- TODO:Poner botón para vuelva a vista anterior -->
 <acme:cancel url="position/company/list.do" code="position.goBack"/>
 

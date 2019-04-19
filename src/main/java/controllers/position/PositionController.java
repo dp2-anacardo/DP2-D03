@@ -84,7 +84,6 @@ public class PositionController extends AbstractController {
         return result;
     }
 
-    //TODO: Meter comprobaciones en servicio
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveDraft")
     public ModelAndView saveDraft(Position position, BindingResult binding){
         ModelAndView result;
@@ -116,7 +115,6 @@ public class PositionController extends AbstractController {
         return result;
     }
 
-    //TODO: Meter comprobaciones en Asserts en Servicio
     @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "saveFinal")
     public ModelAndView saveFinal(Position position, BindingResult binding){
         ModelAndView result;
@@ -148,28 +146,24 @@ public class PositionController extends AbstractController {
        }
         return result;
     }
-
-    //TODO: Sin hacer ni comprobar
-    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "cancel")
-    public ModelAndView cancel(Position position, BindingResult binding){
+    
+    @RequestMapping(value = "/company/cancel", method = RequestMethod.GET)
+    public ModelAndView cancel(@RequestParam final int positionId){
         ModelAndView result;
-
-        if (position.getIsFinal() == false){
-            result = this.createEditModelAndView(position, "position.commit.error");
-        }else {
-            position.setIsCancelled(true);
+        Position position = this.positionService.findOne(positionId);
+        Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
             try {
-                Actor a = this.actorService.getActorLogged();
-                Company c = this.companyService.findOne(a.getId());
                 Assert.notNull(c);
-                position = this.positionService.reconstruct(position, binding);
+                Assert.isTrue(position.getIsFinal());
+                Assert.isTrue(position.getCompany().equals(c));
+                position.setIsCancelled(true);
+                this.positionService.save(position);
                 result = new ModelAndView("redirect:list.do");
             } catch (ValidationException e) {
                 result = this.createEditModelAndView(position, null);
             } catch (final Throwable oops) {
                 result = this.createEditModelAndView(position, "position.commit.error");
             }
-        }
         return result;
     }
 
@@ -194,17 +188,21 @@ public class PositionController extends AbstractController {
         return result;
     }
 
-    //TODO: comprobar
-    @RequestMapping(value = "/company/edit", method = RequestMethod.POST, params = "delete")
+
+    @RequestMapping(value = "/company/delete", method = RequestMethod.GET)
     public ModelAndView delete(@RequestParam int positionId) {
         ModelAndView result;
-        try {
-            this.positionService.delete(this.positionService.findOne(positionId));
-            result = new ModelAndView("redirect:list.do");
-        } catch (final Throwable oops) {
-            result =  new ModelAndView("redirect:/misc/403");
-        }
-
+        Position p = this.positionService.findOne(positionId);
+        Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
+            try {
+                Assert.notNull(c);
+                Assert.isTrue(p.getIsFinal() == false);
+                Assert.isTrue(p.getCompany().equals(c));
+                this.positionService.delete(p);
+                result = new ModelAndView("redirect:list.do");
+            } catch (final Throwable oops) {
+                result = new ModelAndView("redirect:/misc/403");
+            }
         return result;
     }
 
