@@ -19,6 +19,12 @@
     <spring:message code="position.description" var="description"/>
     <display:column property="description" title="${description}"/>
 
+    <spring:message code="position.applications" var="applications"/>
+    <display:column title="${applications}">
+        <a href="application/company/list.do?positionId=${row.id}">
+            <spring:message code="position.applications"/></a>
+    </display:column>
+
     <display:column> <a href="position/show.do?positionId=${row.id}">
         <spring:message code="position.show" /></a> </display:column>
     <display:column>

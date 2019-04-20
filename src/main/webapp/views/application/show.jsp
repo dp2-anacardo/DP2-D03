@@ -44,7 +44,7 @@
 </jstl:if>
 
 <fieldset><legend><spring:message code="application.problem"/></legend>
-	<a href="problem/show.do?problemID=${application.problem.id}"><spring:message code="application.problem"/>
+	<a href="problem/show.do?problemID=${application.problem.id}"><spring:message code="application.problem"/></a>
 </fieldset>
 		
 </security:authorize>

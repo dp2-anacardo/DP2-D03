@@ -1,9 +1,7 @@
 package services;
 
-import com.sun.org.glassfish.gmbal.InheritedAttribute;
 import domain.Application;
 import domain.Curricula;
-import domain.Position;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +20,6 @@ public class ApplicationTest extends AbstractTest {
 
     @Autowired
     private ApplicationService applicationService;
-
-    @Autowired
-    private PositionService positionService;
 
     @Autowired
     private CurriculaService curriculaService;
@@ -124,7 +119,7 @@ public class ApplicationTest extends AbstractTest {
     }
 
     //In this test we are testing the requirement 10.1(creating applications).
-    //In the negative cases we are testing that hackers can not create a application if they do not
+    //In the negative cases we are testing that hackers can not create an application if they do not
     //select a curricula, and they can not create an application in a position that is cancelled or final.
     //Sequence coverage: 100%
     //Data coverage: 100%
@@ -168,10 +163,9 @@ public class ApplicationTest extends AbstractTest {
 
     }
 
-    //In this test we are testing the requirement 10.1(creating applications).
-    //In the negative cases we are testing that hackers can not create a application if they do not
-    //select a curricula, and they can not create an application in a position that is cancelled or final
-    //or the application does not have the status pending.
+    //In this test we are testing the requirement 10.1(updating applications).
+    //In the negative cases we are testing that hackers can not update an application if they do not
+    //write an explanation or a link, and they can not update an application that is accepted, rejected or submitted.
     //Sequence coverage: 100%
     //Data coverage: 100%
 

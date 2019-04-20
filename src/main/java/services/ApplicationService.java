@@ -130,8 +130,7 @@ public class ApplicationService {
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
 		Assert.isTrue(applications.contains(application));
 		application.setStatus("ACCEPTED");
-
-		//TODO Probar cuando se puedan aceptar las applications
+		
 		Message msg = this.messageService.create();
 		msg.setRecipient(application.getHacker());
 		msg.setSubject("An application has changed its status.");
@@ -156,7 +155,6 @@ public class ApplicationService {
 		Assert.isTrue(!application.getRejectComment().equals(""));
 		application.setStatus("REJECTED");
 
-		//TODO Probar cuando se puedan rechazar las applications
 		Message msg = this.messageService.create();
 		msg.setRecipient(application.getHacker());
 		msg.setSubject("An application has changed its status.");
