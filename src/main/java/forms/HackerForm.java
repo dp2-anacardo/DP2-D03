@@ -39,8 +39,6 @@ public class HackerForm {
 	private String	number;
 	private Date	expiration;
 	private Integer	cvvCode;
-	private String	githubProfile;
-	private String	linkedInProfile;
 
 
 	public HackerForm(final Hacker a) {
@@ -226,26 +224,6 @@ public class HackerForm {
 
 	public void setCvvCode(final Integer cvvCode) {
 		this.cvvCode = cvvCode;
-	}
-
-	@NotBlank
-	@SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
-	public String getGithubProfile() {
-		return this.githubProfile;
-	}
-
-	public void setGithubProfile(final String githubProfile) {
-		this.githubProfile = githubProfile;
-	}
-
-	@NotBlank
-	@SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
-	public String getLinkedInProfile() {
-		return this.linkedInProfile;
-	}
-
-	public void setLinkedInProfile(final String linkedInProfile) {
-		this.linkedInProfile = linkedInProfile;
 	}
 
 }
