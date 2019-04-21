@@ -1,6 +1,7 @@
 package services;
 
 import domain.Actor;
+import domain.Administrator;
 import domain.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class MessageService {
 
     // CRUD methods
     public Message create() {
+        Assert.notNull(this.actorService.getActorLogged());
         final Message result = new Message();
         final Calendar calendar = new GregorianCalendar();
         final Collection<String> tags = new ArrayList<String>();
@@ -55,6 +57,7 @@ public class MessageService {
 
     public Message save(final Message message) {
         Assert.notNull(message);
+        Assert.notNull(this.actorService.getActorLogged());
         final Message result;
 
         Actor sender = null;
@@ -135,6 +138,7 @@ public class MessageService {
 
     public void broadcast(final Message m){
         final Actor principal = this.actorService.getActorLogged();
+        Assert.isTrue(principal instanceof Administrator);
 
         final Collection<Actor> actors = this.actorService.findAll();
 
@@ -152,12 +156,6 @@ public class MessageService {
 
             a.getMessagesR().add(result);
         }
-    }
-
-    public void deleteAll(final Message m) {
-
-        this.messageRepository.delete(m);
-
     }
 
     // Other methods

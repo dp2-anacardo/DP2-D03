@@ -93,7 +93,6 @@ public class PositionService {
         position.setIsFinal(true);
         Position result = this.save(position);
 
-        //TODO Probar cuando se puedan crear las positions
         for (Hacker h : hackerService.findAll()) {
             Collection<Position> res = finderService.search(h.getFinder());
             if (res.contains(result)) {

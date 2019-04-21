@@ -130,7 +130,7 @@ public class ApplicationService {
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
 		Assert.isTrue(applications.contains(application));
 		application.setStatus("ACCEPTED");
-		
+
 		Message msg = this.messageService.create();
 		msg.setRecipient(application.getHacker());
 		msg.setSubject("An application has changed its status.");

@@ -42,6 +42,9 @@ public class ProblemService {
 
 	// CRUD methods
 	public Problem create() {
+		final Actor actor = this.actorService.getActorLogged();
+		Assert.isTrue(actor instanceof Company);
+
 		final Problem result = new Problem();
 
 		final Collection<Url> attachments = new ArrayList<Url>();
@@ -74,6 +77,9 @@ public class ProblemService {
 	}
 
 	public void delete(final Problem problem) {
+		final Actor actor = this.actorService.getActorLogged();
+		Assert.isTrue(actor instanceof Company);
+		Assert.isTrue(problem.getCompany().equals((Company) actor));
 		Assert.notNull(problem);
 		final UserAccount userAccount = LoginService.getPrincipal();
 		Assert.notNull(userAccount);
