@@ -67,6 +67,7 @@ public class PositionService {
         Assert.notNull(position);
 
         if (position.getId() == 0) {
+            Assert.isTrue(position.getIsCancelled() == false);
             position.setTicker(this.tickerGenerator(position));
             position = this.positionRepository.save(position);
         } else
@@ -179,6 +180,7 @@ public class PositionService {
             result = this.create();
             result.setCompany(p.getCompany());
             result.setIsFinal(p.getIsFinal());
+
         } else {
             result = this.positionRepository.findOne(p.getId());
         }

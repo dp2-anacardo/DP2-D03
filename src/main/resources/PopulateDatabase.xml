@@ -502,6 +502,7 @@
 		<property name = "problems">
 			<list>
 				<ref bean = "problem3"/>
+				<ref bean="problem1"/>
 			</list>
 		</property>
 		<property name = "applications">
