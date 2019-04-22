@@ -17,6 +17,7 @@ import services.ActorService;
 import services.ProblemService;
 
 import javax.swing.*;
+import javax.validation.ValidationException;
 import java.util.Collection;
 
 @Controller
@@ -89,21 +90,18 @@ public class ProblemController extends AbstractController {
 
     // Create Save -------------------------------------------------------------
     @RequestMapping(value = "company/create", method = RequestMethod.POST, params = "save")
-    public ModelAndView createSave(@ModelAttribute("problem") final Problem problem, final BindingResult binding) {
+    public ModelAndView createSave(@ModelAttribute("problem") Problem problem, final BindingResult binding) {
         ModelAndView result;
-        Problem prblm;
 
         try {
-            prblm = this.problemService.reconstruct(problem, binding);
-            if (binding.hasErrors()) {
-                result = this.createModelAndView(problem);
-                for (final ObjectError e : binding.getAllErrors())
-                    if (e.getDefaultMessage().equals("URL incorrecta") || e.getDefaultMessage().equals("Invalid URL"))
-                        result.addObject("attachmentError", e.getDefaultMessage());
-            } else {
-                this.problemService.save(prblm);
-                result = new ModelAndView("redirect:list.do");
-            }
+            problem = this.problemService.reconstruct(problem, binding);
+            problem = this.problemService.save(problem);
+            result = new ModelAndView("redirect:list.do");
+        } catch (final ValidationException e) {
+            result = this.createModelAndView(problem, null);
+            for (final ObjectError oe : binding.getAllErrors())
+                if (oe.getDefaultMessage().equals("URL incorrecta") || oe.getDefaultMessage().equals("Invalid URL"))
+                    result.addObject("attachmentError", oe.getDefaultMessage());
         } catch (final Throwable oops) {
             result = this.createModelAndView(problem, "problem.commit.error");
         }
@@ -112,21 +110,19 @@ public class ProblemController extends AbstractController {
 
     // Update Save -------------------------------------------------------------
     @RequestMapping(value = "company/update", method = RequestMethod.POST, params = "update")
-    public ModelAndView updateSave(@ModelAttribute("problem") final Problem problem, final BindingResult binding) {
+    public ModelAndView updateSave(@ModelAttribute("problem") Problem problem, final BindingResult binding) {
         ModelAndView result;
         Problem prblm;
 
         try {
-            prblm = this.problemService.reconstruct(problem, binding);
-            if (binding.hasErrors()) {
-                result = this.updateModelAndView(problem);
-                for (final ObjectError e : binding.getAllErrors())
-                    if (e.getDefaultMessage().equals("URL incorrecta") || e.getDefaultMessage().equals("Invalid URL"))
-                        result.addObject("attachmentError", e.getDefaultMessage());
-            } else {
-                this.problemService.save(prblm);
-                result = new ModelAndView("redirect:list.do");
-            }
+            problem = this.problemService.reconstruct(problem, binding);
+            problem = this.problemService.save(problem);
+            result = new ModelAndView("redirect:list.do");
+        } catch (final ValidationException e) {
+            result = this.updateModelAndView(problem, null);
+            for (final ObjectError oe : binding.getAllErrors())
+                if (oe.getDefaultMessage().equals("URL incorrecta") || oe.getDefaultMessage().equals("Invalid URL"))
+                    result.addObject("attachmentError", oe.getDefaultMessage());
         } catch (final Throwable oops) {
             result = this.updateModelAndView(problem, "problem.commit.error");
         }

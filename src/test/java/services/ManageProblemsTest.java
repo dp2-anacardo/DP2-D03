@@ -1,7 +1,6 @@
 package services;
 
 import datatype.Url;
-import domain.Company;
 import domain.Problem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +11,7 @@ import org.springframework.validation.DataBinder;
 import utilities.AbstractTest;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.validation.ValidationException;
 
 @ContextConfiguration(locations = {
         "classpath:spring/junit.xml"
@@ -31,10 +29,10 @@ public class ManageProblemsTest extends AbstractTest {
 
     /*
      * Testing functional requirement : 9.2 An actor that is authenticated as a company must be able to manage their problems
-     * Positive: A company creates a problem as draft and as final
+     * Positive: A company creates a problem
      * Negative: A company tries to create a problem with invalid data
      * Sentence coverage:
-     * Data coverage:
+     * Data coverage: 5 atributos, 4 obligatorios, 6 casos posibles, pruebo positivo + dos atributos malos. 3/6
      */
 
     @Test
@@ -45,9 +43,9 @@ public class ManageProblemsTest extends AbstractTest {
                 }, {
                 "problem2", "This is the problem 2", "Check the attachment", "http://www.url.es", true, "company2", null
         }, {
-                "", "This is the problem 3", "Check the attachment", "http://www.url.es", false, "company1", null
+                "", "This is the problem 3", "Check the attachment", "http://www.url.es", false, "company1", ValidationException.class
         }, {
-                "peoblem4", "", "Check the attachment", "http://www.url.es", false, "company2", null
+                "problem4", "", "Check the attachment", "http://www.url.es", false, "company2", ValidationException.class
         }
         };
         for (int i = 0; i < testingData.length; i++) {
@@ -93,121 +91,86 @@ public class ManageProblemsTest extends AbstractTest {
 
 
     /*
-     * Testing functional requirement : 9.1 An actor that is authenticated as a company must be able to manage their problems
-     * Positive: A company save a problem as final
-     * Negative: A company tries to save as final a problem with less than 2 problems
-     * Sentence coverage: 84%
-     * Data coverage: 20%
+     * Testing functional requirement : 9.2 An actor that is authenticated as a company must be able to manage their problems
+     * Positive: A company edits a problem
+     * Negative: A company tries to edit a problem with invalid data
+     * Sentence coverage:
+     * Data coverage: 5 atributos, 4 obligatorios, 6 casos posibles, pruebo positivo + un atributo malo. 2/6
      */
-//    @Test
-//    public void editProblemToFinalDriver() {
-//        Object testingData[][] = {
-//                {
-//                        "problem2", "company1", null
-//                }, {
-//                "problem1", "company1", IllegalArgumentException.class
-//        }
-//        };
-//        for (int i = 0; i < testingData.length; i++) {
-//            this.editProblemToFinalTemplate(super.getEntityId((String) testingData[i][0]),
-//                    (String) testingData[i][1], (Class<?>) testingData[i][2]);
-//        }
-//    }
-//
-//    private void editProblemToFinalTemplate(int entityId, String company, Class<?> expected) {
-//        Class<?> caught;
-//        caught = null;
-//
-//        try {
-//            this.authenticate(company);
-//            Problem p = this.problemService.findOne(entityId);
-//            final DataBinder binding = new DataBinder(new Problem());
-//            p = this.problemService.reconstruct(p, binding.getBindingResult());
-//            this.problemService.saveFinal(p);
-//        } catch (Throwable oops) {
-//            caught = oops.getClass();
-//        }
-//
-//        super.checkExceptions(expected, caught);
-//    }
-//
-//
-//    /*
-//     * Testing functional requirement : 9.1 An actor that is authenticated as a company must be able to manage their problems
-//     * Positive: A company edit a problem
-//     * Negative: A company tries to edit a problem with invalid data
-//     * Sentence coverage: 84%
-//     * Data coverage: 20%
-//     */
-//    @Test
-//    public void editProblemDriver() {
-//        Object testingData[][] = {
-//                {
-//                        "problem2", "company1", null, "prueba"
-//                }, {
-//                "problem2", "company1", ValidationException.class, ""
-//        }
-//        };
-//        for (int i = 0; i < testingData.length; i++) {
-//            this.editProblemTemplate(super.getEntityId((String) testingData[i][0]),
-//                    (String) testingData[i][1], (Class<?>) testingData[i][2], (String) testingData[i][3]);
-//        }
-//    }
-//
-//    private void editProblemTemplate(int entityId, String company, Class<?> expected, String s) {
-//        Class<?> caught;
-//        caught = null;
-//
-//        try {
-//            this.authenticate(company);
-//            Problem p = this.problemService.findOne(entityId);
-//            final DataBinder binding = new DataBinder(new Problem());
-//            p.setTitle(s);
-//            p = this.problemService.reconstruct(p, binding.getBindingResult());
-//            this.problemService.saveDraft(p);
-//        } catch (Throwable oops) {
-//            caught = oops.getClass();
-//        }
-//
-//        super.checkExceptions(expected, caught);
-//    }
-//
-//    /*
-//     * Testing functional requirement : 9.1 An actor that is authenticated as a company must be able to manage their problems
-//     * Positive: A company delete a problem
-//     * Negative: A company tries to delete a problem in final mode
-//     * Sentence coverage: 84%
-//     * Data coverage: Not applicable
-//     */
-//    @Test
-//    public void deleteProblemDriver() {
-//        Object testingData[][] = {
-//                {
-//                        "problem1", "company1", IllegalArgumentException.class
-//                }, {
-//                "problem2", "company1", null
-//        }
-//        };
-//        for (int i = 0; i < testingData.length; i++) {
-//            this.deleteProblemTemplate(super.getEntityId((String) testingData[i][0]),
-//                    (String) testingData[i][1], (Class<?>) testingData[i][2]);
-//        }
-//    }
-//
-//    private void deleteProblemTemplate(int entityId, String company, Class<?> expected) {
-//        Class<?> caught;
-//        caught = null;
-//
-//        try {
-//            this.authenticate(company);
-//            Problem p = this.problemService.findOne(entityId);
-//            this.problemService.delete(p);
-//        } catch (Throwable oops) {
-//            caught = oops.getClass();
-//        }
-//
-//        super.checkExceptions(expected, caught);
-//    }
+
+    @Test
+    public void editProblemDriver() {
+        Object testingData[][] = {
+                {
+                        "company1", "problem6", "This is the new title of problem6", null
+                }, {
+                "company1", "problem6", "", ValidationException.class
+        }
+        };
+        for (int i = 0; i < testingData.length; i++) {
+            this.editProblemTemplate((String) testingData[i][0],
+                    (String) testingData[i][1], (String) testingData[i][2],
+                    (Class<?>) testingData[i][3]);
+        }
+    }
+
+    private void editProblemTemplate(String company, String problem, String title, Class<?> expected) {
+        Class<?> caught;
+        caught = null;
+
+
+        try {
+            this.authenticate(company);
+            Problem p = this.problemService.findOne(super.getEntityId(problem));
+            p.setTitle(title);
+            final DataBinder binding = new DataBinder(new Problem());
+            p = this.problemService.reconstruct(p, binding.getBindingResult());
+            this.problemService.save(p);
+        } catch (Throwable oops) {
+            caught = oops.getClass();
+        }
+
+        super.checkExceptions(expected, caught);
+
+    }
+
+    /*
+     * Testing functional requirement : 9.1 An actor that is authenticated as a company must be able to manage their problems
+     * Positive: A company delete a problem
+     * Negative: A company tries to delete a problem in final mode
+     * Sentence coverage: 84%
+     * Data coverage: Not applicable
+     */
+
+    @Test
+    public void deleteProblemDriver() {
+        Object testingData[][] = {
+                {
+                        "company1", "problem6", null
+                }, {
+                "company2", "problem5", IllegalArgumentException.class
+        }
+        };
+        for (int i = 0; i < testingData.length; i++) {
+            this.deleteProblemTemplate((String) testingData[i][0],
+                    (String) testingData[i][1], (Class<?>) testingData[i][2]);
+        }
+    }
+
+    private void deleteProblemTemplate(String company, String problem, Class<?> expected) {
+        Class<?> caught;
+        caught = null;
+
+        try {
+            this.authenticate(company);
+            Problem p = this.problemService.findOne(super.getEntityId(problem));
+            this.problemService.delete(p);
+        } catch (Throwable oops) {
+            caught = oops.getClass();
+        }
+
+        super.checkExceptions(expected, caught);
+    }
 
 
 }
