@@ -15,6 +15,7 @@ import services.ActorService;
 import services.MessageService;
 
 import javax.swing.*;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -99,62 +100,37 @@ public class MessageController extends AbstractController {
 
     // Send Broadcast  -------------------------------------------------------------
     @RequestMapping(value = "administrator/broadcast", method = RequestMethod.POST, params = "send")
-    public ModelAndView sendBroadcast(@ModelAttribute("mesage") final Message mesage, final BindingResult binding) {
+    public ModelAndView sendBroadcast(@ModelAttribute("mesage") Message mesage, final BindingResult binding) {
         ModelAndView result;
-        Message msg;
 
         try {
-            msg = this.messageService.reconstruct(mesage, binding);
-            Boolean containsDeleted = false;
-            if (msg.getTags() != null) {
-                for (String tag : msg.getTags()) {
-                    if (tag.toUpperCase().equals("DELETED"))
-                        containsDeleted = true;
-                    break;
-                }
-            }
-            if (containsDeleted) {
-                binding.rejectValue("tags", "error.tag");
-                result = this.createBroadcastModelAndView(mesage);
-            } else if (binding.hasErrors() && binding.getErrorCount() > 1)
-                result = this.createBroadcastModelAndView(mesage);
-            else {
-                this.messageService.broadcast(msg);
-                result = new ModelAndView("redirect:/message/list.do");
-            }
+
+            mesage = this.messageService.reconstruct(mesage, binding);
+            this.messageService.broadcast(mesage);
+            result = new ModelAndView("redirect:/message/list.do");
+        } catch (final ValidationException e) {
+            result = this.createBroadcastModelAndView(mesage, null);
         } catch (final Throwable oops) {
-            result = this.createBroadcastModelAndView(mesage, "message.commit.error");
+            result = this.createBroadcastModelAndView(mesage, "problem.commit.error");
         }
         return result;
     }
 
     // Send -------------------------------------------------------------
     @RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-    public ModelAndView save(@ModelAttribute("mesage") final Message mesage, final BindingResult binding) {
+    public ModelAndView save(@ModelAttribute("mesage") Message mesage, final BindingResult binding) {
         ModelAndView result;
         Message msg;
 
         try {
-            msg = this.messageService.reconstruct(mesage, binding);
-            Boolean containsDeleted = false;
-            if (msg.getTags() != null) {
-                for (String tag : msg.getTags()) {
-                    if (tag.toUpperCase().equals("DELETED"))
-                        containsDeleted = true;
-                    break;
-                }
-            }
-            if (containsDeleted) {
-                binding.rejectValue("tags", "error.tag");
-                result = this.createModelAndView(mesage);
-            } else if (binding.hasErrors())
-                result = this.createModelAndView(mesage);
-            else {
-                this.messageService.save(msg);
-                result = new ModelAndView("redirect:list.do");
-            }
+
+            mesage = this.messageService.reconstruct(mesage, binding);
+            mesage = this.messageService.save(mesage);
+            result = new ModelAndView("redirect:list.do");
+        } catch (final ValidationException e) {
+            result = this.createModelAndView(mesage, null);
         } catch (final Throwable oops) {
-            result = this.createModelAndView(mesage, "message.commit.error");
+            result = this.createModelAndView(mesage, "problem.commit.error");
         }
         return result;
     }

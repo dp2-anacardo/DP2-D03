@@ -225,7 +225,7 @@
 		<property name="email" value="emailDePrueba@gmail.com"/>
 		<property name="phoneNumber" value="+34 791235712"/>
 		<property name="address" value="Avenida Pino Montano"/>
-		<property name="isSpammer" value="false"/>
+		<property name="isSpammer" value="true"/>
 		<property name="isBanned" value="false"/>
 		<property name="socialProfiles">
 			<list>
