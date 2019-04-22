@@ -139,12 +139,6 @@
             </a>
         </display:column>
 
-        <display:column>
-            <a
-                    href="miscData/hacker/delete.do?miscDataId=${row.id}">
-                <spring:message code="curricula.delete" />
-            </a>
-        </display:column>
 
     </display:table>
 
