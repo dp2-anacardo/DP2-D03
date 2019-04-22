@@ -19,19 +19,19 @@
 
 
         <acme:textbox code="curricula.educational.degree" path="degree" />
-        <br
+        
 
         <acme:textbox code="curricula.educational.institution" path="institution" />
-        <br>
+        
 
         <acme:textbox code="curricula.educational.mark" path="mark" />
-        <br>
+        
 
         <acme:textbox code="curricula.educational.startD" path="startDate" />
-        <br>
+        
 
         <acme:textbox code="curricula.educational.endD" path="endDate" />
-        <br>
+        
 
         <acme:submit name="save" code="curricula.save"/>
 

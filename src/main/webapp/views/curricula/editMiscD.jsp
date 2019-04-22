@@ -19,13 +19,13 @@
 
 
         <acme:textarea code="curricula.misc.freeT" path="freeText" />
-        <br
+        
 
         <acme:textarea code="curricula.misc.attachments" path="attachment" />
         <jstl:if test="${not empty attachmentError }">
             <p class="error">${attachmentError }</p>
         </jstl:if>
-        <br />
+        <br/>
 
         <acme:submit name="save" code="curricula.save"/>
 
