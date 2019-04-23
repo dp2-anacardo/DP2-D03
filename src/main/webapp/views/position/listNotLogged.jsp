@@ -21,5 +21,7 @@
     <display:column> <a href="position/show.do?positionId=${row.id}">
         <spring:message code="position.show" /></a> </display:column>
 
+    <display:column> <a href="company/show.do?companyId=${row.company.id}">
+        <spring:message code="position.company" /></a> </display:column>
 
 </display:table>
