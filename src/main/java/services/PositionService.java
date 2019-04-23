@@ -200,4 +200,8 @@ public class PositionService {
         }
         return result;
     }
+
+    public Collection<Position> getPositionsByCompanyAvailable(int companyId){
+        return this.positionRepository.getPositionsByCompanyAvailable(companyId);
+    }
 }

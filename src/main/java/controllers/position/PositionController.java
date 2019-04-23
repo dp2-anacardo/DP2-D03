@@ -55,6 +55,20 @@ public class PositionController extends AbstractController {
 
 		return result;
 	}
+	@RequestMapping(value = "/listByCompany", method = RequestMethod.GET)
+	public ModelAndView listByCompany(@RequestParam int companyId){
+		ModelAndView result;
+		try{
+			Assert.notNull(this.companyService.findOne(companyId));
+			Collection<Position> positions = this.positionService.getPositionsByCompanyAvailable(companyId);
+			result = new ModelAndView("position/listNotLogged");
+			result.addObject("positions",positions);
+			result.addObject("RequestURI","position/listByCompany.do");
+		}catch (Throwable oops){
+			result = new ModelAndView("redirect:/");
+		}
+		return result;
+	}
 
 	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
 	public ModelAndView list() {

@@ -37,6 +37,7 @@
         <security:intercept-url pattern="/gdpr/show.do" access="permitAll"/>
         <security:intercept-url pattern="/hacker/create.do" access="permitAll"/>
         <security:intercept-url pattern="/company/create.do" access="permitAll"/>
+        <security:intercept-url pattern="/company/list.do" access="permitAll"/>
         <security:intercept-url pattern="/profile/**" access="isAuthenticated()"/>
         <security:intercept-url pattern="/socialProfile/**" access="isAuthenticated()"/>
 
@@ -66,6 +67,7 @@
         <security:intercept-url pattern="/hacker/company/**" access="hasAnyRole('COMPANY')"/>
 
         <security:intercept-url pattern="/position/listNotLogged.do" access="permitAll"/>
+        <security:intercept-url pattern="/position/listByCompany.do" access="permitAll"/>
         <security:intercept-url pattern="/position/company/**" access="hasAnyRole('COMPANY')"/>
         <security:intercept-url pattern="/position/search.do" access="permitAll"/>
 

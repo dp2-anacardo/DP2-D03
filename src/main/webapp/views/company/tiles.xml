@@ -25,5 +25,10 @@
 		<put-attribute name="title" value="Edit personal data" />
 		<put-attribute name="body" value="/views/company/edit.jsp" />
 	</definition>
+
+	<definition name="company/list" extends="master.page">
+		<put-attribute name="title" value="Companies" />
+		<put-attribute name="body" value="/views/company/list.jsp" />
+	</definition>
 	
 </tiles-definitions>
