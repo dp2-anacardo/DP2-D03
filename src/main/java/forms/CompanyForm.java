@@ -202,14 +202,14 @@ public class CompanyForm {
 		return this.number;
 	}
 
-	@NotNull
-	@Future
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "MM/YY")
 	public void setNumber(final String number) {
 		this.number = number;
 	}
 
+	@NotNull
+	@Future
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "MM/YY")
 	public Date getExpiration() {
 		return this.expiration;
 	}
