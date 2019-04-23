@@ -75,9 +75,24 @@ public class ProblemController extends AbstractController {
         Problem problem;
 
         try {
-            Assert.notNull(problemID);
+            final Actor principal = this.actorService.getActorLogged();
+            if (principal instanceof Company) {
+                problem = this.problemService.findOne(problemID);
+                Assert.isTrue(this.problemService.findAllByCompany(principal.getId()).contains(problem));
+            } else {
+                //TODO Caso Hacker ?
+            }
+            problem = this.problemService.findOne(problemID);
+        } catch (final Exception e) {
+            result = new ModelAndView("redirect:/");
+            return result;
+        }
+
+        try {
+            final Actor principal = this.actorService.getActorLogged();
             problem = this.problemService.findOne(problemID);
             Assert.isTrue(problem.getIsFinal() == false);
+            Assert.isTrue(this.problemService.findAllByCompany(principal.getId()).contains(problem));
             result = this.updateModelAndView(problem);
             return result;
         } catch (final Exception e) {
@@ -166,6 +181,7 @@ public class ProblemController extends AbstractController {
                 problem = this.problemService.findOne(problemID);
                 problems = this.problemService.findAllByCompany(principal.getId());
                 Assert.isTrue(problems.contains(problem));
+                Assert.isTrue(problem.getIsFinal() == false);
             } catch (final Exception e) {
                 result = new ModelAndView("redirect:/");
                 return result;
@@ -188,7 +204,6 @@ public class ProblemController extends AbstractController {
 
         try {
             try {
-                problem = this.problemService.reconstruct(problem, binding);
                 this.problemService.delete(problem);
                 result = new ModelAndView("redirect:list.do");
             } catch (final Exception e) {

@@ -331,6 +331,7 @@
 			<list>
 			</list>
 		</property>
+		<property name="lastUpdate" value="10/04/2019"/>
 	</bean>
 	
 	<!-- Hackers' Curricula -->
