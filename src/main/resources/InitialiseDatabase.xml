@@ -37,174 +37,53 @@
 	<bean id="admin1" class="domain.Administrator">
 		<property name="userAccount" ref="userAccount1"/>
 		<property name="name" value="admin1" />
-		<property name="middleName" value="middleName" />
 		<property name="surname" value="admin1"/>
+		<property name="vatNumber" value="21"/>
+		<property name="creditCard" ref="creditCardAdmin1"/>
 		<property name="photo" value="https://github.com/dp2-anacardo/DP2-D01"/>
 		<property name="email" value="emailDePrueba@gmail.com"/>
 		<property name="phoneNumber" value="+34 678123674"/>
 		<property name="address" value="Avenida Reina Mercedes"/>
-		<property name="isSuspicious" value="false"/>
+		<property name="isSpammer" value="false"/>
 		<property name="isBanned" value="false"/>
-		<property name="score" value=""/>
 		<property name="socialProfiles">
 			<list>
+				<ref bean="socialProfileAdmin1"/>
 			</list>
 		</property>
-		<property name="boxes">
-			<list>
-				<ref bean="inBoxAdmin1"/>
-				<ref bean="outBoxAdmin1"/>
-				<ref bean="spamBoxAdmin1"/>
-				<ref bean="trashBoxAdmin1"/>
-				<ref bean="notificationBoxAdmin1" />
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="inBoxAdmin1" class="domain.MessageBox">
-		<property name="name" value="INBOX"/>
-		<property name="isSystem" value="true"/>
-		<property name="messages">
+		<property name="messagesR">
 			<list>
 			</list>
 		</property>
-		<property name="sons">
+		<property name="messagesS">
 			<list>
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="outBoxAdmin1" class="domain.MessageBox">
-		<property name="name" value="OUTBOX"/>
-		<property name="isSystem" value="true"/>
-		<property name="messages">
-			<list>
-			</list>
-		</property>
-		<property name="sons">
-			<list>
-			</list>
-		</property>
+	<bean id="socialProfileAdmin1" class="domain.SocialProfile">
+		<property name="nick" value="admin1Nick" />
+		<property name="socialNetworkName" value="twitter" />
+		<property name="profileLink" value="http://www.twitter.com" />
 	</bean>
 	
-	<bean id="spamBoxAdmin1" class="domain.MessageBox">
-		<property name="name" value="SPAMBOX"/>
-		<property name="isSystem" value="true"/>
-		<property name="messages">
-			<list>
-			</list>
-		</property>
-		<property name="sons">
-			<list>
-			</list>
-		</property>
+	<bean id="creditCardAdmin1" class ="datatype.CreditCard">
+		<property name = "holder" value = "Admin1"/>
+		<property name = "brandName" value = "VISA"/>
+		<property name = "number" value = "4885149505523388"/>
+		<property name = "expirationYear" value="01/11/2023"/>
+		<property name = "cvv" value = "891"/>
 	</bean>
 	
-	<bean id="trashBoxAdmin1" class="domain.MessageBox">
-		<property name="name" value="TRASHBOX"/>
-		<property name="isSystem" value="true"/>
-		<property name="messages">
-			<list>
-			</list>
-		</property>
-		<property name="sons">
-			<list>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="notificationBoxAdmin1" class="domain.MessageBox">
-		<property name="name" value="NOTIFICATIONBOX"/>
-		<property name="isSystem" value="true"/>
-		<property name="messages">
-			<list>
-			</list>
-		</property>
-		<property name="sons">
-			<list>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="HIGH" class="domain.Priority">
-		<property name="name">
-		<map>
-		<entry key="ES" value="ALTA"/>
-		<entry key="EN" value="HIGH"/>
-		</map>
-		</property>
-	</bean>
-	
-	<bean id="MEDIUM" class="domain.Priority">
-		<property name="name">
-		<map>
-		<entry key="ES" value="MEDIA"/>
-		<entry key="EN" value="MEDIUM"/>
-		</map>
-		</property>
-	</bean>
-	
-	<bean id="LOW" class="domain.Priority">
-		<property name="name">
-		<map>
-		<entry key="ES" value="BAJA"/>
-		<entry key="EN" value="LOW"/>
-		</map>
-		</property>
-	</bean>
-	
-	<bean id="president" class="domain.Position">
-		<property name="roleEs" value="Presidente"/>
-		<property name="roleEn" value="President"/>
-	</bean>
-	
-	<bean id="vicepresident" class="domain.Position">
-		<property name="roleEs" value="Vicepresidente"/>
-		<property name="roleEn" value="Vice President"/>
-	</bean>
-	
-	<bean id="secretary" class="domain.Position">
-		<property name="roleEs" value="Secretario"/>
-		<property name="roleEn" value="Secretary"/>
-	</bean>
-	
-	<bean id="treasurer" class="domain.Position">
-		<property name="roleEs" value="Tesorero"/>
-		<property name="roleEn" value="Treasurer"/>
-	</bean>
-	
-	<bean id="fundraiser" class="domain.Position">
-		<property name="roleEs" value="Promotor"/>
-		<property name="roleEn" value="Fundraiser"/>
-	</bean>
-	
-	<bean id="historian" class="domain.Position">
-		<property name="roleEs" value="Historiador"/>
-		<property name="roleEn" value="Historian"/>
-	</bean>
-	
-	<bean id="officer" class="domain.Position">
-		<property name="roleEs" value="Vocal"/>
-		<property name="roleEn" value="Officer"/>
-	</bean>
-	
-	<bean id="default" class="domain.Position">
-		<property name="roleEs" value="default"/>
-		<property name="roleEn" value="default"/>
-	</bean>
-	
-	<!-- Configuration -->
 	
 	<bean id="configuration1" class="domain.Configuration">
 		<property name="maxResults" value="10"/>
 		<property name="maxTime" value="1"/>
-		<property name="systemName" value="Acme Madrugá"/>
-		<property name="banner" value="https://st.depositphotos.com/1907907/3851/v/950/depositphotos_38512469-stock-illustration-marching-band-in-celebtarion-parade.jpg"/>
-		<property name="welcomeMessageEs" value="¡Bienvenidos a Acme Madrugá! Tu sitio para organizar procesiones."/>
-		<property name="welcomeMessageEn" value="Welcome to Acme Madrugá, the site to organise your parades."/>
-		<property name="defaultCC" value="34"/>
-		<property name="vat" value="21"/>
-		<property name="flatFee" value="15"/>
+		<property name="systemName" value="Acme Hacker Rank"/>
+		<property name="banner" value="https://i.imgur.com/7b8lu4b.png"/>
+		<property name="welcomeMessageEs" value="¡Bienvenidos a Acme Hacker Rank! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!"/>
+		<property name="welcomeMessageEn" value="Welcome to Acme hacker Rank! We’re IT hacker’s favourite job marketplace!"/>
+		<property name="countryCode" value="34"/>
 		<property name="spamWords">
 			<list>
 				<value>sex</value>
@@ -216,67 +95,7 @@
 				<value>sexo</value>
 				<value>un millon</value>
 				<value>has sido seleccionado</value>
-			</list>
-		</property>
-		<property name="positiveWords">
-			<list>
-				<value>good</value>
-				<value>fantastic</value>
-				<value>excellent</value>
-				<value>great</value>
-				<value>amazing</value>
-				<value>terrific</value>
-				<value>beautiful</value>
-				<value>bueno</value>
-				<value>buenos</value>
-				<value>buena</value>
-				<value>buenas</value>
-				<value>fantastico</value>
-				<value>fantasticos</value>
-				<value>fantastica</value>
-				<value>fantasticas</value>
-				<value>excelente</value>
-				<value>excelentes</value>
-				<value>genial</value>
-				<value>geniales</value>
-				<value>increible</value>
-				<value>increibles</value>
-				<value>estupendo</value>
-				<value>estupendos</value>
-				<value>estupenda</value>
-				<value>estupendas</value>
-				<value>bonito</value>
-				<value>bonitos</value>
-				<value>bonita</value>
-				<value>bonitas</value>
-			</list>
-		</property>
-		<property name="negativeWords">
-			<list>
-				<value>not</value>
-				<value>bad</value>
-				<value>horrible</value>
-				<value>average</value>
-				<value>disaster</value>
-				<value>no</value>
-				<value>malo</value>
-				<value>malos</value>
-				<value>mala</value>
-				<value>malas</value>
-				<value>mediocre</value>
-				<value>desastroso</value>
-				<value>desastrosos</value>
-				<value>desastrosa</value>
-				<value>desastrosas</value>
-			</list>
-		</property>
-		<property name="brandName">
-			<list>
-				<value>VISA</value>
-				<value>MCARD</value>
-				<value>DINNERS</value>
-				<value>AMEX</value>
-				<value>FLY</value>
+				<value>has sido seleccionada</value>
 			</list>
 		</property>
 	</bean>
