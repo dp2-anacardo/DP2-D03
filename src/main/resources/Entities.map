@@ -1,4 +1,5 @@
 #./src/main/resources/Entities.map
+<<<<<<< HEAD
 #Tue Apr 23 14:27:58 CEST 2019
 problem6=462
 application4=470
@@ -52,3 +53,47 @@ curriculaHacker2Copy3=452
 position2=455
 curriculaHacker2Copy2=450
 position1=454
+=======
+#Mon Apr 22 13:31:55 CEST 2019
+problem6=352
+application4=360
+problem5=351
+application3=359
+problem4=350
+application2=358
+message3=357
+personalDataHacker2=343
+problem3=349
+application1=362
+problem2=348
+message2=355
+problem1=347
+message1=329
+configuration1=353
+curriculaHacker2=342
+educationalDataHacker1=338
+finderHacker2=334
+finderHacker1=333
+curricula1Hacker1=335
+socialProfileHacker1=332
+socialProfileCompany1=331
+company2=330
+company1=328
+curricula2Hacker1=340
+personalData1Hacker1=337
+userAccount5=326
+userAccount4=325
+hacker2=356
+hacker1=361
+userAccount3=324
+userAccount2=323
+userAccount1=322
+personalData2Hacker1=341
+miscellaneousDataHacker1=336
+admin1=354
+positionDataHacker1=339
+position3=346
+socialProfileAdmin1=327
+position2=345
+position1=344
+>>>>>>> miguel

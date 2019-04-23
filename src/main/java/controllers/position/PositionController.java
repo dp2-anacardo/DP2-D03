@@ -55,6 +55,7 @@ public class PositionController extends AbstractController {
 
 		return result;
 	}
+
 	@RequestMapping(value = "/listByCompany", method = RequestMethod.GET)
 	public ModelAndView listByCompany(@RequestParam int companyId){
 		ModelAndView result;
