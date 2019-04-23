@@ -99,12 +99,12 @@
 				<ref bean="socialProfileAdmin1"/>
 			</list>
 		</property>
-		<property name="messagesR">
+		<property name="messagesReceived">
 			<list>
 				<ref bean="message2"/>
 			</list>
 		</property>
-		<property name="messagesS">
+		<property name="messagesSent">
 			<list>
 				<ref bean="message1"/>
 			</list>
@@ -149,12 +149,12 @@
 			</list>
 		</property>
 		<property name="commercialName" value="BBVA"/>
-		<property name="messagesR">
+		<property name="messagesReceived">
 			<list>
 				<ref bean="message1"/>
 			</list>
 		</property>
-		<property name="messagesS">
+		<property name="messagesSent">
 			<list>
 			</list>
 		</property>
@@ -177,11 +177,11 @@
 			</list>
 		</property>
 		<property name ="commercialName" value="Abengoa"/>
-		<property name="messagesR">
+		<property name="messagesReceived">
 			<list>
 			</list>
 		</property>
-		<property name="messagesS">
+		<property name="messagesSent">
 			<list>
 			</list>
 		</property>
@@ -239,11 +239,11 @@
 			</list>
 		</property>
 		<property name ="finder" ref="finderHacker1"/>
-		<property name="messagesR">
+		<property name="messagesReceived">
 			<list>
 			</list>
 		</property>
-		<property name="messagesS">
+		<property name="messagesSent">
 			<list>
 				<ref bean="message2"/>
 				<ref bean="message3"/>
@@ -273,12 +273,12 @@
 			</list>
 		</property>
 		<property name ="finder" ref="finderHacker2"/>
-		<property name="messagesR">
+		<property name="messagesReceived">
 			<list>
 				<ref bean="message3"/>
 			</list>
 		</property>
-		<property name="messagesS">
+		<property name="messagesSent">
 			<list>
 			</list>
 		</property>

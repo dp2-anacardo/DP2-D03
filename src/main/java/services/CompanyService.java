@@ -61,8 +61,8 @@ public class CompanyService {
 		a.setIsBanned(false);
 		a.setIsSpammer(false);
 		a.setSocialProfiles(profiles);
-		a.setMessagesR(received);
-		a.setMessagesS(sent);
+		a.setMessagesReceived(received);
+		a.setMessagesSent(sent);
 
 		return a;
 	}

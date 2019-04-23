@@ -76,7 +76,7 @@ public class MessageService {
 
                 result = this.messageRepository.save(message);
 
-                recipient.getMessagesR().add(result);
+                recipient.getMessagesReceived().add(result);
 
             } else {
                 final UserAccount userAccount = LoginService.getPrincipal();
@@ -90,9 +90,9 @@ public class MessageService {
                 result = this.messageRepository.save(message);
 
                 if (sender != null)
-                    sender.getMessagesS().add(result);
+                    sender.getMessagesSent().add(result);
 
-                recipient.getMessagesR().add(result);
+                recipient.getMessagesReceived().add(result);
             }
 
         } else
@@ -115,23 +115,23 @@ public class MessageService {
                 message.getTags().add("DELETED");
 
                 if (sender)
-                    actor.getMessagesS().remove(message);
+                    actor.getMessagesSent().remove(message);
                 else
-                    actor.getMessagesR().remove(message);
+                    actor.getMessagesReceived().remove(message);
 
                 this.messageRepository.save(message);
             } else {
                 if (sender)
-                    actor.getMessagesS().remove(message);
+                    actor.getMessagesSent().remove(message);
                 else
-                    actor.getMessagesR().remove(message);
+                    actor.getMessagesReceived().remove(message);
 
                 this.messageRepository.delete(message.getId());
 
             }
 
         } else {
-            actor.getMessagesR().remove(message);
+            actor.getMessagesReceived().remove(message);
             this.messageRepository.delete(message.getId());
         }
 
@@ -155,7 +155,7 @@ public class MessageService {
 
             result = this.messageRepository.save(msg);
 
-            a.getMessagesR().add(result);
+            a.getMessagesReceived().add(result);
         }
     }
 

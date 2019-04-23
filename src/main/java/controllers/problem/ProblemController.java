@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ProblemService;
 
-import javax.swing.*;
 import javax.validation.ValidationException;
 import java.util.Collection;
 
@@ -32,7 +31,6 @@ public class ProblemController extends AbstractController {
 
     @ExceptionHandler(TypeMismatchException.class)
     public ModelAndView handleMismatchException(final TypeMismatchException oops) {
-        JOptionPane.showMessageDialog(null, "Forbidden operation");
         return new ModelAndView("redirect:/");
     }
 
@@ -47,7 +45,7 @@ public class ProblemController extends AbstractController {
             Assert.isTrue(principal instanceof Company);
             problems = this.problemService.findAllByCompany(principal.getId());
         } catch (final Exception e) {
-            result = this.forbiddenOperation();
+            result = new ModelAndView("redirect:/");
             return result;
         }
 
@@ -83,7 +81,7 @@ public class ProblemController extends AbstractController {
             result = this.updateModelAndView(problem);
             return result;
         } catch (final Exception e) {
-            result = new ModelAndView("redirect:list.do");
+            result = new ModelAndView("redirect:/");
             return result;
         }
     }
@@ -145,7 +143,7 @@ public class ProblemController extends AbstractController {
             }
             problem = this.problemService.findOne(problemID);
         } catch (final Exception e) {
-            result = this.forbiddenOperation();
+            result = new ModelAndView("redirect:/");
             return result;
         }
 
@@ -154,8 +152,6 @@ public class ProblemController extends AbstractController {
 
         return result;
     }
-
-    //TODO No poder borrar un Problem en uso.
 
     // Delete GET ------------------------------------------------------
     @RequestMapping(value = "company/delete", method = RequestMethod.GET)
@@ -171,7 +167,7 @@ public class ProblemController extends AbstractController {
                 problems = this.problemService.findAllByCompany(principal.getId());
                 Assert.isTrue(problems.contains(problem));
             } catch (final Exception e) {
-                result = this.forbiddenOperation();
+                result = new ModelAndView("redirect:/");
                 return result;
             }
             this.problemService.delete(problem);
@@ -196,7 +192,7 @@ public class ProblemController extends AbstractController {
                 this.problemService.delete(problem);
                 result = new ModelAndView("redirect:list.do");
             } catch (final Exception e) {
-                result = this.forbiddenOperation();
+                result = new ModelAndView("redirect:/");
                 return result;
             }
         } catch (final Throwable oops) {
@@ -246,7 +242,4 @@ public class ProblemController extends AbstractController {
         return result;
     }
 
-    private ModelAndView forbiddenOperation() {
-        return new ModelAndView("redirect:/company/list.do");
-    }
 }

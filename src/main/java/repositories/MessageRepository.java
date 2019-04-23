@@ -12,10 +12,10 @@ import domain.Message;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
-	@Query("select a.messagesR from Actor a where a.id=?1")
+	@Query("select a.messagesReceived from Actor a where a.id=?1")
 	Collection<Message> findAllReceivedInPoolByActor(int actorID);
 
-	@Query("select a.messagesS from Actor a where a.id=?1")
+	@Query("select a.messagesSent from Actor a where a.id=?1")
 	Collection<Message> findAllSentInPoolByActor(int actorID);
 
 	@Query("select m from Message m where m.sender.id=?1")
