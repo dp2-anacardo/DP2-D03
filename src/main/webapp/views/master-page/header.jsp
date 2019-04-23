@@ -68,6 +68,9 @@
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">
+			<li><a href="company/list.do"><spring:message code="master.page.company.all" /></a></li>
+			<li><a href="position/listNotLogged.do"><spring:message code="master.page.position.available" /></a></li>
+			<li><a href="position/search.do"><spring:message code="master.page.search" /></a></li>
 			<li>
 				<a class="fNiv"> 
 					<spring:message code="master.page.profile" /> 
@@ -80,9 +83,6 @@
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>				
 				</ul>
 			</li>
-			<li><a href="position/listNotLogged.do"><spring:message code="master.page.position.available" /></a></li>
-			<li><a href="position/search.do"><spring:message code="master.page.search" /></a></li>
-			<li><a href="company/list.do"><spring:message code="master.page.company.all" /></a></li>
 		</security:authorize>
 	</ul>
 </div>

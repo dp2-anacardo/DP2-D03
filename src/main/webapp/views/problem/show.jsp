@@ -73,7 +73,9 @@
 </security:authorize>
 
 <security:authorize access="hasRole('COMPANY')">
-    <acme:cancel url="problem/company/delete.do?problemID=${row.id}" code="problem.delete"/>
+    <jstl:if test="${problem.isFinal eq false}">
+        <acme:cancel url="problem/company/delete.do?problemID=${row.id}" code="problem.delete"/>
+    </jstl:if>
     <acme:cancel url="problem/company/list.do" code="problem.goBack"/>
 
 </security:authorize>
@@ -81,6 +83,6 @@
 <security:authorize access="hasRole('HACKER')">
     <input type="button" name="cancel"
            value="<spring:message code="message.goBack" />"
-           onclick="javascript: window.history.back();" />
+           onclick="javascript: window.history.back();"/>
 
 </security:authorize>
