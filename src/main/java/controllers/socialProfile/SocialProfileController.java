@@ -19,6 +19,8 @@ import controllers.AbstractController;
 import domain.Actor;
 import domain.SocialProfile;
 
+import javax.validation.ValidationException;
+
 @Controller
 @RequestMapping("/socialProfile/admin,company,hacker")
 public class SocialProfileController extends AbstractController {
@@ -84,19 +86,19 @@ public class SocialProfileController extends AbstractController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-    public ModelAndView save(@ModelAttribute("socialProfile") SocialProfile profile, final BindingResult binding) {
+    public ModelAndView save(SocialProfile profile, final BindingResult binding) {
 
         ModelAndView result;
-        profile = this.socialProfileService.reconstruct(profile, binding);
 
-        if (binding.hasErrors())
-            result = this.createEditModelAndView(profile);
-        else
             try {
-                this.socialProfileService.save(profile);
+                profile = this.socialProfileService.reconstruct(profile, binding);
+                profile = this.socialProfileService.save(profile);
                 result = new ModelAndView("redirect:list.do");
-            } catch (final Throwable oops) {
-                result = this.createEditModelAndView(profile, "profile.commit.error");
+            } catch (ValidationException e){
+                result = this.createEditModelAndView(profile, null);
+            }
+            catch (final Throwable oops) {
+                result = this.createEditModelAndView(profile, "socialProfile.commit.error");
             }
         return result;
     }
@@ -114,7 +116,7 @@ public class SocialProfileController extends AbstractController {
                 this.socialProfileService.delete(profile);
                 result = new ModelAndView("redirect:list.do");
             } catch (final Throwable oops) {
-                result = this.createEditModelAndView(profile, "profile.commit.error");
+                result = this.createEditModelAndView(profile, "socialProfile.commit.error");
             }
         return result;
     }
