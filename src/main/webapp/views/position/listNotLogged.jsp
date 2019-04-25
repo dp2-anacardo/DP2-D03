@@ -24,4 +24,9 @@
     <display:column> <a href="company/show.do?companyId=${row.company.id}">
         <spring:message code="position.company" /></a> </display:column>
 
+    <security:authorize access="hasRole('HACKER')">
+        <display:column> <a href="application/hacker/create.do?positionId=${row.id}">
+            <spring:message code="application.create" /></a> </display:column>
+    </security:authorize>
+
 </display:table>
