@@ -1,9 +1,10 @@
 
 package controllers.company;
 
-import javax.validation.Valid;
-
-import com.sun.xml.internal.fastinfoset.util.ValueArrayResourceException;
+import controllers.AbstractController;
+import datatype.CreditCard;
+import domain.Company;
+import forms.CompanyForm;
 import org.hibernate.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,15 +13,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import services.ActorService;
 import services.AdministratorService;
 import services.CompanyService;
-import controllers.AbstractController;
-import datatype.CreditCard;
-import domain.Company;
-import forms.CompanyForm;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @Controller
@@ -40,7 +37,7 @@ public class RegisterCompanyController extends AbstractController {
 
 	@ExceptionHandler(TypeMismatchException.class)
 	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
-		return new ModelAndView("redirect:/misc/403");
+		return new ModelAndView("redirect:/");
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)

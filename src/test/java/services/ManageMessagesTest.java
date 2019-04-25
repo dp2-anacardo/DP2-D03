@@ -30,8 +30,8 @@ public class ManageMessagesTest extends AbstractTest {
      * Testing functional requirement : 23.2 An actor that is authenticated must be able to manage their messages
      * Positive: An actor sends a message
      * Negative: An actor tries to send a message with invalid data
-     * Sentence coverage:
-     * Data coverage:
+     * Sentence coverage: 84%
+     * Data coverage: 20%
      */
 
     @Test
@@ -80,9 +80,9 @@ public class ManageMessagesTest extends AbstractTest {
 
     /*
      * Testing functional requirement : 23.2 An actor that is authenticated must be able to manage their messages
-     * Positive: A company deletes a message
-     * Negative: A company tries to delete a message
-     * Sentence coverage: 84%
+     * Positive: An actor deletes a message
+     * Negative: A company tries to delete a message that not exists
+     * Sentence coverage: 75.5%
      * Data coverage: Not applicable
      */
 
@@ -92,7 +92,7 @@ public class ManageMessagesTest extends AbstractTest {
                 {
                         "hacker1", "message3", null
                 }, {
-                "hacker2", "message3", null
+                "hacker2", "message5", AssertionError.class
         }
         };
         for (int i = 0; i < testingData.length; i++) {
@@ -118,10 +118,10 @@ public class ManageMessagesTest extends AbstractTest {
 
     /*
      * Testing functional requirement : 24.1 An actor that is authenticated as a administraotr must be able to broadcast a message
-     * Positive: A company deletes a message
-     * Negative: A company tries to delete a message
-     * Sentence coverage: 84%
-     * Data coverage: Not applicable
+     * Positive: An administrator broadcast a message.
+     * Negative: An administrator tries to broadcast a message with invalid fields.
+     * Sentence coverage: 92%
+     * Data coverage: 50%
      */
 
     @Test

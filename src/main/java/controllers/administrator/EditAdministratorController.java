@@ -1,8 +1,9 @@
 
 package controllers.administrator;
 
-import javax.validation.Valid;
-
+import controllers.AbstractController;
+import domain.Actor;
+import domain.Administrator;
 import org.hibernate.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,12 +13,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import services.ActorService;
 import services.AdministratorService;
-import controllers.AbstractController;
-import domain.Actor;
-import domain.Administrator;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("administrator/administrator")
@@ -31,7 +30,7 @@ public class EditAdministratorController extends AbstractController {
 
 	@ExceptionHandler(TypeMismatchException.class)
 	public ModelAndView handleMismatchException(final TypeMismatchException oops) {
-		return new ModelAndView("redirect:/misc/403");
+		return new ModelAndView("redirect:/");
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)

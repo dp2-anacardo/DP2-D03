@@ -63,9 +63,12 @@ public class ManageActorsController extends AbstractController {
     public ModelAndView calculateSpam() {
         ModelAndView result;
 
-        this.administratorService.computeAllSpam();
-
-        result = new ModelAndView("redirect:/administrator/actorList.do");
+        try {
+            this.administratorService.computeAllSpam();
+            result = new ModelAndView("redirect:/administrator/actorList.do");
+        } catch (final Throwable oops) {
+            return new ModelAndView("redirect:/");
+        }
 
         return result;
     }
@@ -79,7 +82,7 @@ public class ManageActorsController extends AbstractController {
             this.administratorService.ban(actor);
             result = new ModelAndView("redirect:/administrator/actorList.do");
         } catch (final Throwable oops) {
-            return new ModelAndView("redirect:/misc/403");
+            return new ModelAndView("redirect:/");
         }
         return result;
     }
@@ -93,7 +96,7 @@ public class ManageActorsController extends AbstractController {
             this.administratorService.unban(actor);
             result = new ModelAndView("redirect:/administrator/actorList.do");
         } catch (final Throwable oops) {
-            return new ModelAndView("redirect:/misc/403");
+            return new ModelAndView("redirect:/");
         }
         return result;
     }
@@ -117,7 +120,7 @@ public class ManageActorsController extends AbstractController {
             result.addObject("company", company);
 
         } catch (final Throwable oops) {
-            return new ModelAndView("redirect:/misc/403");
+            return new ModelAndView("redirect:/");
         }
 
         return result;

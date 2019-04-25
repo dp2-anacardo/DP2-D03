@@ -499,7 +499,7 @@
 	<bean id="message2" class ="domain.Message">
 		<property name = "moment" value = "04/14/2019 16:20"/>
 		<property name = "subject" value = "prueba"/>
-		<property name = "body" value = "message2"/>
+		<property name = "body" value = "sex viagra"/>
 		<property name = "tags">
 			<value>Aviso</value>
 		</property>

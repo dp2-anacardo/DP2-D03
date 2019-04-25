@@ -31,8 +31,8 @@ public class ManageProblemsTest extends AbstractTest {
      * Testing functional requirement : 9.2 An actor that is authenticated as a company must be able to manage their problems
      * Positive: A company creates a problem
      * Negative: A company tries to create a problem with invalid data
-     * Sentence coverage:
-     * Data coverage: 5 atributos, 4 obligatorios, 6 casos posibles, pruebo positivo + dos atributos malos. 3/6
+     * Sentence coverage: 99%
+     * Data coverage: 50%
      */
 
     @Test
@@ -94,8 +94,8 @@ public class ManageProblemsTest extends AbstractTest {
      * Testing functional requirement : 9.2 An actor that is authenticated as a company must be able to manage their problems
      * Positive: A company edits a problem
      * Negative: A company tries to edit a problem with invalid data
-     * Sentence coverage:
-     * Data coverage: 5 atributos, 4 obligatorios, 6 casos posibles, pruebo positivo + un atributo malo. 2/6
+     * Sentence coverage: 99%
+     * Data coverage: 33%
      */
 
     @Test
@@ -136,9 +136,9 @@ public class ManageProblemsTest extends AbstractTest {
 
     /*
      * Testing functional requirement : 9.1 An actor that is authenticated as a company must be able to manage their problems
-     * Positive: A company delete a problem
+     * Positive: A company deletes a problem
      * Negative: A company tries to delete a problem in final mode
-     * Sentence coverage: 84%
+     * Sentence coverage: 100%
      * Data coverage: Not applicable
      */
 

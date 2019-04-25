@@ -1,17 +1,14 @@
 package services;
 
 import domain.Actor;
-import domain.Message;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.validation.DataBinder;
 import utilities.AbstractTest;
 
 import javax.transaction.Transactional;
-import javax.validation.ValidationException;
 
 @ContextConfiguration(locations = {
         "classpath:spring/junit.xml"
@@ -27,10 +24,11 @@ public class CalculateSpamAndBanTest extends AbstractTest {
     private AdministratorService administratorService;
 
     /*
-     * Testing functional requirement : 23.2 An actor that is authenticated must be able to manage their messages
-     * Positive: A company deletes a message
-     * Negative: A company tries to delete a message
-     * Sentence coverage: 84%
+     * Testing functional requirement : 24.2 An actor who is authenticated as an administrator must be able to launch a process that flags the actor
+     * of the system as spammerr or not-spammers
+     * Positive: An admin launch the process
+     * Negative: A hacker tries to launch the process
+     * Sentence coverage: 70.9%
      * Data coverage: Not applicable
      */
 
@@ -64,10 +62,10 @@ public class CalculateSpamAndBanTest extends AbstractTest {
     }
 
     /*
-     * Testing functional requirement : 23.2 An actor that is authenticated must be able to manage their messages
-     * Positive: A company deletes a message
-     * Negative: A company tries to delete a message
-     * Sentence coverage: 84%
+     * Testing functional requirement : 24.3 An actor who is authenticated as an administrator must be able to ban an actor with the spammer flag
+     * Positive: An administrator bans a hacker with spammer flag
+     * Negative: An administrator tries to bans a hacker with not-spammer flag
+     * Sentence coverage: 93.1%
      * Data coverage: Not applicable
      */
 
@@ -102,10 +100,11 @@ public class CalculateSpamAndBanTest extends AbstractTest {
     }
 
     /*
-     * Testing functional requirement : 23.2 An actor that is authenticated must be able to manage their messages
-     * Positive: A company deletes a message
-     * Negative: A company tries to delete a message
-     * Sentence coverage: 84%
+     * Testing functional requirement : 24.3 An actor who is authenticated as an administrator must be able to unban an actor who was
+     * previously banned.
+     * Positive: An administrator unbans an actor who was previously banned
+     * Negative: An administrator tries to unban an acto who is not banned.
+     * Sentence coverage: 100%
      * Data coverage: Not applicable
      */
 
