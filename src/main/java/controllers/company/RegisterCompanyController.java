@@ -3,6 +3,7 @@ package controllers.company;
 
 import javax.validation.Valid;
 
+import com.sun.xml.internal.fastinfoset.util.ValueArrayResourceException;
 import org.hibernate.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import datatype.CreditCard;
 import domain.Company;
 import forms.CompanyForm;
 
+import java.util.Collection;
+
 @Controller
 @RequestMapping("/company")
 public class RegisterCompanyController extends AbstractController {
@@ -32,6 +35,7 @@ public class RegisterCompanyController extends AbstractController {
 
 	@Autowired
 	private CompanyService			companyService;
+
 
 
 	@ExceptionHandler(TypeMismatchException.class)
@@ -97,6 +101,20 @@ public class RegisterCompanyController extends AbstractController {
 		result.addObject("companyForm", companyForm);
 		result.addObject("message", messageCode);
 
+		return result;
+	}
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(){
+		ModelAndView result;
+		try{
+			Collection<Company> companies = this.companyService.findAll();
+			result = new ModelAndView("company/list");
+			result.addObject("companies",companies);
+			result.addObject("RequestURI","company/list.do");
+		}catch (Throwable oops){
+			result = new ModelAndView("redirect:/" );
+		}
 		return result;
 	}
 }

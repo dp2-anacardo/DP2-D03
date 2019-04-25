@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,19 +83,21 @@ public class SocialProfileService {
 	public SocialProfile reconstruct(final SocialProfile profile, final BindingResult binding) {
 
 		SocialProfile result;
-
 		if (profile.getId() == 0) {
-			this.validator.validate(profile, binding);
-			result = profile;
+			result = this.create();
 		} else {
 			result = this.socialProfileRepository.findOne(profile.getId());
-
-			//			result.setNick(profile.getNick());
-			//			result.setProfileLink(profile.getProfileLink());
-			//			result.setSocialNetworkName(profile.getSocialNetworkName());
 			profile.setVersion(result.getVersion());
 			result = profile;
-			this.validator.validate(profile, binding);
+		}
+
+		result.setNick(profile.getNick());
+		result.setProfileLink(profile.getProfileLink());
+		result.setSocialNetworkName(profile.getSocialNetworkName());
+
+		this.validator.validate(profile, binding);
+		if (binding.hasErrors()){
+			throw new ValidationException();
 		}
 		return result;
 	}

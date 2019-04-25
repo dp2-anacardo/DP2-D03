@@ -17,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
-import services.CompanyService;
-import services.PositionService;
-import services.ProblemService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
 import forms.SearchForm;
+import services.ActorService;
+import services.CompanyService;
+import services.PositionService;
+import services.ProblemService;
 
 @Controller
 @RequestMapping("/position")
@@ -56,6 +56,21 @@ public class PositionController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/listByCompany", method = RequestMethod.GET)
+	public ModelAndView listByCompany(@RequestParam final int companyId) {
+		ModelAndView result;
+		try {
+			Assert.notNull(this.companyService.findOne(companyId));
+			final Collection<Position> positions = this.positionService.getPositionsByCompanyAvailable(companyId);
+			result = new ModelAndView("position/listNotLogged");
+			result.addObject("positions", positions);
+			result.addObject("RequestURI", "position/listByCompany.do");
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/");
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/company/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
@@ -68,7 +83,7 @@ public class PositionController extends AbstractController {
 			result.addObject("positions", positions);
 			result.addObject("RequestURI", "position/company/list.do");
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
+			result = new ModelAndView("redirect:/");
 		}
 		return result;
 
@@ -163,7 +178,7 @@ public class PositionController extends AbstractController {
 		final Company c = this.companyService.findOne(this.actorService.getActorLogged().getId());
 
 		if (position == null || position.getIsFinal() == true || !(position.getCompany().equals(c)))
-			result = new ModelAndView("redirect:/misc/403");
+			result = new ModelAndView("redirect:/");
 		else
 			try {
 				final Collection<Problem> problems = this.problemService.getProblemsFinalByCompany(c);
@@ -171,7 +186,7 @@ public class PositionController extends AbstractController {
 				result = this.createEditModelAndView(position);
 				result.addObject("problems", problems);
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:/misc/403");
+				result = new ModelAndView("redirect:/");
 			}
 		return result;
 	}
@@ -188,7 +203,7 @@ public class PositionController extends AbstractController {
 			this.positionService.delete(p);
 			result = new ModelAndView("redirect:list.do");
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
+			result = new ModelAndView("redirect:/");
 		}
 		return result;
 	}
@@ -258,14 +273,14 @@ public class PositionController extends AbstractController {
 	 * result = this.editModelAndView(configF, null);
 	 * return result;
 	 * }
-	 * 
+	 *
 	 * protected ModelAndView editModelAndView(final ConfigurationForm configF, final String messageCode) {
 	 * ModelAndView result;
-	 * 
+	 *
 	 * result = new ModelAndView("configuration/administrator/edit");
 	 * result.addObject("configF", configF);
 	 * result.addObject("messageCode", messageCode);
-	 * 
+	 *
 	 * return result;
 	 * }
 	 */

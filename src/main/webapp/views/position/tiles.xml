@@ -41,4 +41,9 @@
 		<put-attribute name="body" value="/views/position/search.jsp" />
 	</definition>
 
+	<definition name="position/listByCompany" extends="master.page">
+		<put-attribute name="title" value="Positions Available" />
+		<put-attribute name="body" value="/views/position/listNotLogged.jsp." />
+	</definition>
+
 </tiles-definitions>

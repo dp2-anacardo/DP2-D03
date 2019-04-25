@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.MessageService;
 
-import javax.swing.*;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +30,6 @@ public class MessageController extends AbstractController {
 
     @ExceptionHandler(TypeMismatchException.class)
     public ModelAndView handleMismatchException(final TypeMismatchException oops) {
-        JOptionPane.showMessageDialog(null, "Forbidden operation");
         return new ModelAndView("redirect:/");
     }
 
@@ -45,7 +43,7 @@ public class MessageController extends AbstractController {
             final Actor principal = this.actorService.getActorLogged();
             messages = this.messageService.findInPoolByActor(principal.getId());
         } catch (final Exception e) {
-            result = this.forbiddenOperation();
+            result = new ModelAndView("redirect:/");
             return result;
         }
 
@@ -148,7 +146,7 @@ public class MessageController extends AbstractController {
             pool = this.messageService.findInPoolByActor(principal.getId());
             Assert.isTrue(pool.contains(message));
         } catch (final Exception e) {
-            result = this.forbiddenOperation();
+            result = new ModelAndView("redirect:/");
             return result;
         }
 
@@ -172,7 +170,7 @@ public class MessageController extends AbstractController {
                 pool = this.messageService.findInPoolByActor(principal.getId());
                 Assert.isTrue(pool.contains(message));
             } catch (final Exception e) {
-                result = this.forbiddenOperation();
+                result = new ModelAndView("redirect:/");
                 return result;
             }
             this.messageService.delete(message);
@@ -227,7 +225,4 @@ public class MessageController extends AbstractController {
         return result;
     }
 
-    private ModelAndView forbiddenOperation() {
-        return new ModelAndView("redirect:/message/list.do");
-    }
 }

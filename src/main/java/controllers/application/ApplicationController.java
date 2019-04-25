@@ -128,7 +128,7 @@ public class ApplicationController extends AbstractController {
 			result = new ModelAndView("redirect:/application/company/list.do?positionId="+positionId);
 			return result;
 		} catch (Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
+			result = new ModelAndView("redirect:/");
 			return result;
 		}
 	}
@@ -144,7 +144,7 @@ public class ApplicationController extends AbstractController {
 			result = this.rejectModelAndView(application);
 			return result;
 		} catch (Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
+			result = new ModelAndView("redirect:/");
 			return result;
 		}
 	}
@@ -203,7 +203,7 @@ public class ApplicationController extends AbstractController {
 			result.addObject("positionId",positionId);
 			result.addObject("curricula",h.getCurricula());
 		}catch(Throwable oops){
-			result = new ModelAndView("redirect:/misc/403");
+			result = new ModelAndView("redirect:/");
 		}
 		return result;
 	}
@@ -215,7 +215,7 @@ public class ApplicationController extends AbstractController {
 			this.applicationService.saveHacker(application,positionId);
 			result = new ModelAndView("redirect:/application/hacker/list.do");
 		}catch (Throwable oops){
-			result = new ModelAndView("redirect:/misc/403");
+			result = new ModelAndView("redirect:/");
 		}
 		return result;
 	}
@@ -232,7 +232,7 @@ public class ApplicationController extends AbstractController {
 			result = new ModelAndView("application/hacker/update");
 			result.addObject("application",a);
 		}catch (Throwable oops){
-			result = new ModelAndView("redirect:/misc/403/");
+			result = new ModelAndView("redirect:/");
 		}
 		return result;
 	}

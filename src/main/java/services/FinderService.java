@@ -59,6 +59,7 @@ public class FinderService {
         Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
         Assert.isTrue(this.hackerService.findOne(this.actorService.getActorLogged().getId()).getFinder().equals(finder));
 
+
         Collection<Position> result = this.search(finder);
 
         Configuration conf;

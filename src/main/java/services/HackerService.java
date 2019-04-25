@@ -66,8 +66,8 @@ public class HackerService {
 		a.setUserAccount(userAccount);
 		a.setIsBanned(false);
 		a.setIsSpammer(false);
-		a.setMessagesR(received);
-		a.setMessagesS(sent);
+		a.setMessagesReceived(received);
+		a.setMessagesSent(sent);
 		a.setSocialProfiles(profiles);
 		a.setCurricula(curriculas);
 		return a;
