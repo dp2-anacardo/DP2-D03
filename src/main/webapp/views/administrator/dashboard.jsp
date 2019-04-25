@@ -28,9 +28,20 @@
     <b><spring:message code="administrator.maxNumberOfApps" /></b> ${MaxNumberOfApps} <br />
     <b><spring:message code="administrator.stddevNumberOfApps" /></b> ${StddevNumberOfApps} <br />
 
-    <b><spring:message code="administrator.companiesWithOfferedMorePositions" /></b> ${CompaniesWithOfferedMorePositions} <br />
+    <b><spring:message code="administrator.companiesWithOfferedMorePositions" /></b>
+    <jstl:forEach var="x" items="${CompaniesWithOfferedMorePositions}">
+        <br>
+        - ${x.commercialName}
+    </jstl:forEach>
+    <br />
 
-    <b><spring:message code="administrator.hackersWithMoreApplications" /></b> ${HackersWithMoreApplications} <br />
+
+    <b><spring:message code="administrator.hackersWithMoreApplications" /></b>
+    <jstl:forEach var="x" items="${HackersWithMoreApplications}">
+        <br>
+        - ${x.userAccount.username}
+    </jstl:forEach>
+    <br />
 
     <b><spring:message code="administrator.avgSalaryOffered" /></b> ${AvgSalaryOffered} <br />
     <b><spring:message code="administrator.minSalaryOffered" /></b> ${MinSalaryOffered} <br />
