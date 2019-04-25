@@ -113,7 +113,7 @@ public class Application extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = false)
+	@OneToOne(optional = false)
 	public Curricula getCurricula() {
 		return this.curricula;
 	}
