@@ -107,7 +107,7 @@ public class CompanyService {
 	public void delete(final Company company) {
 
 		final Actor actor = this.actorService.getActorLogged();
-		Assert.isTrue(actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("ADMIN"));
+		Assert.isTrue(actor.getUserAccount().getAuthorities().iterator().next().getAuthority().equals("COMPANY"));
 		Assert.notNull(company);
 
 		this.companyRepository.delete(company);

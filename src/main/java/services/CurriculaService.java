@@ -92,6 +92,11 @@ public class CurriculaService {
 		this.curriculaRepository.delete(curricula);
 	}
 
+	public void deleteCopy(final Curricula curricula){
+		Assert.notNull(curricula);
+		this.curriculaRepository.delete(curricula);
+	}
+
 	public Curricula copy(final Curricula curricula) {
 		Assert.notNull(curricula);
 		Curricula result;
