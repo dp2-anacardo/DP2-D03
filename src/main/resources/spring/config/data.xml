@@ -29,9 +29,9 @@
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://bs5p6wbwnryb1emzanxf-mysql.services.clever-cloud.com:3306/bs5p6wbwnryb1emzanxf" />
-		<property name="user" value="ujdzxfovted2hrbc" />
-		<property name="password" value="X9JL32Rt74tz08Cy54cV" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/Acme-Hacker-Rank" />
+		<property name="user" value="acme-user" />
+		<property name="password" value="ACME-Us3r-P@ssw0rd" />
 	</bean>
 
 	<!-- JPA -->
