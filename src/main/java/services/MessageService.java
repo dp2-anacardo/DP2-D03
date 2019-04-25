@@ -1,6 +1,7 @@
 package services;
 
 import domain.Actor;
+import domain.Administrator;
 import domain.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import repositories.MessageRepository;
 import security.LoginService;
 import security.UserAccount;
 
+import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -36,6 +38,7 @@ public class MessageService {
 
     // CRUD methods
     public Message create() {
+        Assert.notNull(this.actorService.getActorLogged());
         final Message result = new Message();
         final Calendar calendar = new GregorianCalendar();
         final Collection<String> tags = new ArrayList<String>();
@@ -55,6 +58,7 @@ public class MessageService {
 
     public Message save(final Message message) {
         Assert.notNull(message);
+        Assert.notNull(this.actorService.getActorLogged());
         final Message result;
 
         Actor sender = null;
@@ -104,7 +108,7 @@ public class MessageService {
 
         Assert.isTrue(message.getRecipient().equals(actor) || message.getSender().equals(actor));
 
-        if(message.getSender() != null) {
+        if (message.getSender() != null) {
             final Boolean sender = message.getSender().equals(actor);
 
             if (!message.getTags().contains("DELETED")) {
@@ -126,19 +130,27 @@ public class MessageService {
 
             }
 
-        }else{
+        } else {
             actor.getMessagesR().remove(message);
             this.messageRepository.delete(message.getId());
         }
 
     }
 
-    public void broadcast(final Message m){
+    public void deleteForced(Message message){
+        Assert.notNull(message);
+        message.getSender().getMessagesS().remove(message);
+        message.getRecipient().getMessagesR().remove(message);
+        this.messageRepository.delete(message);
+    }
+
+    public void broadcast(final Message m) {
         final Actor principal = this.actorService.getActorLogged();
+        Assert.isTrue(principal instanceof Administrator);
 
         final Collection<Actor> actors = this.actorService.findAll();
 
-        for(Actor a : actors){
+        for (Actor a : actors) {
             Message msg = this.create();
             Message result;
 
@@ -154,14 +166,7 @@ public class MessageService {
         }
     }
 
-    public void deleteAll(final Message m) {
-
-        this.messageRepository.delete(m);
-
-    }
-
     // Other methods
-
     public Collection<Message> findInPoolByActor(final int actorID) {
         final Collection<Message> result = new ArrayList<Message>();
         final Collection<Message> received = this.messageRepository.findAllReceivedInPoolByActor(actorID);
@@ -177,8 +182,15 @@ public class MessageService {
     }
 
 
-    public 	Collection<Message> findAllSentByActor(int actorID){
+    public Collection<Message> findAllSentByActor(int actorID) {
         final Collection<Message> result = this.messageRepository.findAllSentByActor(actorID);
+        Assert.notNull(result);
+
+        return result;
+    }
+
+    public Collection<Message> findAllReceivedByActor(int actorID) {
+        final Collection<Message> result = this.messageRepository.findAllReceivedByActor(actorID);
         Assert.notNull(result);
 
         return result;
@@ -187,6 +199,8 @@ public class MessageService {
 
     public Message reconstruct(final Message message, final BindingResult binding) {
         final Message result;
+
+        final Actor actor = this.actorService.getActorLogged();
 
         result = this.create();
 
@@ -201,6 +215,23 @@ public class MessageService {
         result.setRecipient(message.getRecipient());
 
         this.validator.validate(result, binding);
+
+        if (result.getTags().size() > 0) {
+            for (String tag : result.getTags()) {
+                if (tag.toUpperCase().equals("DELETED"))
+                    binding.rejectValue("tags", "error.tag");
+                break;
+            }
+        }
+
+        if (actor instanceof Administrator) {
+            if (!binding.getFieldErrors("recipient").isEmpty() && binding.getErrorCount() > 1)
+                throw new ValidationException();
+            else if (binding.getFieldErrors("recipient").isEmpty() && binding.hasErrors())
+                throw new ValidationException();
+        } else if (binding.hasErrors())
+            throw new ValidationException();
+
 
         return result;
 

@@ -171,6 +171,27 @@ public class AdministratorService {
         return result;
     }
 
+    public void ban(final Actor actor) {
+        final Actor principal = this.actorService.getActorLogged();
+        Assert.isTrue(principal instanceof Administrator);
+        Assert.isTrue(!actor.getIsBanned());
+        Assert.isTrue(actor.getIsSpammer());
+
+        actor.setIsBanned(true);
+
+        this.actorService.save(actor);
+    }
+
+    public void unban(final Actor actor) {
+        final Actor principal = this.actorService.getActorLogged();
+        Assert.isTrue(principal instanceof Administrator);
+        Assert.isTrue(actor.getIsBanned());
+
+        actor.setIsBanned(false);
+
+        this.actorService.save(actor);
+    }
+
     public void computeAllSpam() {
 
         Collection<Hacker> hackers;
@@ -190,7 +211,7 @@ public class AdministratorService {
                     if (checkSpam(m))
                         spam++;
                 }
-                ratio = 1.0 * (spam / sentMessages.size());
+                ratio = (spam * 1.0) / sentMessages.size();
                 if (ratio >= 0.1)
                     hacker.setIsSpammer(true);
                 else
@@ -211,7 +232,7 @@ public class AdministratorService {
                     if (checkSpam(m))
                         spam++;
                 }
-                ratio = 1.0 * (spam / sentMessages.size());
+                ratio = (spam * 1.0) / sentMessages.size();
                 if (ratio >= 0.1)
                     company.setIsSpammer(true);
                 else
@@ -243,7 +264,7 @@ public class AdministratorService {
         return spam;
     }
 
-    public List<Double> getStatsPositionsPerCompany(){
+    public List<Double> getStatsPositionsPerCompany() {
         List<Double> result = new ArrayList<>();
 
         result.add(this.administratorRepository.getAvgNumberOfPositions());
@@ -254,7 +275,7 @@ public class AdministratorService {
         return result;
     }
 
-    public List<Double> getStatsApplicationsPerHacker(){
+    public List<Double> getStatsApplicationsPerHacker() {
 
         List<Double> result = new ArrayList<>();
 
@@ -266,7 +287,7 @@ public class AdministratorService {
         return result;
     }
 
-    public List<Company> getCompaniesWithOfferedMorePositions(){
+    public List<Company> getCompaniesWithOfferedMorePositions() {
 
         List<Company> result = new ArrayList<>();
 
@@ -275,7 +296,7 @@ public class AdministratorService {
         return result;
     }
 
-    public List<Hacker> getHackersWithMoreApplications(){
+    public List<Hacker> getHackersWithMoreApplications() {
 
         List<Hacker> result = new ArrayList<>();
 
@@ -284,7 +305,7 @@ public class AdministratorService {
         return result;
     }
 
-    public List<Double> getStatsSalariesOffered(){
+    public List<Double> getStatsSalariesOffered() {
 
         List<Double> result = new ArrayList<>();
 
@@ -296,7 +317,7 @@ public class AdministratorService {
         return result;
     }
 
-    public Position getBestPositionSalaryOffered(){
+    public Position getBestPositionSalaryOffered() {
 
         Position position;
 
@@ -305,7 +326,7 @@ public class AdministratorService {
         return position;
     }
 
-    public Position getWorstPositionSalaryOffered(){
+    public Position getWorstPositionSalaryOffered() {
 
         Position position;
 
@@ -314,7 +335,7 @@ public class AdministratorService {
         return position;
     }
 
-    public List<Double> getStatsCurricula(){
+    public List<Double> getStatsCurricula() {
 
         List<Double> result = new ArrayList<>();
 
@@ -326,7 +347,7 @@ public class AdministratorService {
         return result;
     }
 
-    public List<Double> getStatsFinder(){
+    public List<Double> getStatsFinder() {
 
         List<Double> result = new ArrayList<>();
 
@@ -338,14 +359,14 @@ public class AdministratorService {
         return result;
     }
 
-    public Double getRatioOfNotEmptyFinders(){
+    public Double getRatioOfNotEmptyFinders() {
 
         Double result = this.administratorRepository.getRatioOfNotEmptyFinders();
 
         return result;
     }
 
-    public Double getRatioOfEmptyFinders(){
+    public Double getRatioOfEmptyFinders() {
 
         Double result = this.administratorRepository.getRatioOfEmptyFinders();
 

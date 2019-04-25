@@ -17,19 +17,19 @@
 
 
         <acme:textbox code="curricula.personal.name" path="fullName" />
-        <br
+        
 
         <acme:textbox code="curricula.personal.statement" path="statement" />
-        <br>
+        
 
         <acme:textbox code="curricula.personal.phoneNumber" path="phoneNumber" />
-        <br>
+        
 
         <acme:textbox code="curricula.personal.githubProfile" path="githubProfile" />
-        <br>
+        
 
         <acme:textbox code="curricula.personal.linkedInProfile" path="linkedInProfile" />
-        <br>
+        
 
         <acme:submit name="save" code="curricula.save"/>
 

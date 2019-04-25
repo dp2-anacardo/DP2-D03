@@ -17,25 +17,25 @@
         <form:input type ="hidden" path="id" readonly="true"/>
 
         <acme:textbox code="position.title" path="title" />
-        <br
+        
 
         <acme:textbox code="position.description" path="description" />
-        <br>
+        
 
         <acme:textbox code="position.deadline" path="deadline" />
-        <br>
+        
 
         <acme:textbox code="position.profile" path="profile" />
-        <br>
+        
 
         <acme:textarea code="position.skill" path="skill" />
-        <br>
+        
 
         <acme:textarea code="position.technology" path="technology" />
-        <br>
+        
 
         <acme:textbox code="position.salary" path="salary" />
-        <br>
+        
 
         <form:label path="problems">
             <spring:message code="position.problems"/>
@@ -43,7 +43,7 @@
         <form:select path="problems">
             <form:options items="${problems}" itemValue="id" itemLabel="title"/>
         </form:select>
-        <br>
+        <br/>
 
         <acme:submit name="saveDraft" code="position.saveDraft"/>
 

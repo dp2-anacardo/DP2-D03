@@ -67,6 +67,7 @@ public class PositionService {
         Assert.notNull(position);
 
         if (position.getId() == 0) {
+            Assert.isTrue(position.getIsCancelled() == false);
             position.setTicker(this.tickerGenerator(position));
             position = this.positionRepository.save(position);
         } else
@@ -92,7 +93,6 @@ public class PositionService {
         position.setIsFinal(true);
         Position result = this.save(position);
 
-        //TODO Probar cuando se puedan crear las positions
         for (Hacker h : hackerService.findAll()) {
             Collection<Position> res = finderService.search(h.getFinder());
             if (res.contains(result)) {
@@ -117,6 +117,11 @@ public class PositionService {
 
         this.positionRepository.delete(position);
 
+    }
+
+    public void deleteForced(final Position position){
+        Assert.notNull(position);
+        this.positionRepository.delete(position.getId());
     }
 
     private String tickerGenerator(final Position position) {
@@ -179,6 +184,7 @@ public class PositionService {
             result = this.create();
             result.setCompany(p.getCompany());
             result.setIsFinal(p.getIsFinal());
+
         } else {
             result = this.positionRepository.findOne(p.getId());
         }

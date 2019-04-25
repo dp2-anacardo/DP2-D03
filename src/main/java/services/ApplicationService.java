@@ -130,7 +130,7 @@ public class ApplicationService {
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"));
 		Assert.isTrue(applications.contains(application));
 		application.setStatus("ACCEPTED");
-		
+
 		Message msg = this.messageService.create();
 		msg.setRecipient(application.getHacker());
 		msg.setSubject("An application has changed its status.");
@@ -196,6 +196,11 @@ public class ApplicationService {
 		Position position = this.applicationRepository.getPositionByApplication(applicationId);
 
 		return position;
+	}
+
+	public void delete(Application application){
+		Assert.notNull(application);
+		this.applicationRepository.delete(application);
 	}
 
 	//PARTE DEL HACKER--------------------------------------------------------------------------------------------------
