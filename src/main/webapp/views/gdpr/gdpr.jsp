@@ -38,5 +38,3 @@
 <p><spring:message code="gdpr.message33"/></p>
 <h2><spring:message code="gdpr.message34"/></h2>
 <p><spring:message code="gdpr.message35"/></p>
-<h2><spring:message code="gdpr.message36"/></h2>
-<p><spring:message code="gdpr.message37"/></p>
