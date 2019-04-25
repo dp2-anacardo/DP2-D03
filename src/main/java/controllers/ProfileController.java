@@ -89,6 +89,6 @@ public class ProfileController extends AbstractController {
 	}
 
 	private ModelAndView forbiddenOperation() {
-		return new ModelAndView("redirect:/action-1.do");
+		return new ModelAndView("redirect:/");
 	}
 }

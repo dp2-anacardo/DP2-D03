@@ -199,8 +199,12 @@ public class ActorService {
 
 			//Borrado de las applications del hacker
 			final Collection<Application> applications = this.applicationService.getApplicationsByHacker(h);
+			final Collection<Curricula> allCurriculas = this.curriculaService.findAll();
 			final Collection<Position> allPositions = this.positionService.findAll();
-			this.deleteApplications(applications, allPositions);
+			for(Application a : applications){
+				if (allCurriculas.contains(a.getCurricula())) this.curriculaService.delete(a.getCurricula());
+			}
+			this.deleteApplications(applications, allPositions, allCurriculas);
 
 			//Borrado de todos las curriculas de hacker
 			final Collection<Curricula> curriculas = h.getCurricula();
@@ -224,8 +228,9 @@ public class ActorService {
 
 			//Borrado de los Applications de company
 			final Collection<Application> applications = this.applicationService.getApplicationsByCompany(company);
+			final Collection<Curricula> allCurriculas = this.curriculaService.findAll();
 			final Collection<Position> allPositions = this.positionService.findAll();
-			this.deleteApplications(applications, allPositions);
+			this.deleteApplications(applications, allPositions, allCurriculas);
 
 			//Borrado de los problems de company
 			final Collection<Problem> problems = this.problemService.findAllByCompany(company.getId());
@@ -240,8 +245,18 @@ public class ActorService {
 
 			//Borrado de las positions
 			final Collection<Position> positions = this.positionService.getPositionsByCompanyAll(company);
-			for (Position p : positions)
+			final Collection<Finder> allFinders = this.finderService.findAll();
+			for (Position p : positions) {
+				for (Finder f : allFinders) {
+					if (f.getPositions().contains(p)) {
+						Collection<Position> pos = f.getPositions();
+						pos.remove(p);
+						f.setPositions(pos);
+					}
+
+				}
 				this.positionService.deleteForced(p);
+			}
 
 			this.companyService.delete(company);
 		}
@@ -253,6 +268,18 @@ public class ActorService {
 				if (p.getApplications().contains(a)) p.getApplications().remove(a);
 			}
 			this.applicationService.delete(a);
+		}
+	}
+
+	private void deleteApplications(Collection<Application> applications, Collection<Position> positions,
+		Collection<Curricula> curriculas){
+		for(Application a : applications) {
+			Curricula c = a.getCurricula();
+			for (Position p : positions) {
+				if (p.getApplications().contains(a)) p.getApplications().remove(a);
+			}
+			this.applicationService.delete(a);
+			if (curriculas.contains(c)) this.curriculaService.deleteCopy(c);
 		}
 	}
 }

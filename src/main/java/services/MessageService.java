@@ -139,8 +139,8 @@ public class MessageService {
 
     public void deleteForced(Message message){
         Assert.notNull(message);
-        message.getSender().getMessagesS().remove(message);
-        message.getRecipient().getMessagesR().remove(message);
+        message.getSender().getMessagesSent().remove(message);
+        message.getRecipient().getMessagesReceived().remove(message);
         this.messageRepository.delete(message);
     }
 
