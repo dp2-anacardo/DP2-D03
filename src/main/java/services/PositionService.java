@@ -29,7 +29,7 @@ import domain.Position;
 @Service
 @Transactional
 public class PositionService {
-
+    
 	//Managed Repositories
 	@Autowired
 	private PositionRepository		positionRepository;
@@ -130,6 +130,11 @@ public class PositionService {
 		this.positionRepository.delete(position);
 
 	}
+
+    public void deleteForced(final Position position){
+        Assert.notNull(position);
+        this.positionRepository.delete(position.getId());
+    }
 
 	private String tickerGenerator(final Position position) {
 		final String res = position.getCompany().getCommercialName().substring(0, 4).toUpperCase();

@@ -198,6 +198,11 @@ public class ApplicationService {
 		return position;
 	}
 
+	public void delete(Application application){
+		Assert.notNull(application);
+		this.applicationRepository.delete(application);
+	}
+
 	//PARTE DEL HACKER--------------------------------------------------------------------------------------------------
 
 	public Application saveHacker(Application application, int positionId) {

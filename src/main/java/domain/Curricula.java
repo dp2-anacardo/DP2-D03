@@ -8,6 +8,9 @@ import javax.validation.Valid;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+		@Index(columnList = "isCopy")
+})
 public class Curricula extends DomainEntity {
 
 	//Relationships ----------------------------------------------------------------------------------------------------

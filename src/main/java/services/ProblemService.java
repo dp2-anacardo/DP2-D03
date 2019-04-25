@@ -85,6 +85,11 @@ public class ProblemService {
         this.problemRepository.delete(problem.getId());
     }
 
+    public void deleteForced(final Problem problem){
+        Assert.notNull(problem);
+        this.problemRepository.delete(problem);
+    }
+
     // Other methods
 
     public Problem reconstruct(final Problem problem, final BindingResult binding) {

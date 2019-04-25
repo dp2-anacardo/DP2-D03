@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import repositories.FinderRepository;
+import security.LoginService;
 
 import java.util.*;
 
@@ -24,6 +25,10 @@ public class FinderService {
     //Services
     @Autowired
     private ConfigurationService configurationService;
+    @Autowired
+    private ActorService actorService;
+    @Autowired
+    private  HackerService hackerService;
 
     //Validator
     @Autowired
@@ -51,6 +56,10 @@ public class FinderService {
     public Finder save(Finder finder) {
 
         Assert.notNull(finder);
+        if(finder.getId()!=0) {
+            Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
+            Assert.isTrue(this.hackerService.findOne(this.actorService.getActorLogged().getId()).getFinder().equals(finder));
+        }
 
         Collection<Position> result = this.search(finder);
 

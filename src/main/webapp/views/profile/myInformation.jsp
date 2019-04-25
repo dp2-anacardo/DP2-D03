@@ -27,6 +27,8 @@
 			onclick="javascript: relativeRedir('/administrator/administrator/edit.do');" />
 <input type="button" name="socialProfiles" value="<spring:message code="socialProfile" />"
 			onclick="javascript: relativeRedir('/socialProfile/admin,company,hacker/list.do');" />
+	<input type="button" name="socialProfiles" value="<spring:message code="profile.export" />"
+		   onclick="javascript: relativeRedir('/profile/exportJSON.do');" />
 			
 </security:authorize>
 	
@@ -49,6 +51,8 @@
 			onclick="javascript: relativeRedir('hacker/hacker/edit.do');" />
 <input type="button" name="socialProfiles" value="<spring:message code="socialProfile" />"
 			onclick="javascript: relativeRedir('/socialProfile/admin,company,hacker/list.do');" />
+	<input type="button" name="socialProfiles" value="<spring:message code="profile.export" />"
+		   onclick="javascript: relativeRedir('/profile/exportJSON.do');" />
 			
 </security:authorize>
 
@@ -76,6 +80,16 @@
 <input type="button" name="socialProfiles" value="<spring:message code="socialProfile" />"
 			onclick="javascript: relativeRedir('/socialProfile/admin,company,hacker/list.do');" />
 
+	<input type="button" name="socialProfiles" value="<spring:message code="profile.export" />"
+		   onclick="javascript: relativeRedir('/profile/exportJSON.do');" />
+
 </security:authorize>
 
 <acme:cancel url="/" code="messageBox.goBack"/>
+
+
+<br>
+<br>
+<b><spring:message code="actor.deleteMSG"/>:</b>
+<br>
+<acme:cancel code="actor.deleteAccount" url="/profile/deleteInformation.do"/>

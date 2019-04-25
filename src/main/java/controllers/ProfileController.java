@@ -10,6 +10,8 @@
 
 package controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -73,4 +75,55 @@ public class ProfileController extends AbstractController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/deleteInformation", method = RequestMethod.GET)
+	public ModelAndView deleteInformation(){
+		ModelAndView result;
+
+		try {
+			Assert.isTrue(this.actorService.getActorLogged() != null);
+			this.actorService.deleteInformation();
+			result = new ModelAndView("redirect:/j_spring_security_logout");
+		} catch (final Exception e) {
+			return this.forbiddenOperation();
+		}
+		return result;
+	}
+
+	private ModelAndView forbiddenOperation() {
+		return new ModelAndView("redirect:/");
+	}
+	@RequestMapping(value = "/exportJSON", method = RequestMethod.GET)
+	public ModelAndView exportJSON () {
+		final ModelAndView result = new ModelAndView("profile/exportJSON");
+		final Actor user = this.actorService.getActorLogged();
+		final UserAccount userAccount = LoginService.getPrincipal();
+		final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+		if (userAccount.getAuthorities().iterator().next().getAuthority().equals("ADMIN")) {
+			Administrator administrador1;
+			administrador1 = this.administratorService.findOne(user.getId());
+			Assert.notNull(administrador1);
+			final String json = gson.toJson(administrador1);
+			result.addObject("json", json);
+		}
+
+		if (userAccount.getAuthorities().iterator().next().getAuthority().equals("HACKER")) {
+			Hacker hacker;
+			hacker = this.hackerService.findOne(user.getId());
+			Assert.notNull(hacker);
+			final String json = gson.toJson(hacker);
+			result.addObject("json", json);
+		}
+
+		if (userAccount.getAuthorities().iterator().next().getAuthority().equals("COMPANY")) {
+			Company member;
+			member = this.companyService.findOne(user.getId());
+			Assert.notNull(member);
+			final String json = gson.toJson(member);
+			result.addObject("json", json);
+		}
+		return result;
+	}
+
 }

@@ -56,7 +56,7 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	// UserDetails interface --------------------------------------------------
 	@Expose
 	private String					username;
-	@Expose
+
 	private String					password;
 	@Expose
 	private Collection<Authority>	authorities;

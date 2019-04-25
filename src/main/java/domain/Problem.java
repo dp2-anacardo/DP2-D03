@@ -3,12 +3,7 @@ package domain;
 
 import java.util.Collection;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -23,6 +18,9 @@ import datatype.Url;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+		@Index(columnList = "isFinal")
+})
 public class Problem extends DomainEntity {
 
 	// Attributes -------------------------------------------------------------
