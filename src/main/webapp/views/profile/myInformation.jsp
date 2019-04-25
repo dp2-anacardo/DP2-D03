@@ -27,6 +27,8 @@
 			onclick="javascript: relativeRedir('/administrator/administrator/edit.do');" />
 <input type="button" name="socialProfiles" value="<spring:message code="socialProfile" />"
 			onclick="javascript: relativeRedir('/socialProfile/admin,company,hacker/list.do');" />
+	<input type="button" name="socialProfiles" value="<spring:message code="profile.export" />"
+		   onclick="javascript: relativeRedir('/profile/exportJSON.do');" />
 			
 </security:authorize>
 	
