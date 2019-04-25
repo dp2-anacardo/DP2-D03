@@ -81,6 +81,8 @@
 
         <security:intercept-url pattern="/administrator/actorList.do" access="hasRole('ADMIN')"/>
 
+        <security:intercept-url pattern="/gdpr/**" access="permitAll"/>
+
         <security:intercept-url pattern="/**" access="permitAll"/>
 
         <security:form-login
