@@ -51,11 +51,11 @@
 				<ref bean="socialProfileAdmin1"/>
 			</list>
 		</property>
-		<property name="messagesR">
+		<property name="messagesReceived">
 			<list>
 			</list>
 		</property>
-		<property name="messagesS">
+		<property name="messagesSent">
 			<list>
 			</list>
 		</property>
@@ -82,7 +82,7 @@
 		<property name="systemName" value="Acme Hacker Rank"/>
 		<property name="banner" value="https://i.imgur.com/7b8lu4b.png"/>
 		<property name="welcomeMessageEs" value="¡Bienvenidos a Acme Hacker Rank! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!"/>
-		<property name="welcomeMessageEn" value="Welcome to Acme hacker Rank! We’re IT hacker’s favourite job marketplace!"/>
+		<property name="welcomeMessageEn" value="Welcome to Acme hacker Rank! We're IT hacker's favourite job marketplace!"/>
 		<property name="countryCode" value="34"/>
 		<property name="spamWords">
 			<list>
