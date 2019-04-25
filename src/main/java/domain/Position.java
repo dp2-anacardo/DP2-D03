@@ -13,6 +13,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+		@Index(columnList = "isFinal, isCancelled")
+})
 public class Position extends DomainEntity {
 
 	//Properties -----------------------------------------------------------------------------------
