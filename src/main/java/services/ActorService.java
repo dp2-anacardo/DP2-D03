@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -15,8 +16,6 @@ import repositories.ActorRepository;
 import security.LoginService;
 import security.UserAccount;
 import security.UserAccountService;
-import domain.Actor;
-import domain.SocialProfile;
 
 @Service
 @Transactional
@@ -25,11 +24,30 @@ public class ActorService {
 	//Managed Repositories
 	@Autowired
 	private ActorRepository			actorRepository;
+
 	//Supporting services
 	@Autowired
 	private UserAccountService		userAccountService;
 	@Autowired
 	private SocialProfileService	socialProfileService;
+	@Autowired
+	private MessageService			messageService;
+	@Autowired
+	private AdministratorService 	administratorService;
+	@Autowired
+	private HackerService 			hackerService;
+	@Autowired
+	private CurriculaService		curriculaService;
+	@Autowired
+	private ApplicationService		applicationService;
+	@Autowired
+	private FinderService			finderService;
+	@Autowired
+	private CompanyService			companyService;
+	@Autowired
+	private ProblemService			problemService;
+	@Autowired
+	private PositionService			positionService;
 
 
 	public Collection<Actor> findAll() {
@@ -141,4 +159,100 @@ public class ActorService {
 		return res;
 	}
 
+	public void deleteInformation() {
+
+		UserAccount userAccount;
+		userAccount = LoginService.getPrincipal();
+		final Actor user = this.findByUserAccount(userAccount);
+
+		//Borrado de los socialProfiles de los actores
+		if (!(user.getSocialProfiles().isEmpty())) {
+			final List<SocialProfile> a = new ArrayList<>();
+			final Collection<SocialProfile> ad = user.getSocialProfiles();
+			a.addAll(ad);
+			for (final SocialProfile i : a)
+				this.socialProfileService.delete(i);
+		}
+
+		//Borrado de los mensajes que recibes y envias
+		final Collection<Message> msgs = this.messageService.findAllSentByActor(user.getId());
+		msgs.addAll(this.messageService.findAllReceivedByActor(user.getId()));
+
+		if (msgs.size() > 0)
+			for (final Message m : msgs)
+				this.messageService.deleteForced(m);
+
+		//Borrado si admin
+		if (userAccount.getAuthorities().iterator().next().getAuthority().equals("ADMIN")) {
+
+			final Administrator admin = this.administratorService.findOne(user.getId());
+
+			//Borrado de la informacion del administrador
+			this.administratorService.delete(admin);
+		}
+
+		//Borrado si hacker
+		if (userAccount.getAuthorities().iterator().next().getAuthority().equals("HACKER")) {
+
+			//Faltan las relaciones de hacker
+			final Hacker h = this.hackerService.findOne(user.getId());
+
+			//Borrado de las applications del hacker
+			final Collection<Application> applications = this.applicationService.getApplicationsByHacker(h);
+			final Collection<Position> allPositions = this.positionService.findAll();
+			this.deleteApplications(applications, allPositions);
+
+			//Borrado de todos las curriculas de hacker
+			final Collection<Curricula> curriculas = h.getCurricula();
+			for(final Curricula c : curriculas)
+				this.curriculaService.delete(c);
+
+			//Borrado del hacker
+			this.hackerService.delete(h);
+
+			//Borrado del finder
+			Finder finder = this.finderService.findOne(h.getFinder().getId());
+			finder.setPositions(new ArrayList<Position>());
+			this.finderService.delete(finder);
+
+		}
+
+		//Borrado si company
+		if (userAccount.getAuthorities().iterator().next().getAuthority().equals("COMPANY")) {
+
+			final Company company = this.companyService.findOne(user.getId());
+
+			//Borrado de los Applications de company
+			final Collection<Application> applications = this.applicationService.getApplicationsByCompany(company);
+			final Collection<Position> allPositions = this.positionService.findAll();
+			this.deleteApplications(applications, allPositions);
+
+			//Borrado de los problems de company
+			final Collection<Problem> problems = this.problemService.findAllByCompany(company.getId());
+			final Collection<Application> allApplications = this.applicationService.findAll();
+			for (Problem p : problems) {
+				for (Application a : allApplications) {
+					if (a.getProblem().equals(p)) this.applicationService.delete(a);
+				}
+				this.problemService.deleteForced(p);
+			}
+
+
+			//Borrado de las positions
+			final Collection<Position> positions = this.positionService.getPositionsByCompanyAll(company);
+			for (Position p : positions)
+				this.positionService.deleteForced(p);
+
+			this.companyService.delete(company);
+		}
+	}
+
+	private void deleteApplications(Collection<Application> applications, Collection<Position> positions){
+		for(Application a : applications) {
+			for (Position p : positions) {
+				if (p.getApplications().contains(a)) p.getApplications().remove(a);
+			}
+			this.applicationService.delete(a);
+		}
+	}
 }

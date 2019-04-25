@@ -137,6 +137,13 @@ public class MessageService {
 
     }
 
+    public void deleteForced(Message message){
+        Assert.notNull(message);
+        message.getSender().getMessagesS().remove(message);
+        message.getRecipient().getMessagesR().remove(message);
+        this.messageRepository.delete(message);
+    }
+
     public void broadcast(final Message m) {
         final Actor principal = this.actorService.getActorLogged();
         Assert.isTrue(principal instanceof Administrator);
@@ -160,7 +167,6 @@ public class MessageService {
     }
 
     // Other methods
-
     public Collection<Message> findInPoolByActor(final int actorID) {
         final Collection<Message> result = new ArrayList<Message>();
         final Collection<Message> received = this.messageRepository.findAllReceivedInPoolByActor(actorID);
@@ -178,6 +184,13 @@ public class MessageService {
 
     public Collection<Message> findAllSentByActor(int actorID) {
         final Collection<Message> result = this.messageRepository.findAllSentByActor(actorID);
+        Assert.notNull(result);
+
+        return result;
+    }
+
+    public Collection<Message> findAllReceivedByActor(int actorID) {
+        final Collection<Message> result = this.messageRepository.findAllReceivedByActor(actorID);
         Assert.notNull(result);
 
         return result;

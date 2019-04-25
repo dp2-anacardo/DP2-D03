@@ -73,4 +73,22 @@ public class ProfileController extends AbstractController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/deleteInformation", method = RequestMethod.GET)
+	public ModelAndView deleteInformation(){
+		ModelAndView result;
+
+		try {
+			Assert.isTrue(this.actorService.getActorLogged() != null);
+			this.actorService.deleteInformation();
+			result = new ModelAndView("redirect:/j_spring_security_logout");
+		} catch (final Exception e) {
+			return this.forbiddenOperation();
+		}
+		return result;
+	}
+
+	private ModelAndView forbiddenOperation() {
+		return new ModelAndView("redirect:/action-1.do");
+	}
 }

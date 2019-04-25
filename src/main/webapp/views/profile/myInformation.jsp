@@ -75,7 +75,13 @@
 			onclick="javascript: relativeRedir('/company/company/edit.do');" />
 <input type="button" name="socialProfiles" value="<spring:message code="socialProfile" />"
 			onclick="javascript: relativeRedir('/socialProfile/admin,company,hacker/list.do');" />
-
 </security:authorize>
 
 <acme:cancel url="/" code="messageBox.goBack"/>
+
+
+<br>
+<br>
+<b><spring:message code="actor.deleteMSG"/>:</b>
+<br>
+<acme:cancel code="actor.deleteAccount" url="/profile/deleteInformation.do"/>
