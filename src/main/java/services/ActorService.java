@@ -201,15 +201,15 @@ public class ActorService {
 			final Collection<Application> applications = this.applicationService.getApplicationsByHacker(h);
 			final Collection<Curricula> allCurriculas = this.curriculaService.findAll();
 			final Collection<Position> allPositions = this.positionService.findAll();
-			for(Application a : applications){
-				if (allCurriculas.contains(a.getCurricula())) this.curriculaService.delete(a.getCurricula());
-			}
+
 			this.deleteApplications(applications, allPositions, allCurriculas);
 
 			//Borrado de todos las curriculas de hacker
-			final Collection<Curricula> curriculas = h.getCurricula();
-			for(final Curricula c : curriculas)
-				this.curriculaService.delete(c);
+			Collection<Curricula> curriculas = h.getCurricula();
+			h.setCurricula(new ArrayList<Curricula>());
+			for(final Curricula c : curriculas) {
+				this.curriculaService.deleteCopy(c);
+			}
 
 			//Borrado del hacker
 			this.hackerService.delete(h);

@@ -56,9 +56,10 @@ public class FinderService {
     public Finder save(Finder finder) {
 
         Assert.notNull(finder);
-        Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
-        Assert.isTrue(this.hackerService.findOne(this.actorService.getActorLogged().getId()).getFinder().equals(finder));
-
+        if(finder.getId()!=0) {
+            Assert.isTrue(this.actorService.getActorLogged().getUserAccount().getAuthorities().iterator().next().getAuthority().equals("HACKER"));
+            Assert.isTrue(this.hackerService.findOne(this.actorService.getActorLogged().getId()).getFinder().equals(finder));
+        }
 
         Collection<Position> result = this.search(finder);
 

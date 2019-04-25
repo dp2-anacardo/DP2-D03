@@ -77,8 +77,6 @@ public class RegisterHackerController extends AbstractController {
 				this.hackerService.save(hacker);
 				result = new ModelAndView("redirect:/");
 			} catch (final Throwable oops) {
-				if (binding.hasErrors())
-					result = this.createEditModelAndView(hackerForm, "error.duplicated");
 				result = this.createEditModelAndView(hackerForm, "error.commit.error");
 			}
 		return result;
